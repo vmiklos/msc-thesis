@@ -1,0 +1,945 @@
+= Diploma 1 log
+
+== 1st week
+
+Too busy, first meeting scheduled on 2nd week.
+
+== 2nd week
+
+=== 2011-02-14
+
+I sent back the two patches I created during projlab2:
+
+http://article.gmane.org/gmane.linux.kernel.device-mapper.devel/13399
+
+It turned out (in a reply) that the whole round-robin code is RHEL5-specific,
+it does not present in RHEl6/upstream. (Need to find out why.)
+
+We agreed on the meeting that this week I'll evaluate dm-raid to see how mature
+it is. We also agreed that I'll visit ULX 1-2 times a week this semester.
+
+I installed RHEL6 in a virtual machine, spent a lot of time with downloading
+the i386 version as first I picked up the x86_64 one...
+
+Asked Jonathan about possible task list for dm-raid, got it:
+
+http://article.gmane.org/gmane.linux.kernel.device-mapper.devel/13400
+
+=== 2011-02-15
+
+Asked Jonathan for newest dm-raid kernel patches & userspace tools. dm-raid is
+a single commit in upstream (drivers/md/dm-raid.c), looks like the latest
+version is in some private quilt tree. The userspace part is not yet part of
+lvm2, a prototype is available in perl. Available here:
+
+http://article.gmane.org/gmane.linux.kernel.device-mapper.devel/13418
+
+=== 2011-02-16
+
+Trying to find out dm-raid status on RHEL6 kernel:
+
+----
+$ wget ftp://ftp.redhat.com/redhat/linux/enterprise/6Server/en/os/SRPMS/kernel-2.6.32-71.el6.src.rpm
+$ rpm -Uvh kernel-2.6.32-71.el6.src.rpm 2>&1 | grep -v mockb
+$ cd ~/rpmbuild/SPECS
+$ rpmbuild -bp --target=`uname -m` kernel.spec 2>&1 | tee prep.log
+----
+
+The source package is called kernel, it was kernel-2.6 in RHEL5.
+
+Configuring the install media to be a source repo for `yum install` also
+changed, now those .repo files live under /etc/yum.repos.d, not
+/etc/yum/repos.d. After this, build-dependencies for kernel build could be
+installed and prep went fine.
+
+The rest of the prepare was the same as on RHEL5:
+
+----
+$ cd ~/rpmbuild/BUILD/kernel-2.6.32-71.el6/linux-2.6.32-71.el6.i686
+$ perl -p -i -e "s/^EXTRAVERSION.*/EXTRAVERSION = -71.el6/" Makefile
+
+$ cp /boot/symvers-2.6.32-71.el6.i686.gz .
+$ gunzip symvers-2.6.32-71.el6.i686.gz
+$ mv symvers-2.6.32-71.el6.i686 Module.symvers
+
+$ make prepare
+$ make modules_prepare
+$ make M=drivers/md
+# cp drivers/md/*.ko /lib/modules/2.6.18-194.el5/extra
+# depmod -a
+----
+
+The sad news is that dm-raid.c is not part of the RHEL6 kernel:
+
+----
+root@diploma1:~# modinfo dm-raid
+ERROR: modinfo: could not find module dm-raid
+----
+
+so it's possible to:
+
+- cherry-pick the dm-raid.c commit from upstream + apply Jonathan's patches or
+- install rawhide where they have kernel-2.6.38rc5 (including dm-raid.c) + only
+  apply the patches there
+
+Given that I have RHEL6 install at the moment, I'm trying the first.
+
+The cherry-picked patch applies, but build fails:
+
+----
+  CC [M]  drivers/md/dm-raid.o
+drivers/md/dm-raid.c:61: error: field 'callbacks' has incomplete type
+drivers/md/dm-raid.c: In function 'context_alloc':
+drivers/md/dm-raid.c:119: error: implicit declaration of function 'mddev_init'
+drivers/md/dm-raid.c:133: error: implicit declaration of function 'md_rdev_init'
+drivers/md/dm-raid.c: In function 'parse_raid_params':
+drivers/md/dm-raid.c:347: error: implicit declaration of function 'raid5_set_cache_size'
+drivers/md/dm-raid.c: In function 'do_table_event':
+drivers/md/dm-raid.c:381: error: 'struct mddev_s' has no member named 'event_work'
+drivers/md/dm-raid.c:381: warning: type defaults to 'int' in declaration of '__mptr'
+drivers/md/dm-raid.c:381: warning: initialization from incompatible pointer type
+drivers/md/dm-raid.c:381: error: 'struct mddev_s' has no member named 'event_work'
+drivers/md/dm-raid.c: In function 'raid_is_congested':
+drivers/md/dm-raid.c:388: warning: type defaults to 'int' in declaration of '__mptr'
+drivers/md/dm-raid.c:388: warning: initialization from incompatible pointer type
+drivers/md/dm-raid.c:390: error: implicit declaration of function 'md_raid5_congested'
+drivers/md/dm-raid.c: In function 'raid_unplug':
+drivers/md/dm-raid.c:395: warning: type defaults to 'int' in declaration of '__mptr'
+drivers/md/dm-raid.c:395: warning: initialization from incompatible pointer type
+drivers/md/dm-raid.c:397: error: implicit declaration of function 'md_raid5_unplug_device'
+drivers/md/dm-raid.c: In function 'raid_ctr':
+drivers/md/dm-raid.c:475: error: 'struct mddev_s' has no member named 'event_work'
+drivers/md/dm-raid.c:475: error: 'struct mddev_s' has no member named 'event_work'
+drivers/md/dm-raid.c:475: error: 'struct mddev_s' has no member named 'event_work'
+drivers/md/dm-raid.c:480: error: implicit declaration of function 'md_run'
+drivers/md/dm-raid.c:491: error: implicit declaration of function 'dm_table_add_target_callbacks'
+drivers/md/dm-raid.c: In function 'raid_dtr':
+drivers/md/dm-raid.c:506: error: implicit declaration of function 'md_stop'
+drivers/md/dm-raid.c: In function 'raid_presuspend':
+drivers/md/dm-raid.c:647: error: implicit declaration of function 'md_stop_writes'
+drivers/md/dm-raid.c: In function 'raid_postsuspend':
+drivers/md/dm-raid.c:654: error: implicit declaration of function 'mddev_suspend'
+drivers/md/dm-raid.c: In function 'raid_resume':
+drivers/md/dm-raid.c:661: error: implicit declaration of function 'mddev_resume'
+make[1]: *** [drivers/md/dm-raid.o] Error 1
+make: *** [_module_drivers/md] Error 2
+----
+
+So now I'm installing rawhide. Not rawhide actually, but Fedora Branched
+(pre-Fedora15), which is supposed a bit more stable than rawhide and contains a
+new enough kernel as well - following the instructions from here:
+
+http://fedoraproject.org/wiki/Releases/Branched#Yum_update_from_previous_official_release
+
+A few tricks were needed to get a bootable system after upgrade (disable
+selinux, blacklist microcode kernel module), but that's probably due to
+'Branched' being pre-alpha.
+
+The dm-raid code is here:
+
+----
+root@diploma1-f:~# modinfo dm-raid
+filename:       /lib/modules/2.6.38-0.rc4.git7.1.fc15.i686.PAE/kernel/drivers/md/dm-raid.ko
+license:        GPL
+author:         Neil Brown <dm-devel@redhat.com>
+alias:          dm-raid6
+alias:          dm-raid5
+alias:          dm-raid4
+description:    device-mapper raid4/5/6 target
+srcversion:     B900F48156096E136BB8CD9
+depends:        raid456
+vermagic:       2.6.38-0.rc4.git7.1.fc15.i686.PAE SMP mod_unload 686 
+----
+
+Let's try out, based on:
+
+http://article.gmane.org/gmane.linux.kernel.device-mapper.devel/12890
+
+----
+# ~vmiklos/dm-raid-patches/gime_raid.pl raid4 /dev/sd[bcdef]1
+RAID type    : raid4
+Block devices: /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1
+Device size  : 770868BB
+----
+
+and it hangs here...
+
+In an other shell:
+
+----
+# dmsetup ls
+raid    (253, 2)
+vg_diploma1f-lv_swap    (253, 1)
+vg_diploma1f-lv_root    (253, 0)
+----
+
+So it does create something, but definitely not perfect:
+
+----
+# strace -p $(pidof dmsetup)
+Process 1144 attached - interrupt to quit
+semop(32768, {{0, 0, 0}}, 1
+----
+
+But I guess it does not worth doing more debugging before applying Jonathan's
+patches.
+
+=== 2011-02-17
+
+Let's do that:
+
+----
+$ wget http://download.fedora.redhat.com/pub/fedora/linux/development/15/source/SRPMS/kernel-2.6.38-0.rc4.git0.2.fc15.src.rpm
+$ rpm -Uvh kernel-2.6.38-0.rc4.git0.2.fc15.src.rpm 2>&1 | grep -v mockb
+$ cd ~/rpmbuild/SPECS
+# yum install xmlto asciidoc elfutils-devel 'perl(ExtUtils::Embed)' # build-depends for kernel
+$ rpmbuild -bp --target=`uname -m` kernel.spec 2>&1 | tee prep.log
+----
+
+Then continue the build manually:
+
+----
+$ cd ~/rpmbuild/BUILD/kernel-2.6.37.fc15/linux-2.6.37.i686
+$ perl -p -i -e "s/^EXTRAVERSION.*/EXTRAVERSION = -0.rc4.git7.1.fc15.i686.PAE/" Makefile
+
+$ cp /usr/src/kernels/2.6.38-0.rc4.git7.1.fc15.i686.PAE/Module.symvers .
+
+$ make prepare
+$ make modules_prepare
+$ make M=drivers/md
+# cp drivers/md/*.ko /lib/modules/2.6.38-0.rc4.git7.1.fc15.i686.PAE/extra/
+# depmod -a
+----
+
+Apply the patches:
+
+----
+$ git quiltimport --author "Jonathan Brassow <jbrassow@redhat.com>" --patches ~/dm-raid-patches/
+----
+
+Build, install and reload the modules, then try it:
+
+----
+# ~vmiklos/dm-raid-patches/gime_raid.pl raid4 /dev/sd[bcdef]1
+RAID type    : raid4
+Block devices: /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1
+Device size  : 770868BB
+# ls /dev/mapper/
+control  raid  vg_diploma1f-lv_root  vg_diploma1f-lv_swap
+----
+
+No hanging!
+
+However almost anything else fails. Here is what I tried:
+
+(I reverted the virtual machine to a snapshot before each attempt.)
+
+Creating a raid1:
+
+----
+# ~vmiklos/dm-raid-patches/gime_raid.pl raid1 /dev/sd[bc]1
+RAID type    : raid1
+Block devices: /dev/sdb1 /dev/sdc1
+Device size  : 192717BB
+
+Message from syslogd@diploma1-f at Feb 17 11:19:57 ...
+ kernel:[ 1395.143044] Oops: 0000 [#1] SMP
+
+(...)
+
+sh: line 1:  4209 Done                    echo 0 192717 raid raid1 0 2 - /dev/sdb1 - /dev/sdc1
+      4210 Killed                  | dmsetup create raid
+Failed to create "raid":
+  0 192717 raid raid1 0 2 - /dev/sdb1 - /dev/sdc1
+----
+
+dmesg:
+
+----
+[ 1269.709043] bio: create slab <bio-1> at 1
+[ 1269.733414] md/raid1:mdX: not clean -- starting background reconstruction
+[ 1269.734568] md/raid1:mdX: active with 2 out of 2 mirrors
+[ 1269.752416] BUG: unable to handle kernel NULL pointer dereference at 000001f4
+[ 1269.753039] IP: [<c070c3d0>] md_integrity_register+0x29/0xdc
+[ 1269.753039] *pdpt = 000000000c77c001 *pde = 000000000f5be067 *pte = 0000000000000000 
+[ 1269.753039] Oops: 0000 [#1] SMP 
+[ 1269.753039] last sysfs file: /sys/module/raid1/initstate
+[ 1269.753039] Modules linked in: dm_raid raid1 raid456 async_raid6_recov async_pq raid6_pq async_xor xor async_memcpy async_tx sunrpc ip6t_REJECT nf_conntrack_ipv6 nf_defrag_ipv6 ip6table_filter ip6_tables snd_ens1371 gameport snd_rawmidi snd_ac97_codec ac97_bus snd_seq snd_seq_device snd_pcm snd_timer ppdev vmw_balloon snd pcnet32 mii soundcore snd_page_alloc i2c_piix4 parport_pc i2c_core parport ipv6 mptspi mptscsih mptbase scsi_transport_spi [last unloaded: raid456]
+[ 1269.753039] 
+[ 1269.753039] Pid: 4227, comm: dmsetup Not tainted 2.6.38-0.rc4.git7.1.fc15.i686.PAE #1 440BX Desktop Reference Platform/VMware Virtual Platform
+[ 1269.753039] EIP: 0060:[<c070c3d0>] EFLAGS: 00010246 CPU: 0
+[ 1269.753039] EIP is at md_integrity_register+0x29/0xdc
+[ 1269.753039] EAX: 00000000 EBX: cf8dd398 ECX: 00000000 EDX: 00000000
+[ 1269.753039] ESI: cf8dd00c EDI: 00000000 EBP: cc79dd4c ESP: cc79dd34
+[ 1269.753039]  DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068
+[ 1269.753039] Process dmsetup (pid: 4227, ti=cc79c000 task=cf8e25b0 task.ti=cc79c000)
+[ 1269.753039] Stack:
+[ 1269.753039]  cc780f68 cc780f68 cf8dd01c cf8dd00c cc780f68 0000000c cc79dd74 d10b7d46
+[ 1269.753039]  d10ba952 d10ba775 00000002 00000002 000000e0 cf8dd01c cf8dd00c cf8dd01c
+[ 1269.753039]  cc79ddfc c070f8cf 00000001 c098c29a 00000001 00000021 c040b453 cf8dd394
+[ 1269.753039] Call Trace:
+[ 1269.753039]  [<d10b7d46>] run+0x24c/0x256 [raid1]
+[ 1269.753039]  [<c070f8cf>] md_run+0x4f0/0x7ab
+[ 1269.753039]  [<c040b453>] ? do_softirq+0x8c/0x92
+[ 1269.753039]  [<c0420d64>] ? smp_apic_timer_interrupt+0x6b/0x78
+[ 1269.753039]  [<c0435ad9>] ? __might_sleep+0x29/0xe4
+[ 1269.753039]  [<c042f5a4>] ? should_resched+0xd/0x27
+[ 1269.753039]  [<c07e603e>] ? _cond_resched+0xd/0x21
+[ 1269.753039]  [<d10f5ff7>] raid_ctr+0x8b4/0x8d4 [dm_raid]
+[ 1269.753039]  [<c07177f5>] dm_table_add_target+0x165/0x202
+[ 1269.753039]  [<c04d4f7f>] ? vfree+0x25/0x27
+[ 1269.753039]  [<c071715b>] ? alloc_targets+0x8c/0xb1
+[ 1269.753039]  [<c071a05c>] table_load+0x233/0x242
+[ 1269.753039]  [<c0719aa8>] dm_ctl_ioctl+0x1af/0x1ed
+[ 1269.753039]  [<c043474f>] ? pick_next_task_fair+0x85/0x8d
+[ 1269.753039]  [<c0719e29>] ? table_load+0x0/0x242
+[ 1269.753039]  [<c07198f9>] ? dm_ctl_ioctl+0x0/0x1ed
+[ 1269.753039]  [<c04f9c4f>] do_vfs_ioctl+0x451/0x482
+[ 1269.753039]  [<c0491ca0>] ? __call_rcu+0xdb/0xe1
+[ 1269.753039]  [<c0501713>] ? mntput_no_expire+0x28/0xbd
+[ 1269.753039]  [<c05017c6>] ? mntput+0x1e/0x20
+[ 1269.753039]  [<c04f4f4f>] ? path_put+0x1a/0x1d
+[ 1269.753039]  [<c04f9cc7>] sys_ioctl+0x47/0x60
+[ 1269.753039]  [<c040969f>] sysenter_do_call+0x12/0x28
+[ 1269.753039] Code: 5d c3 55 89 e5 57 56 53 83 ec 0c 3e 8d 74 26 00 89 c6 8b 5e 10 8d 40 10 89 45 f0 31 c0 3b 5d f0 0f 84 b0 00 00 00 8b 56 30 31 ff <83> ba f4 01 00 00 00 0f 85 9e 00 00 00 eb 38 8b 43 6c a8 02 75 
+[ 1269.753039] EIP: [<c070c3d0>] md_integrity_register+0x29/0xdc SS:ESP 0068:cc79dd34
+[ 1269.753039] CR2: 00000000000001f4
+[ 1269.898378] ---[ end trace 49f34abab1d4a1b8 ]---
+----
+
+Creating and then deleting a raid4:
+
+----
+root@diploma1-f:~# ~vmiklos/dm-raid-patches/gime_raid.pl raid4 /dev/sd[bcdef]1
+RAID type    : raid4
+Block devices: /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1
+Device size  : 770868BB
+
+root@diploma1-f:~# dmsetup remove raid
+Killed
+----
+
+dmesg:
+
+----
+[ 1289.594670] bio: create slab <bio-1> at 1
+[ 1289.617603] md/raid:mdX: not clean -- starting background reconstruction
+[ 1289.623386] md/raid:mdX: device sdf1 operational as raid disk 4
+[ 1289.634279] md/raid:mdX: device sde1 operational as raid disk 3
+[ 1289.634889] md/raid:mdX: device sdd1 operational as raid disk 2
+[ 1289.635479] md/raid:mdX: device sdc1 operational as raid disk 1
+[ 1289.636071] md/raid:mdX: device sdb1 operational as raid disk 0
+[ 1289.661945] md/raid:mdX: allocated 5265kB
+[ 1289.663995] md/raid:mdX: raid level 5 active with 5 out of 5 devices, algorithm 4
+[ 1289.665539] RAID conf printout:
+[ 1289.665630]  --- level:5 rd:5 wd:5
+[ 1289.665742]  disk 0, o:1, dev:sdb1
+[ 1289.665759]  disk 1, o:1, dev:sdc1
+[ 1289.665765]  disk 2, o:1, dev:sdd1
+[ 1289.665770]  disk 3, o:1, dev:sde1
+[ 1289.665776]  disk 4, o:1, dev:sdf1
+[ 1289.685823] md: resync of RAID array mdX
+[ 1289.686486] md: minimum _guaranteed_  speed: 1000 KB/sec/disk.
+[ 1289.687117] md: using maximum available idle IO bandwidth (but not more than 200000 KB/sec) for resync.
+[ 1289.701594] md: using 128k window, over a total of 96256 blocks.
+[ 1289.892256] attempt to access beyond end of device
+[ 1289.893552] sdc1: rw=0, want=193160, limit=192717
+[ 1289.895278] attempt to access beyond end of device
+[ 1289.895768] sdf1: rw=0, want=193160, limit=192717
+[ 1289.896795] attempt to access beyond end of device
+[ 1289.897354] sde1: rw=0, want=193160, limit=192717
+[ 1289.897991] attempt to access beyond end of device
+[ 1289.898565] sdd1: rw=0, want=193160, limit=192717
+[ 1289.899524] attempt to access beyond end of device
+[ 1289.900051] sdb1: rw=0, want=193160, limit=192717
+[ 1289.901523] md/raid:mdX: Disk failure on sdf1, disabling device.
+[ 1289.901528] md/raid:mdX: Operation continuing on 4 devices.
+[ 1289.909029] md/raid:mdX: Disk failure on sde1, disabling device.
+[ 1289.909033] md/raid:mdX: Operation continuing on 3 devices.
+[ 1289.917651] md/raid:mdX: Disk failure on sdd1, disabling device.
+[ 1289.917656] md/raid:mdX: Operation continuing on 2 devices.
+[ 1289.918748] md/raid:mdX: Disk failure on sdc1, disabling device.
+[ 1289.918752] md/raid:mdX: Operation continuing on 1 devices.
+[ 1289.933445] md/raid:mdX: Disk failure on sdb1, disabling device.
+[ 1289.933449] md/raid:mdX: Operation continuing on 0 devices.
+[ 1289.936280] Buffer I/O error on device dm-2, logical block 192673
+[ 1289.937184] Buffer I/O error on device dm-2, logical block 192672
+[ 1289.954961] Buffer I/O error on device dm-2, logical block 192673
+[ 1289.955619] Buffer I/O error on device dm-2, logical block 192672
+[ 1289.956650] Buffer I/O error on device dm-2, logical block 192712
+[ 1289.960572] Buffer I/O error on device dm-2, logical block 192713
+[ 1289.961338] Buffer I/O error on device dm-2, logical block 192712
+[ 1289.962174] Buffer I/O error on device dm-2, logical block 192713
+[ 1289.963016] Buffer I/O error on device dm-2, logical block 0
+[ 1289.977325] Buffer I/O error on device dm-2, logical block 1
+[ 1290.812860] md: mdX: resync done.
+[ 1290.813983] md: checkpointing resync of mdX.
+[ 1290.822997] md: resync of RAID array mdX
+[ 1290.831231] md: minimum _guaranteed_  speed: 1000 KB/sec/disk.
+[ 1290.832595] md: using maximum available idle IO bandwidth (but not more than 200000 KB/sec) for resync.
+[ 1290.833594] md: using 128k window, over a total of 96256 blocks.
+[ 1290.834244] md: resuming resync of mdX from checkpoint.
+[ 1290.834877] md: mdX: resync done.
+[ 1290.850001] RAID conf printout:
+[ 1290.850062]  --- level:5 rd:5 wd:0
+[ 1290.850070]  disk 0, o:0, dev:sdb1
+[ 1290.850076]  disk 1, o:0, dev:sdc1
+[ 1290.850081]  disk 2, o:0, dev:sdd1
+[ 1290.850086]  disk 3, o:0, dev:sde1
+[ 1290.850091]  disk 4, o:0, dev:sdf1
+[ 1293.215726] BUG: sleeping function called from invalid context at arch/x86/mm/fault.c:1081
+[ 1293.216017] in_atomic(): 0, irqs_disabled(): 1, pid: 4250, name: dmsetup
+[ 1293.216017] Pid: 4250, comm: dmsetup Not tainted 2.6.38-0.rc4.git7.1.fc15.i686.PAE #1
+[ 1293.216017] Call Trace:
+[ 1293.216017]  [<c0435b8d>] ? __might_sleep+0xdd/0xe4
+[ 1293.216017]  [<c07ea191>] ? do_page_fault+0x179/0x30c
+[ 1293.216017]  [<c0465112>] ? tick_dev_program_event+0x2f/0x137
+[ 1293.216017]  [<c04e0b72>] ? kmem_cache_free+0x67/0x94
+[ 1293.216017]  [<c0535dfd>] ? release_sysfs_dirent+0x79/0x8c
+[ 1293.216017]  [<c07ea018>] ? do_page_fault+0x0/0x30c
+[ 1293.216017]  [<c07e7d97>] ? error_code+0x67/0x6c
+[ 1293.216017]  [<c07e726b>] ? _raw_spin_lock_irqsave+0x15/0x27
+[ 1293.216017]  [<c05c7d92>] ? __disk_unblock_events+0x23/0x9e
+[ 1293.216017]  [<c042f5a4>] ? should_resched+0xd/0x27
+[ 1293.216017]  [<c05c91bc>] ? disk_unblock_events+0x1b/0x1d
+[ 1293.216017]  [<c0511052>] ? blkdev_put+0xbb/0xe7
+[ 1293.216017]  [<c0716f35>] ? close_dev+0x30/0x3a
+[ 1293.216017]  [<c0716f61>] ? dm_put_device+0x22/0x33
+[ 1293.216017]  [<d10f56e7>] ? context_free+0x58/0x73 [dm_raid]
+[ 1293.216017]  [<d10f5740>] ? raid_dtr+0x3e/0x41 [dm_raid]
+[ 1293.216017]  [<c0717550>] ? dm_table_destroy+0x5b/0xcf
+[ 1293.216017]  [<c0469a28>] ? arch_local_irq_save+0x12/0x17
+[ 1293.216017]  [<c0715ae3>] ? __dm_destroy+0xfa/0x1c2
+[ 1293.216017]  [<c0716412>] ? dm_destroy+0x12/0x14
+[ 1293.216017]  [<c071a146>] ? dev_remove+0xdb/0xe5
+[ 1293.216017]  [<c05dae00>] ? copy_to_user+0x12/0x4b
+[ 1293.216017]  [<c0719aa8>] ? dm_ctl_ioctl+0x1af/0x1ed
+[ 1293.216017]  [<c058fae7>] ? newary+0x10a/0x11c
+[ 1293.216017]  [<c071a06b>] ? dev_remove+0x0/0xe5
+[ 1293.216017]  [<c07198f9>] ? dm_ctl_ioctl+0x0/0x1ed
+[ 1293.216017]  [<c04f9c4f>] ? do_vfs_ioctl+0x451/0x482
+[ 1293.216017]  [<c0491ca0>] ? __call_rcu+0xdb/0xe1
+[ 1293.216017]  [<c0501713>] ? mntput_no_expire+0x28/0xbd
+[ 1293.216017]  [<c05017c6>] ? mntput+0x1e/0x20
+[ 1293.216017]  [<c04f4f4f>] ? path_put+0x1a/0x1d
+[ 1293.216017]  [<c04f9cc7>] ? sys_ioctl+0x47/0x60
+[ 1293.216017]  [<c040969f>] ? sysenter_do_call+0x12/0x28
+[ 1293.216017] BUG: unable to handle kernel NULL pointer dereference at 0000080c
+[ 1293.216017] IP: [<c07e726b>] _raw_spin_lock_irqsave+0x15/0x27
+[ 1293.216017] *pdpt = 000000000f7cb001 *pde = 000000000c661067 *pte = 0000000000000000 
+[ 1293.216017] Oops: 0002 [#1] SMP 
+[ 1293.216017] last sysfs file: /sys/devices/virtual/block/dm-2/range
+[ 1293.216017] Modules linked in: dm_raid raid1 raid456 async_raid6_recov async_pq raid6_pq async_xor xor async_memcpy async_tx sunrpc ip6t_REJECT nf_conntrack_ipv6 nf_defrag_ipv6 ip6table_filter ip6_tables snd_ens1371 gameport snd_rawmidi snd_ac97_codec ac97_bus snd_seq snd_seq_device snd_pcm snd_timer ppdev vmw_balloon snd pcnet32 mii soundcore snd_page_alloc i2c_piix4 parport_pc i2c_core parport ipv6 mptspi mptscsih mptbase scsi_transport_spi [last unloaded: raid456]
+[ 1293.216017] 
+[ 1293.216017] Pid: 4250, comm: dmsetup Not tainted 2.6.38-0.rc4.git7.1.fc15.i686.PAE #1 440BX Desktop Reference Platform/VMware Virtual Platform
+[ 1293.216017] EIP: 0060:[<c07e726b>] EFLAGS: 00010082 CPU: 0
+[ 1293.216017] EIP is at _raw_spin_lock_irqsave+0x15/0x27
+[ 1293.216017] EAX: 00000282 EBX: 0000080c ECX: 00000083 EDX: 00000100
+[ 1293.216017] ESI: cf98be00 EDI: 00000001 EBP: cf5b9dfc ESP: cf5b9df8
+[ 1293.216017]  DS: 007b ES: 007b FS: 00d8 GS: 00e0 SS: 0068
+[ 1293.216017] Process dmsetup (pid: 4250, ti=cf5b8000 task=cfa77110 task.ti=cf5b8000)
+[ 1293.216017] Stack:
+[ 1293.216017]  00000800 cf5b9e18 c05c7d92 c042f5a4 0000080c cbc31400 cbc31410 00000083
+[ 1293.216017]  cf5b9e20 c05c91bc cf5b9e34 c0511052 cda488c0 cccc5000 00000000 cf5b9e40
+[ 1293.216017]  c0716f35 cda488c0 cf5b9e4c c0716f61 cccc5000 cf5b9e60 d10f56e7 cccc5000
+[ 1293.216017] Call Trace:
+[ 1293.216017]  [<c05c7d92>] __disk_unblock_events+0x23/0x9e
+[ 1293.216017]  [<c042f5a4>] ? should_resched+0xd/0x27
+[ 1293.216017]  [<c05c91bc>] disk_unblock_events+0x1b/0x1d
+[ 1293.216017]  [<c0511052>] blkdev_put+0xbb/0xe7
+[ 1293.216017]  [<c0716f35>] close_dev+0x30/0x3a
+[ 1293.216017]  [<c0716f61>] dm_put_device+0x22/0x33
+[ 1293.216017]  [<d10f56e7>] context_free+0x58/0x73 [dm_raid]
+[ 1293.216017]  [<d10f5740>] raid_dtr+0x3e/0x41 [dm_raid]
+[ 1293.216017]  [<c0717550>] dm_table_destroy+0x5b/0xcf
+[ 1293.216017]  [<c0469a28>] ? arch_local_irq_save+0x12/0x17
+[ 1293.216017]  [<c0715ae3>] __dm_destroy+0xfa/0x1c2
+[ 1293.216017]  [<c0716412>] dm_destroy+0x12/0x14
+[ 1293.216017]  [<c071a146>] dev_remove+0xdb/0xe5
+[ 1293.216017]  [<c05dae00>] ? copy_to_user+0x12/0x4b
+[ 1293.216017]  [<c0719aa8>] dm_ctl_ioctl+0x1af/0x1ed
+[ 1293.216017]  [<c058fae7>] ? newary+0x10a/0x11c
+[ 1293.216017]  [<c071a06b>] ? dev_remove+0x0/0xe5
+[ 1293.216017]  [<c07198f9>] ? dm_ctl_ioctl+0x0/0x1ed
+[ 1293.216017]  [<c04f9c4f>] do_vfs_ioctl+0x451/0x482
+[ 1293.216017]  [<c0491ca0>] ? __call_rcu+0xdb/0xe1
+[ 1293.216017]  [<c0501713>] ? mntput_no_expire+0x28/0xbd
+[ 1293.216017]  [<c05017c6>] ? mntput+0x1e/0x20
+[ 1293.216017]  [<c04f4f4f>] ? path_put+0x1a/0x1d
+[ 1293.216017]  [<c04f9cc7>] sys_ioctl+0x47/0x60
+[ 1293.216017]  [<c040969f>] sysenter_do_call+0x12/0x28
+[ 1293.216017] Code: 0f 95 c0 0f b6 c0 c3 55 89 e5 3e 8d 74 26 00 e8 06 28 c8 ff 5d c3 55 89 e5 53 3e 8d 74 26 00 89 c3 e8 b0 27 c8 ff ba 00 01 00 00 <3e> 66 0f c1 13 38 f2 74 06 f3 90 8a 13 eb f6 5b 5d c3 55 89 e5 
+[ 1293.216017] EIP: [<c07e726b>] _raw_spin_lock_irqsave+0x15/0x27 SS:ESP 0068:cf5b9df8
+[ 1293.216017] CR2: 000000000000080c
+[ 1293.216017] ---[ end trace 49f34abab1d4a1b8 ]---
+----
+
+Creating a raid4 and creating a filesystem on it:
+
+----
+root@diploma1-f:~# ~vmiklos/dm-raid-patches/gime_raid.pl raid4 /dev/sd[bcdef]1
+RAID type    : raid4
+Block devices: /dev/sdb1 /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1
+Device size  : 770868BB
+
+root@diploma1-f:~# mkfs.ext4 /dev/mapper/raid 
+mke2fs 1.41.14 (22-Dec-2010)
+----
+
+and it hangs here.
+
+dmesg:
+
+----
+[ 1270.954599] bio: create slab <bio-1> at 1
+[ 1270.963550] md/raid:mdX: not clean -- starting background reconstruction
+[ 1270.987463] md/raid:mdX: device sdf1 operational as raid disk 4
+[ 1270.989895] md/raid:mdX: device sde1 operational as raid disk 3
+[ 1270.990513] md/raid:mdX: device sdd1 operational as raid disk 2
+[ 1270.991101] md/raid:mdX: device sdc1 operational as raid disk 1
+[ 1270.992075] md/raid:mdX: device sdb1 operational as raid disk 0
+[ 1271.028680] md/raid:mdX: allocated 5265kB
+[ 1271.047135] md/raid:mdX: raid level 5 active with 5 out of 5 devices, algorithm 4
+[ 1271.048513] RAID conf printout:
+[ 1271.048604]  --- level:5 rd:5 wd:5
+[ 1271.048749]  disk 0, o:1, dev:sdb1
+[ 1271.048768]  disk 1, o:1, dev:sdc1
+[ 1271.048773]  disk 2, o:1, dev:sdd1
+[ 1271.048779]  disk 3, o:1, dev:sde1
+[ 1271.048784]  disk 4, o:1, dev:sdf1
+[ 1271.079401] md: resync of RAID array mdX
+[ 1271.080482] md: minimum _guaranteed_  speed: 1000 KB/sec/disk.
+[ 1271.081111] md: using maximum available idle IO bandwidth (but not more than 200000 KB/sec) for resync.
+[ 1271.082639] md: using 128k window, over a total of 96256 blocks.
+[ 1271.261775] attempt to access beyond end of device
+[ 1271.262542] sdc1: rw=0, want=193160, limit=192717
+[ 1271.263924] attempt to access beyond end of device
+[ 1271.264467] sdf1: rw=0, want=193160, limit=192717
+[ 1271.265172] attempt to access beyond end of device
+[ 1271.265747] sde1: rw=0, want=193160, limit=192717
+[ 1271.266436] attempt to access beyond end of device
+[ 1271.266946] sdd1: rw=0, want=193160, limit=192717
+[ 1271.267872] attempt to access beyond end of device
+[ 1271.281551] sdb1: rw=0, want=193160, limit=192717
+[ 1271.282992] md/raid:mdX: Disk failure on sdf1, disabling device.
+[ 1271.282996] md/raid:mdX: Operation continuing on 4 devices.
+[ 1271.284807] md/raid:mdX: Disk failure on sde1, disabling device.
+[ 1271.284811] md/raid:mdX: Operation continuing on 3 devices.
+[ 1271.285962] md/raid:mdX: Disk failure on sdd1, disabling device.
+[ 1271.285966] md/raid:mdX: Operation continuing on 2 devices.
+[ 1271.300746] md/raid:mdX: Disk failure on sdc1, disabling device.
+[ 1271.300750] md/raid:mdX: Operation continuing on 1 devices.
+[ 1271.302077] md/raid:mdX: Disk failure on sdb1, disabling device.
+[ 1271.302081] md/raid:mdX: Operation continuing on 0 devices.
+[ 1271.322206] Buffer I/O error on device dm-2, logical block 192673
+[ 1271.323102] Buffer I/O error on device dm-2, logical block 192672
+[ 1271.326465] Buffer I/O error on device dm-2, logical block 192672
+[ 1271.338964] Buffer I/O error on device dm-2, logical block 192673
+[ 1271.339820] Buffer I/O error on device dm-2, logical block 192712
+[ 1271.340476] Buffer I/O error on device dm-2, logical block 192713
+[ 1271.341118] Buffer I/O error on device dm-2, logical block 192712
+[ 1271.341700] Buffer I/O error on device dm-2, logical block 192713
+[ 1271.356296] Buffer I/O error on device dm-2, logical block 0
+[ 1271.356867] Buffer I/O error on device dm-2, logical block 1
+[ 1272.188477] md: mdX: resync done.
+[ 1272.189634] md: checkpointing resync of mdX.
+[ 1272.192828] md: resync of RAID array mdX
+[ 1272.193363] md: minimum _guaranteed_  speed: 1000 KB/sec/disk.
+[ 1272.194090] md: using maximum available idle IO bandwidth (but not more than 200000 KB/sec) for resync.
+[ 1272.195083] md: using 128k window, over a total of 96256 blocks.
+[ 1272.195723] md: resuming resync of mdX from checkpoint.
+[ 1272.209475] md: mdX: resync done.
+[ 1272.210697] RAID conf printout:
+[ 1272.210709]  --- level:5 rd:5 wd:0
+[ 1272.210716]  disk 0, o:0, dev:sdb1
+[ 1272.210721]  disk 1, o:0, dev:sdc1
+[ 1272.210726]  disk 2, o:0, dev:sdd1
+[ 1272.210731]  disk 3, o:0, dev:sde1
+[ 1272.210736]  disk 4, o:0, dev:sdf1
+----
+
+=== 2011-02-18
+
+We had an in-person meeting with Gabor and Ivan:
+
+- dm-mirror is the past, dm-raid is the future, there is good current MSc thesis topic in this area, we need something new
+- given that I have some OpenOffice.org/LibreOffice experience, the new topic could be connected to that
+
+Initial idea:
+
+Alfresco is kind of an opensource alternative to MS Sharepoint (regarding
+document handling), it can emulate MS sharepoint (ideally). There are MS Office
+/ OOo extensions for Alfresco, probably using its native protocol. There is a
+commercial (free as in beer) MS Sharepoint OOo extension by Oracle. Goal:
+opensource alternative of this.
+
+Once this is done, I could design and implement a similar plugin that can
+communicate with an ESB for document handling (but this part will be discussed
+in detail once the first part is done).
+
+Need to look after / try out:
+
+- Alfresco server + its OOo extension [ Oracle done, Opal - opensource - done ]
+- Alfresco server + its MSO extension
+- Alfresco server in sharepoint mode + MSO native
+- Alfresco server in sharepoint mode + Oracle OOo extension
+- A test with native Sharepoint would be nice as well
+- Need to look after if the sharepoint protocol spec is available or not [ done, yes ]
+
+We suspect that a part of Alfresco is a more or less standalone sharepoint
+server implementation, but need to search if such a client library is available
+or not.
+
+Related documentation:
+http://wiki.services.openoffice.org/wiki/JavaEclipseTuto
+
+=== 2011-02-20
+
+1) The sharepoint spec seems to be available here:
+http://msdn.microsoft.com/en-us/library/dd912094%28v=office.12%29.aspx (134
+pages)
+
+2) Alfresco + OOo extension
+
+Alfresco has Community and Enterprise editions:
+http://www.alfresco.com/products/networks/compare/
+
+It seems only the community edition is provided as a Linux 32bit binary:
+http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco (437MB)
+
+After installing Alfresco, I was able to login as admin, create a new folder,
+upload a sample document. It comes with a bundled OOo 3.2, but it seems the
+Alfresco connector extension is not installed there...
+
+Found one here:
+http://extensions.services.openoffice.org/project/alfrescoconnector though it
+mentions as Freeware (not opensource).
+
+I installed it following this howto:
+http://wiki.alfresco.com/wiki/Setting_up_OpenOffice_for_Alfresco (the tricky
+part is the URL)
+
+Basic functionality works:
+
+- search
+- result can be viewed
+- can be checked out
+- edited
+- checked in
+
+== 3rd week
+
+=== 2011-02-21
+
+In ULX: setting up working env (account creation, installing KDE, git, etc.)
+
+Downloaded & installed Alfresco + the Oracle Alfresco extension on the ULX
+machine (vishudda) as well, works fine..
+
+Found an other Alfresco OOo extension that is opensource:
+http://extensions.services.openoffice.org/en/project/OPAL (alfresco_3.x-opal_3.1.4)
+
+Source code at:
+http://forge.alfresco.com/scm/?group_id=196
+but svn checkout is not public, only source code for 3.0 as a source tarball.
+
+Downloaded binary ends in some OOo Basic runtime error (in Fedora OOo 3.3), probably caused by this Java exception:
+
+----
+com.sun.star.uno.Exception: com.sun.star.configuration.ConfigurationProvider factory: unknown argument enablesync
+        at com.sun.star.bridges.jni_uno.JNI_proxy.dispatch_call(Native Method)
+        at com.sun.star.bridges.jni_uno.JNI_proxy.invoke(JNI_proxy.java:175)
+        at $Proxy3.createInstanceWithArgumentsAndContext(Unknown Source)
+        at fr.starxpert.opal.comp.utils.UnoUtils.getConfigAccess(UnoUtils.java:121)
+        at fr.starxpert.opal.comp.ui.ConnectionDialog.updateListServer(ConnectionDialog.java:206)
+        at fr.starxpert.opal.comp.ui.ConnectionDialog.execute(ConnectionDialog.java:236)
+        at fr.starxpert.opal.comp.ui.AbstractDialog.run(AbstractDialog.java:94)
+        at fr.starxpert.opal.comp.AuthenticationManagerImpl.execute(AuthenticationManagerImpl.java:130)
+----
+
+Tried with the bundled (in Alfresco) OOo 3.2, but there it fails at installation already:
+
+----
+Could not create Java implementation loader
+----
+
+Tried installing OOo 3.2, though graphical installer failed to some rpm
+dependency problem. So tried manually:
+
+----
+mkdir ~/ooo32
+rpm --nodeps --upgrade --ignoresize -vh --relocate /opt=/home/vmiklos/ooo32//opt --dbpath /home/vmiklos/ooo32/.RPM_OFFICE_DATABASE ~/git/diploma1/opal/ooo-3.2/OOO320_m18_native_packed-1_en-US.9502/RPMS/*rpm
+----
+
+And the connection dialog opens in OOo 3.2.1!
+
+Connecting does not work, but a usable exception is logged in tomcat's log,
+OPAL has some server-side part in Alfresco, the French documentation
+how to install that:
+
+- have to copy the .amp file to the alfresco amp/ directory
+- run bin/apply_amps.sh, restart alfresco
+
+and then it works! (Same basic functionality: open, save, close)
+
+Still need to test:
+
+- test OPAL with upstream OOo 3.3 (maybe OPAL just does not work with OOo 3.3
+  from RPM due to a Fedora packaging issue?) -> done, it fails that way, too.
+- build OPAL from source (waiting for mail from starxpert guys - authors of OPAL)
+
+Previous not completed ones:
+
+- Alfresco server + its MSO extension
+- Alfresco server in sharepoint mode + MSO native
+- Alfresco server in sharepoint mode + Oracle OOo extension
+- A test with native Sharepoint would be nice as well
+
+=== 2010-02-23
+
+Managed to check out the source code of OPAL - it truns out by anonymous, they
+meant 'there is open registration, and every registered user can check out the
+code'. No reply from the Starxpert guys, though.
+
+Mailed two extension developers I know to ask them about the OOo 3.2 vs 3.3
+extension issue from 21th.
+
+=== 2010-02-24
+
+Tried compiling OPAL from source, using the already mentioned tutorial:
+
+http://wiki.services.openoffice.org/wiki/JavaEclipseTuto
+
+Asked on #libreoffice (irc.freenode.net) what version of Eclipse integration
+should I try to install, Cedric (the main developer of OOEclipse) recommends
+the 'dev' version, but its update site is broken at the moment, so he suggested
+building my own update site.
+
+Installed eclipse and its development package:
+
+----
+# yum install eclipse-platform eclipse-jdt eclipse-cdt
+----
+
+Cloned the ooeclipse repo:
+
+----
+git clone git://anongit.freedesktop.org/libreoffice/contrib/ooeclipse
+cd ooeclipse/build
+ANT_ARGS="-Dopenoffice.home=/home/vmiklos/ooo32/opt/openoffice.org3 -Declipse.home=/usr/lib64/eclipse" ant
+----
+
+Build went fine, I added the new site to Eclipse as
+
+----
+file:/home/vmiklos/git/ooeclipse/site/
+----
+
+but I got dependency errors in Eclipse 3.6 during installation:
+
+----
+Cannot complete the install because one or more required items could not be found.
+  Software being installed: LibreOffice development plugin support for Java implementation 1.0.3 (org.openoffice.ide.eclipse.java.feature.group 1.0.3)
+  Missing requirement: Ant UI 3.5.0.v20100427 (org.eclipse.ant.ui 3.5.0.v20100427) requires 'bundle org.eclipse.ant.launching [1.0.0,2.0.0)' but it could not be found
+  Cannot satisfy dependency:
+    From: Eclipse Java Development Tools 3.6.1.r361_v20100714-0800-7z8XFUSFLBmsgvVz0z-3vjz095IX (org.eclipse.jdt.feature.group 3.6.1.r361_v20100714-0800-7z8XFUSFLBmsgvVz0z-3vjz095IX)
+    To: org.eclipse.ant.ui [3.5.0.v20100427]
+  Cannot satisfy dependency:
+    From: LibreOffice development plugin support for Java implementation 1.0.3 (org.openoffice.ide.eclipse.java.feature.group 1.0.3)
+    To: org.eclipse.jdt.feature.group 0.0.0
+----
+
+So I tried installing under eclipse upstream 3.6 (not from yum), and that
+worked (took a lot if time, but no errors).
+
+Then I imported the 'OPAL_OOo_Alf3_trunk' project (which is supposed to be the
+source for of the OOo extension) to Eclipse, but it won't build:
+
+----
+No SDK or OOo set: won't build	OPAL_OOo_Alf3_trunk		Unknown	Problem
+Project 'OPAL_OOo_Alf3_trunk' is missing required Java project: 'SDK AlfrescoEmbedded'	OPAL_OOo_Alf3_trunk		Build path	Build Path Problem
+The project cannot be built until build path errors are resolved	OPAL_OOo_Alf3_trunk		Unknown	Java Problem
+----
+
+So I searched what SDK is available that could be downloaded, and found
+http://dl.alfresco.com/release/community/build-3370/alfresco-community-sdk-3.4.d.zip
+(198MB)
+
+The `lib/server` subdirectory of that tarball contains a project named 'SDK
+AlfrescoEmbedded'. There were a few build errors after this, but that was easy
+to fix (java source code level and such).
+
+Now to install it and try if it works. The File -> Export -> UNO wizart just
+does nothing when one would click on 'Finish'.
+
+So first I create a helloworld project and see if that works, ie if the issue
+is specific to OPAL or not.
+
+Following the howto (linked above) I created a HelloWorld project, but the wizard ends with:
+
+----
+An internal error occurred during: "Uno Project creation job".
+org/openoffice/plugin/core/utils/XMLWriter
+----
+
+Poked Cedric about the issue - in case he knows what can be the problem.
+
+Another test: let's see if helloworld project works in case I use the OOo-3.3
+(from system rpm) SDK. -> same :(
+
+Got reply from Cedric: non-dev version is supposed to work with Eclipse 3.5 -
+so I'm trying the helloworld there.
+
+The tutorial went fine till project generation / build, but it's not possible
+to export it. I reported that to Cedric, and for now I can work it around by
+manually zipping the binaries (oxt is a zip file in fact).
+
+As a result, finally my little modification renaming a menu item showed up in
+OOo. This is only a config file, not a real code change, though.
+
+When there is a code change, then Eclipse automatically builds the project, so
+only the jar file has to be updated (manually.. that could be improved), and
+the jar file has to be copied, like:
+
+----
+cat OPAL_OOo_Alf3_trunk.jar > /home/vmiklos/.openoffice.org/3/user/uno_packages/cache/uno_packages/xFd4dl_/alfresco_3.x-opal_3.1.4_trunk.oxt/OPAL_OOo_Alf3_trunk.jar
+----
+
+After restarting OOo, the change appears!
+
+(A simple System.out.println() in case the connection dialog is closed with an
+enter.)
+
+Talked with Cedric, he can reproduce the project creation bug and said that the
+oxt export has been rewritten since the stable release, so it does not worth
+debugging the stable version's this part.
+
+Summary:
+- OOo 3.2, Eclipse 3.5, OOEclipse stable and OPAL from svn works more or less togother.
+- the build part is not nice yet - manually creating the jar & oxt is a no-go in the long term
+- OOEclipse developer responds, so it worths reporting issues to him
+- code and wiki contents will be uploaded to svn repos at ULX next week
+
+=== 2010-02-27
+
+Today's target is to evaluate the sharepoint interface of Alfresco.
+
+Word 2007 runs in a virtual machine on Windows and the host IP is 192.168.239.3.
+
+Documentation:
+
+http://wiki.alfresco.com/wiki/Alfresco_Labs_3#Microsoft_Office_SharePoint_Protocol_Support
+
+The first problem is that Word requires the sharepoint server to be a trusted
+site, but trusted sites must use https. OTOH tomcat does not listen on https by
+default.
+
+Relevant tomcat documentation:
+
+http://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html
+
+I configured the keystore as described above.
+
+`tomcat/conf/server.xml` contains a commented out example (search for
+`port="8443"`) for listening on port 8443, accessing the site via https works
+after removing the comments and restarting alfresco.
+
+Later it turned out that the vti module (which implements the sharepoint
+interface) listens on port 7070 and it's also possible to avoid https for
+trusted sites (this is just a default requirement, but you can disable that).
+
+Now in Word I tried: Office button -> Publish -> Create document workspace and
+passsed `http://192.168.239.3:7070/alfresco` as the location for new workspace
+(`SPP` as name, but that could be anything else - page 7 of the above mentioned
+Getting_Started_with_SPP_Support_for_Labs_3_Stable.pdf), but that just resulted
+in:
+
+----
+Action could not be completed. For more information, contact your site administrator, or try again later.
+----
+
+The sad fact is that no log file under `tomcat/logs` changed, so I need to dig
+deeper to find some usable error message.
+
+I set log4j.logger.org.alfresco.module.vti=debug in
+`tomcat/webapps/alfresco/WEB-INF/classes/log4j.properties`, and then
+alfresco.log contains:
+
+----
+19:39:02,352 DEBUG [org.alfresco.module.vti.handler.alfresco.v3.ShareUtils] Trying to create site with name: SPP. URL: http://s12:8080/alfresco/s/api/sites?alf_ticket=TICKET_ebc578da44d59e260e483105523dafec305e1421
+19:39:02,506 DEBUG [org.alfresco.module.vti.handler.alfresco.v3.ShareUtils] Fail to create site with name: SPP. Message: The server s12 failed to respond
+----
+
+Which obviously won't work, as s12 resolves to 127.0.0.1, so the guest machine
+tries to connect to itself...
+
+Additionally, even if I configured it to port 8081, it tries to connect to the
+default 8080, so finally I gave up and moved my (unrelated) proxy from 8080
+elsewhere.
+
+After that, saving to Alfresco from MSO works!
+
+A few more notes:
+
+- It seems there are two WAR files in tomcat, 'share' and 'alfresco'. The previous is a newer client, the later is the older one.
+
+- When 'share' prints:
+
+----
+The remote server may be unavailable or your authentication details have not been recognized.
+----
+
+During login, that usually means some configuration error. In my case I had to
+grep for 8080 in the alfresco directory and once I changed 8081 to 8080 in
+every config file, the problem want away...
+
+OK, so once initial document upload feature works, let's see what else can we do.
+
+- Opening an existing document:
+
+Office button -> Open, `http://192.168.239.3:7070/alfresco` lists existing
+spaces and then opening for example `SPP/documentLibrary/test.doc` is possible.
+The usual Office -> Save works properly.
+
+- Office -> Server -> Check out: making a private copy and lock the server version
+
+- Check in: unlock + commit message (and optionally avoid unlocking)
+
+- Update
+
+- Add members to the space (with email invitation, showing if they are online
+  or not; and with roles, like Site Manager or normal user)
+
+- Task list - attached to the space
+
+- file / folder list - though this seems to be redundant with Office -> open
+
+- Link list
+
+- View version history (Office -> Save has no comments, check in can have)
+
+And I probably missed something. Plenty of features to implement. :)
+
+A totally different topic is: can we reuse some existing sharepoint client code
+to avoid reinventing the wheel? Gabor's original idea was to use sharepoint
+code from alfresco, but it turns out that contains sharepoint server code only,
+so that does not really help here.
+
+Related software I found:
+
+- http://extensions.services.openoffice.org/en/project/sharepoint_connector
+  This is Oracle's sharepoint extension. It's commercial, a trial version can
+  be downloaded.
+- http://www.pdfburst.com/license.html DocumentBurster - this can upload to SharePoint
+- http://code.google.com/p/google-enterprise-connector-sharepoint/source/browse/#svn%2Ftrunk%2Fprojects%2Fsharepoint another client code - to index sharepoint documents using Google
+- http://code.google.com/p/bevy/source/browse/#svn%2Ftrunk%2FJavaEE%2FPortlets%2FWSSPortlet similar, but looks quite minimalistic and dead
+- https://github.com/fabsor/sharepoint drupal integration - this sounds quite nice, even if it's in PHP, it's maintained and has some documentation for the "it's in the spec but in some hard to parse form" cases
+- https://github.com/rgeyer/sp-wsapi-consumer a generic php sharepoint libarary using nusoap, looks incomplete
+
+From the above list I think the Oracle one may worth looking for a user
+interface idea and probably the drupal module can give ideas.
+
+A note: I just noticed that for example all the WSDL files (which can serve as
+a good base for the client code) are missing from alfresco - so even if it
+works with MSO, the real sharepoint server will be probably easier to develop
+against.
