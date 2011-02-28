@@ -590,6 +590,9 @@ We suspect that a part of Alfresco is a more or less standalone sharepoint
 server implementation, but need to search if such a client library is available
 or not.
 
+Related documentation:
+http://wiki.services.openoffice.org/wiki/JavaEclipseTuto
+
 === 2011-02-20
 
 1) The sharepoint spec seems to be available here:
