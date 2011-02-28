@@ -747,7 +747,7 @@ Cannot complete the install because one or more required items could not be foun
   Cannot satisfy dependency:
     From: LibreOffice development plugin support for Java implementation 1.0.3 (org.openoffice.ide.eclipse.java.feature.group 1.0.3)
     To: org.eclipse.jdt.feature.group 0.0.0
----
+----
 
 So I tried installing under eclipse upstream 3.6 (not from yum), and that
 worked (took a lot if time, but no errors).
