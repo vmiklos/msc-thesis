@@ -824,7 +824,7 @@ Summary:
 
 Today's target is to evaluate the sharepoint interface of Alfresco.
 
-Word runs in a virtual machine on Windows and the host IP is 192.168.239.3.
+Word 2007 runs in a virtual machine on Windows and the host IP is 192.168.239.3.
 
 Documentation:
 
@@ -850,8 +850,9 @@ trusted sites (this is just a default requirement, but you can disable that).
 
 Now in Word I tried: Office button -> Publish -> Create document workspace and
 passsed `http://192.168.239.3:7070/alfresco` as the location for new workspace
-(page 7 of the above mentioned
-Getting_Started_with_SPP_Support_for_Labs_3_Stable.pdf), but that just resulted in:
+(`SPP` as name, but that could be anything else - page 7 of the above mentioned
+Getting_Started_with_SPP_Support_for_Labs_3_Stable.pdf), but that just resulted
+in:
 
 ----
 Action could not be completed. For more information, contact your site administrator, or try again later.
@@ -859,3 +860,86 @@ Action could not be completed. For more information, contact your site administr
 
 The sad fact is that no log file under `tomcat/logs` changed, so I need to dig
 deeper to find some usable error message.
+
+I set log4j.logger.org.alfresco.module.vti=debug in
+`tomcat/webapps/alfresco/WEB-INF/classes/log4j.properties`, and then
+alfresco.log contains:
+
+----
+19:39:02,352 DEBUG [org.alfresco.module.vti.handler.alfresco.v3.ShareUtils] Trying to create site with name: SPP. URL: http://s12:8080/alfresco/s/api/sites?alf_ticket=TICKET_ebc578da44d59e260e483105523dafec305e1421
+19:39:02,506 DEBUG [org.alfresco.module.vti.handler.alfresco.v3.ShareUtils] Fail to create site with name: SPP. Message: The server s12 failed to respond
+----
+
+Which obviously won't work, as s12 resolves to 127.0.0.1, so the guest machine
+tries to connect to itself...
+
+Additionally, even if I configured it to port 8081, it tries to connect to the
+default 8080, so finally I gave up and moved my (unrelated) proxy from 8080
+elsewhere.
+
+After that, saving to Alfresco from MSO works!
+
+A few more notes:
+
+- It seems there are two WAR files in tomcat, 'share' and 'alfresco'. The previous is a newer client, the later is the older one.
+
+- When 'share' prints:
+
+----
+The remote server may be unavailable or your authentication details have not been recognized.
+----
+
+During login, that usually means some configuration error. In my case I had to
+grep for 8080 in the alfresco directory and once I changed 8081 to 8080 in
+every config file, the problem want away...
+
+OK, so once initial document upload feature works, let's see what else can we do.
+
+- Opening an existing document:
+
+Office button -> Open, `http://192.168.239.3:7070/alfresco` lists existing
+spaces and then opening for example `SPP/documentLibrary/test.doc` is possible.
+The usual Office -> Save works properly.
+
+- Office -> Server -> Check out: making a private copy and lock the server version
+
+- Check in: unlock + commit message (and optionally avoid unlocking)
+
+- Update
+
+- Add members to the space (with email invitation, showing if they are online
+  or not; and with roles, like Site Manager or normal user)
+
+- Task list - attached to the space
+
+- file / folder list - though this seems to be redundant with Office -> open
+
+- Link list
+
+- View version history (Office -> Save has no comments, check in can have)
+
+And I probably missed something. Plenty of features to implement. :)
+
+A totally different topic is: can we reuse some existing sharepoint client code
+to avoid reinventing the wheel? Gabor's original idea was to use sharepoint
+code from alfresco, but it turns out that contains sharepoint server code only,
+so that does not really help here.
+
+Related software I found:
+
+- http://extensions.services.openoffice.org/en/project/sharepoint_connector
+  This is Oracle's sharepoint extension. It's commercial, a trial version can
+  be downloaded.
+- http://www.pdfburst.com/license.html DocumentBurster - this can upload to SharePoint
+- http://code.google.com/p/google-enterprise-connector-sharepoint/source/browse/#svn%2Ftrunk%2Fprojects%2Fsharepoint another client code - to index sharepoint documents using Google
+- http://code.google.com/p/bevy/source/browse/#svn%2Ftrunk%2FJavaEE%2FPortlets%2FWSSPortlet similar, but looks quite minimalistic and dead
+- https://github.com/fabsor/sharepoint drupal integration - this sounds quite nice, even if it's in PHP, it's maintained and has some documentation for the "it's in the spec but in some hard to parse form" cases
+- https://github.com/rgeyer/sp-wsapi-consumer a generic php sharepoint libarary using nusoap, looks incomplete
+
+From the above list I think the Oracle one may worth looking for a user
+interface idea and probably the drupal module can give ideas.
+
+A note: I just noticed that for example all the WSDL files (which can serve as
+a good base for the client code) are missing from alfresco - so even if it
+works with MSO, the real sharepoint server will be probably easier to develop
+against.
