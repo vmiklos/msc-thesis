@@ -943,3 +943,71 @@ A note: I just noticed that for example all the WSDL files (which can serve as
 a good base for the client code) are missing from alfresco - so even if it
 works with MSO, the real sharepoint server will be probably easier to develop
 against.
+
+== 4th week
+
+=== 2011-02-28
+
+In ULX. So far I tracked my documentation in a private repo, now it's available
+at
+http://build.ulx.hu/svn/vmiki-diploma/trunk/doc/
+
+I will still upload its contents to the wiki weekly.
+
+Ideas for today:
+
+- Try out Oracle's sharepoint ooo extension
+- No email reply from starxpert - try to find some forum if possible.
+- Install a real sharepoint server
+- Play around with its wsdl interfaces in Java / start understanding the
+  interfaces based on the spec or drupal code
+
+Oracle's sharepoint extension:
+
+It's sadly only available on Win32. (No Linux32 or Linux64 version.)
+
+After downloading a 150M zip file, the real extension is
+oracle-sharepoint-connector.oxt, but it requires changes on the sharepoint
+server side... For now, I gave up here.
+
+Starxpert forum:
+
+The class names on OPAL are under starxpert.fr, though their support forum is
+under http://forums.alfresco.com/en/ - it seems.
+
+It does not sounds too promising though, the only thread regarding opal is this one:
+http://forums.alfresco.com/en/viewtopic.php?t=23507 - and nobody replied.
+
+There is also an IRC support channel ##alfresco on irc.freenode.net - I asked
+there as well, but no reply so far.
+
+Given that Ivan is out of office today, I did not start installing a virtual
+machine / sharepoint but continued to debug the opal plugin to find out how to
+build a usable version from source.
+
+One trick I found is that on startup Eclipse complains about missing OOo SDK. A
+workaround I did previously was to delete those errors, and then I could invoke
+the exporter. However, a better solution for this is to open the project
+properties and click OK (without any changes) this way the exporter does not
+hang...
+
+This way I tested both config (.xcu) and Java changes - both are working with
+the following quite basic workflow:
+
+- do the change in Eclipse
+- project properties - uno properties - OK (without changes)
+- file -> export -> openoffice package -> finish. deploy? no (it would deploy to system-OOo, which is at 3.3, not our 3.2)
+- in OOo: uninstall the extension, install it, restart
+
+Even if this is pretty slow, something that works with Eclipse 3.5 + OOEclipse
+stable (1.1.2 + Java part 1.0.2) + OOo 3.2, and now no manual jar/oxt creation
+is needed, at least these parts are done by Eclipse.
+
+It turns out that OOEclipse calls the `unopkg` command to deploy the extension,
+so if I play around with PATH to calls the 3.2 version of unopkg, then the
+deploy part works automatically. This means that the extension will be
+removed/installed automatically and only a single restart is needed.
+
+I gave Eclipse 3.6 & OOEclipse dev a try again, but the export wizard has been
+rewritten there and I can't seem to deploy the extension with the new wizard,
+so I ignore that for now.
