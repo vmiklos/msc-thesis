@@ -694,3 +694,12 @@ Previous not completed ones:
 - Alfresco server in sharepoint mode + MSO native
 - Alfresco server in sharepoint mode + Oracle OOo extension
 - A test with native Sharepoint would be nice as well
+
+=== 2010-02-23
+
+Managed to check out the source code of OPAL - it truns out by anonymous, they
+meant 'there is open registration, and every registered user can check out the
+code'. No reply from the Starxpert guys, though.
+
+Mailed two extension developers I know to ask them about the OOo 3.2 vs 3.3
+extension issue from 21th.
