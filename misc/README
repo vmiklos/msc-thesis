@@ -557,3 +557,69 @@ dmesg:
 [ 1272.210731]  disk 3, o:0, dev:sde1
 [ 1272.210736]  disk 4, o:0, dev:sdf1
 ----
+
+=== 2011-02-18
+
+We had an in-person meeting with Gabor and Ivan:
+
+- dm-mirror is the past, dm-raid is the future, there is good current MSc thesis topic in this area, we need something new
+- given that I have some OpenOffice.org/LibreOffice experience, the new topic could be connected to that
+
+Initial idea:
+
+Alfresco is kind of an opensource alternative to MS Sharepoint (regarding
+document handling), it can emulate MS sharepoint (ideally). There are MS Office
+/ OOo extensions for Alfresco, probably using its native protocol. There is a
+commercial (free as in beer) MS Sharepoint OOo extension by Oracle. Goal:
+opensource alternative of this.
+
+Once this is done, I could design and implement a similar plugin that can
+communicate with an ESB for document handling (but this part will be discussed
+in detail once the first part is done).
+
+Need to look after / try out:
+
+- Alfresco server + its OOo extension
+- Alfresco server + its MSO extension
+- Alfresco server in sharepoint mode + MSO native
+- Alfresco server in sharepoint mode + Oracle OOo extension
+- A test with native Sharepoint would be nice as well
+- Need to look after if the sharepoint protocol spec is available or not
+
+We suspect that a part of Alfresco is a more or less standalone sharepoint
+server implementation, but need to search if such a client library is available
+or not.
+
+=== 2011-02-20
+
+1) The sharepoint spec seems to be available here:
+http://msdn.microsoft.com/en-us/library/dd912094%28v=office.12%29.aspx (134
+pages)
+
+2) Alfresco + OOo extension
+
+Alfresco has Community and Enterprise editions:
+http://www.alfresco.com/products/networks/compare/
+
+It seems only the community edition is provided as a Linux 32bit binary:
+http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco (437MB)
+
+After installing Alfresco, I was able to login as admin, create a new folder,
+upload a sample document. It comes with a bundled OOo 3.2, but it seems the
+Alfresco connector extension is not installed there...
+
+Found one here:
+http://extensions.services.openoffice.org/project/alfrescoconnector though it
+mentions as Freeware (not opensource).
+
+I installed it following this howto:
+http://wiki.alfresco.com/wiki/Setting_up_OpenOffice_for_Alfresco (the tricky
+part is the URL)
+
+Basic functionality works:
+
+- search
+- result can be viewed
+- can be checked out
+- edited
+- checked in
