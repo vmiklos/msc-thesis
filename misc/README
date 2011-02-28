@@ -704,7 +704,7 @@ code'. No reply from the Starxpert guys, though.
 Mailed two extension developers I know to ask them about the OOo 3.2 vs 3.3
 extension issue from 21th.
 
-== 2010-02-24
+=== 2010-02-24
 
 Tried compiling OPAL from source, using the already mentioned tutorial:
 
@@ -819,3 +819,43 @@ Summary:
 - the build part is not nice yet - manually creating the jar & oxt is a no-go in the long term
 - OOEclipse developer responds, so it worths reporting issues to him
 - code and wiki contents will be uploaded to svn repos at ULX next week
+
+=== 2010-02-27
+
+Today's target is to evaluate the sharepoint interface of Alfresco.
+
+Word runs in a virtual machine on Windows and the host IP is 192.168.239.3.
+
+Documentation:
+
+http://wiki.alfresco.com/wiki/Alfresco_Labs_3#Microsoft_Office_SharePoint_Protocol_Support
+
+The first problem is that Word requires the sharepoint server to be a trusted
+site, but trusted sites must use https. OTOH tomcat does not listen on https by
+default.
+
+Relevant tomcat documentation:
+
+http://tomcat.apache.org/tomcat-6.0-doc/ssl-howto.html
+
+I configured the keystore as described above.
+
+`tomcat/conf/server.xml` contains a commented out example (search for
+`port="8443"`) for listening on port 8443, accessing the site via https works
+after removing the comments and restarting alfresco.
+
+Later it turned out that the vti module (which implements the sharepoint
+interface) listens on port 7070 and it's also possible to avoid https for
+trusted sites (this is just a default requirement, but you can disable that).
+
+Now in Word I tried: Office button -> Publish -> Create document workspace and
+passsed `http://192.168.239.3:7070/alfresco` as the location for new workspace
+(page 7 of the above mentioned
+Getting_Started_with_SPP_Support_for_Labs_3_Stable.pdf), but that just resulted in:
+
+----
+Action could not be completed. For more information, contact your site administrator, or try again later.
+----
+
+The sad fact is that no log file under `tomcat/logs` changed, so I need to dig
+deeper to find some usable error message.
