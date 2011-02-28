@@ -1011,3 +1011,19 @@ removed/installed automatically and only a single restart is needed.
 I gave Eclipse 3.6 & OOEclipse dev a try again, but the export wizard has been
 rewritten there and I can't seem to deploy the extension with the new wizard,
 so I ignore that for now.
+
+I also created an opal-client directory in ULX trunk, which is an import of
+upstream OPAL svn + fixes to make it work with OOo 3.2.
+
+At the end, I continued reading the spec, but of course it's a bit pointless to
+do so without being able to try it - hopefully we can do the sharepoint
+installation soon when Ivan will be back.
+
+Summary of what I read so far:
+
+- the client sends xml (soap) over http requests, the response is json over http
+- the request is a list of actions to be performed, and the result of these actions is returned by the server
+- authentication is not hardwired, the simplest one is using http basic
+- most of the text should be used later as a reference, ie dozen of times it lists a zillion of different integer types (specified by xml schema, etc)
+
+Next to read: chapter 4 (protocol examples).
