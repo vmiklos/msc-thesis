@@ -579,12 +579,12 @@ in detail once the first part is done).
 
 Need to look after / try out:
 
-- Alfresco server + its OOo extension
+- Alfresco server + its OOo extension [ Oracle done, Opal - opensource - done ]
 - Alfresco server + its MSO extension
 - Alfresco server in sharepoint mode + MSO native
 - Alfresco server in sharepoint mode + Oracle OOo extension
 - A test with native Sharepoint would be nice as well
-- Need to look after if the sharepoint protocol spec is available or not
+- Need to look after if the sharepoint protocol spec is available or not [ done, yes ]
 
 We suspect that a part of Alfresco is a more or less standalone sharepoint
 server implementation, but need to search if such a client library is available
@@ -626,3 +626,71 @@ Basic functionality works:
 - can be checked out
 - edited
 - checked in
+
+== 3rd week
+
+=== 2011-02-21
+
+In ULX: setting up working env (account creation, installing KDE, git, etc.)
+
+Downloaded & installed Alfresco + the Oracle Alfresco extension on the ULX
+machine (vishudda) as well, works fine..
+
+Found an other Alfresco OOo extension that is opensource:
+http://extensions.services.openoffice.org/en/project/OPAL (alfresco_3.x-opal_3.1.4)
+
+Source code at:
+http://forge.alfresco.com/scm/?group_id=196
+but svn checkout is not public, only source code for 3.0 as a source tarball.
+
+Downloaded binary ends in some OOo Basic runtime error (in Fedora OOo 3.3), probably caused by this Java exception:
+
+----
+com.sun.star.uno.Exception: com.sun.star.configuration.ConfigurationProvider factory: unknown argument enablesync
+        at com.sun.star.bridges.jni_uno.JNI_proxy.dispatch_call(Native Method)
+        at com.sun.star.bridges.jni_uno.JNI_proxy.invoke(JNI_proxy.java:175)
+        at $Proxy3.createInstanceWithArgumentsAndContext(Unknown Source)
+        at fr.starxpert.opal.comp.utils.UnoUtils.getConfigAccess(UnoUtils.java:121)
+        at fr.starxpert.opal.comp.ui.ConnectionDialog.updateListServer(ConnectionDialog.java:206)
+        at fr.starxpert.opal.comp.ui.ConnectionDialog.execute(ConnectionDialog.java:236)
+        at fr.starxpert.opal.comp.ui.AbstractDialog.run(AbstractDialog.java:94)
+        at fr.starxpert.opal.comp.AuthenticationManagerImpl.execute(AuthenticationManagerImpl.java:130)
+----
+
+Tried with the bundled (in Alfresco) OOo 3.2, but there it fails at installation already:
+
+----
+Could not create Java implementation loader
+----
+
+Tried installing OOo 3.2, though graphical installer failed to some rpm
+dependency problem. So tried manually:
+
+----
+mkdir ~/ooo32
+rpm --nodeps --upgrade --ignoresize -vh --relocate /opt=/home/vmiklos/ooo32//opt --dbpath /home/vmiklos/ooo32/.RPM_OFFICE_DATABASE ~/git/diploma1/opal/ooo-3.2/OOO320_m18_native_packed-1_en-US.9502/RPMS/*rpm
+----
+
+And the connection dialog opens in OOo 3.2.1!
+
+Connecting does not work, but a usable exception is logged in tomcat's log,
+OPAL has some server-side part in Alfresco, the French documentation
+how to install that:
+
+- have to copy the .amp file to the alfresco amp/ directory
+- run bin/apply_amps.sh, restart alfresco
+
+and then it works! (Same basic functionality: open, save, close)
+
+Still need to test:
+
+- test OPAL with upstream OOo 3.3 (maybe OPAL just does not work with OOo 3.3
+  from RPM due to a Fedora packaging issue?) -> done, it fails that way, too.
+- build OPAL from source (waiting for mail from starxpert guys - authors of OPAL)
+
+Previous not completed ones:
+
+- Alfresco server + its MSO extension
+- Alfresco server in sharepoint mode + MSO native
+- Alfresco server in sharepoint mode + Oracle OOo extension
+- A test with native Sharepoint would be nice as well
