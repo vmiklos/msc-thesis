@@ -703,3 +703,119 @@ code'. No reply from the Starxpert guys, though.
 
 Mailed two extension developers I know to ask them about the OOo 3.2 vs 3.3
 extension issue from 21th.
+
+== 2010-02-24
+
+Tried compiling OPAL from source, using the already mentioned tutorial:
+
+http://wiki.services.openoffice.org/wiki/JavaEclipseTuto
+
+Asked on #libreoffice (irc.freenode.net) what version of Eclipse integration
+should I try to install, Cedric (the main developer of OOEclipse) recommends
+the 'dev' version, but its update site is broken at the moment, so he suggested
+building my own update site.
+
+Installed eclipse and its development package:
+
+----
+# yum install eclipse-platform eclipse-jdt eclipse-cdt
+----
+
+Cloned the ooeclipse repo:
+
+----
+git clone git://anongit.freedesktop.org/libreoffice/contrib/ooeclipse
+cd ooeclipse/build
+ANT_ARGS="-Dopenoffice.home=/home/vmiklos/ooo32/opt/openoffice.org3 -Declipse.home=/usr/lib64/eclipse" ant
+----
+
+Build went fine, I added the new site to Eclipse as
+
+----
+file:/home/vmiklos/git/ooeclipse/site/
+----
+
+but I got dependency errors in Eclipse 3.6 during installation:
+
+----
+Cannot complete the install because one or more required items could not be found.
+  Software being installed: LibreOffice development plugin support for Java implementation 1.0.3 (org.openoffice.ide.eclipse.java.feature.group 1.0.3)
+  Missing requirement: Ant UI 3.5.0.v20100427 (org.eclipse.ant.ui 3.5.0.v20100427) requires 'bundle org.eclipse.ant.launching [1.0.0,2.0.0)' but it could not be found
+  Cannot satisfy dependency:
+    From: Eclipse Java Development Tools 3.6.1.r361_v20100714-0800-7z8XFUSFLBmsgvVz0z-3vjz095IX (org.eclipse.jdt.feature.group 3.6.1.r361_v20100714-0800-7z8XFUSFLBmsgvVz0z-3vjz095IX)
+    To: org.eclipse.ant.ui [3.5.0.v20100427]
+  Cannot satisfy dependency:
+    From: LibreOffice development plugin support for Java implementation 1.0.3 (org.openoffice.ide.eclipse.java.feature.group 1.0.3)
+    To: org.eclipse.jdt.feature.group 0.0.0
+---
+
+So I tried installing under eclipse upstream 3.6 (not from yum), and that
+worked (took a lot if time, but no errors).
+
+Then I imported the 'OPAL_OOo_Alf3_trunk' project (which is supposed to be the
+source for of the OOo extension) to Eclipse, but it won't build:
+
+----
+No SDK or OOo set: won't build	OPAL_OOo_Alf3_trunk		Unknown	Problem
+Project 'OPAL_OOo_Alf3_trunk' is missing required Java project: 'SDK AlfrescoEmbedded'	OPAL_OOo_Alf3_trunk		Build path	Build Path Problem
+The project cannot be built until build path errors are resolved	OPAL_OOo_Alf3_trunk		Unknown	Java Problem
+----
+
+So I searched what SDK is available that could be downloaded, and found
+http://dl.alfresco.com/release/community/build-3370/alfresco-community-sdk-3.4.d.zip
+(198MB)
+
+The `lib/server` subdirectory of that tarball contains a project named 'SDK
+AlfrescoEmbedded'. There were a few build errors after this, but that was easy
+to fix (java source code level and such).
+
+Now to install it and try if it works. The File -> Export -> UNO wizart just
+does nothing when one would click on 'Finish'.
+
+So first I create a helloworld project and see if that works, ie if the issue
+is specific to OPAL or not.
+
+Following the howto (linked above) I created a HelloWorld project, but the wizard ends with:
+
+----
+An internal error occurred during: "Uno Project creation job".
+org/openoffice/plugin/core/utils/XMLWriter
+----
+
+Poked Cedric about the issue - in case he knows what can be the problem.
+
+Another test: let's see if helloworld project works in case I use the OOo-3.3
+(from system rpm) SDK. -> same :(
+
+Got reply from Cedric: non-dev version is supposed to work with Eclipse 3.5 -
+so I'm trying the helloworld there.
+
+The tutorial went fine till project generation / build, but it's not possible
+to export it. I reported that to Cedric, and for now I can work it around by
+manually zipping the binaries (oxt is a zip file in fact).
+
+As a result, finally my little modification renaming a menu item showed up in
+OOo. This is only a config file, not a real code change, though.
+
+When there is a code change, then Eclipse automatically builds the project, so
+only the jar file has to be updated (manually.. that could be improved), and
+the jar file has to be copied, like:
+
+----
+cat OPAL_OOo_Alf3_trunk.jar > /home/vmiklos/.openoffice.org/3/user/uno_packages/cache/uno_packages/xFd4dl_/alfresco_3.x-opal_3.1.4_trunk.oxt/OPAL_OOo_Alf3_trunk.jar
+----
+
+After restarting OOo, the change appears!
+
+(A simple System.out.println() in case the connection dialog is closed with an
+enter.)
+
+Talked with Cedric, he can reproduce the project creation bug and said that the
+oxt export has been rewritten since the stable release, so it does not worth
+debugging the stable version's this part.
+
+Summary:
+- OOo 3.2, Eclipse 3.5, OOEclipse stable and OPAL from svn works more or less togother.
+- the build part is not nice yet - manually creating the jar & oxt is a no-go in the long term
+- OOEclipse developer responds, so it worths reporting issues to him
+- code and wiki contents will be uploaded to svn repos at ULX next week
