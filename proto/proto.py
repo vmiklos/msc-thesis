@@ -40,7 +40,7 @@ def parsehtml(page):
 	return parser.items
 
 # defaults
-url = "http://127.0.0.1:7070/alfresco/"
+url = "http://127.0.0.1:7070/alfresco"
 user = 'admin'
 password = 'alfresco'
 
@@ -73,7 +73,7 @@ print "ok, logged in"
 
 # list folders
 conn = httplib.HTTPConnection(host, port)
-conn.request("GET", "%s_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
+conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
 response = conn.getresponse()
 if response.status != 200:
 	raise Exception("failed to read root dir")
@@ -82,8 +82,8 @@ html = response.read()
 itemlist = parsehtml(html)
 print "available items:"
 for t, n in itemlist:
-	print "%s\t%s" % (n.replace(url, ''), t)
-path += ask('item', 'SPP')
+	print "%s\t%s" % (n.split('/')[-1], t)
+path += "/" + ask('item', 'SPP')
 
 # list selected folder
 conn = httplib.HTTPConnection(host, port)
@@ -91,10 +91,20 @@ conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDi
 response = conn.getresponse()
 if response.status != 200:
 	raise Exception("failed to read selected dir")
-# extract the list of folders from the html response
 html = response.read()
 itemlist = parsehtml(html)
 print "available items:"
 for t, n in itemlist:
 	print "%s\t%s" % (n.split('/')[-1], t)
 path += "/" + ask('item', 'documentLibrary')
+
+conn = httplib.HTTPConnection(host, port)
+conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
+response = conn.getresponse()
+if response.status != 200:
+	raise Exception("failed to read selected subdir")
+html = response.read()
+itemlist = parsehtml(html)
+print "available items:"
+for t, n in itemlist:
+	print "%s\t%s" % (n.split('/')[-1], t)
