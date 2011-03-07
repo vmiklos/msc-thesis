@@ -1338,3 +1338,17 @@ checkout a document, then uncheckout it.
 
 As a start, I wrote a small prototype that can just download a document from
 the server (no directory listing or checkout yet), called `proto.py`.
+
+== 5th week
+
+=== 2011-03-07
+
+In ULX. No Windows VM here, so I use my machine where I have MSO installed
+already.
+
+Had a small meeting with Gabor and Ivan:
+
+- SVN access and real sharepoint server will be sorted out
+- one-page description of my thesis will be handled by Ivan
+- this week I'll work on a simple Python commandline prototype
+- after that, I'll begin modifying the OPAL extension to use the sharepoint protocol
