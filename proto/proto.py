@@ -61,53 +61,36 @@ if response.status != 200:
 	raise Exception("failed to log in")
 print "ok, logged in"
 
-#conn = httplib.HTTPConnection(host, port)
-#conn.request("GET", "/alfresco/SPP/documentLibrary/local.doc", headers = headers)
-#response = conn.getresponse()
-#if response.status != 200:
-#	raise Exception("failed to read file")
-#
-#sock = open("local.doc", "w")
-#sock.write(response.read())
-#sock.close()
-
 # list folders
-conn = httplib.HTTPConnection(host, port)
-conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
-response = conn.getresponse()
-if response.status != 200:
-	raise Exception("failed to read root dir")
-# extract the list of folders from the html response
-html = response.read()
-itemlist = parsehtml(html)
-print "available items:"
-for n in sorted(itemlist.keys()):
-	t = itemlist[n]
-	print "%s\t%s" % (n.split('/')[-1], t)
-path += "/" + ask('item', 'SPP')
-
-# list selected folder
-conn = httplib.HTTPConnection(host, port)
-conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
-response = conn.getresponse()
-if response.status != 200:
-	raise Exception("failed to read selected dir")
-html = response.read()
-itemlist = parsehtml(html)
-print "available items:"
-for n in sorted(itemlist.keys()):
-	t = itemlist[n]
-	print "%s\t%s" % (n.split('/')[-1], t)
-path += "/" + ask('item', 'documentLibrary')
+while True:
+	conn = httplib.HTTPConnection(host, port)
+	conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
+	response = conn.getresponse()
+	if response.status != 200:
+		raise Exception("failed to read dir '%s/'" % path)
+	# extract the list of folders from the html response
+	html = response.read()
+	itemlist = parsehtml(html)
+	print "available items:"
+	names = sorted(itemlist.keys())
+	for n in names:
+		t = itemlist[n]
+		print "%s\t%s" % (n.split('/')[-1], t)
+	item = ask('item', names[0].split('/')[-1])
+	itemurl = "/".join(names[0].split('/')[:-1]) + "/" + item
+	path += "/" + item
+	if itemlist[itemurl] == "file":
+		break
+print "ok, selected %s" % path
 
 conn = httplib.HTTPConnection(host, port)
-conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
+conn.request("GET", path, headers = headers)
 response = conn.getresponse()
 if response.status != 200:
-	raise Exception("failed to read selected subdir")
-html = response.read()
-itemlist = parsehtml(html)
-print "available items:"
-for n in sorted(itemlist.keys()):
-	t = itemlist[n]
-	print "%s\t%s" % (n.split('/')[-1], t)
+	raise Exception("failed to read file '%s'" % path)
+
+localpath = path.split('/')[-1]
+sock = open(localpath, "w")
+sock.write(response.read())
+sock.close()
+print "saved to %s" % localpath
