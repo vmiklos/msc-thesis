@@ -1027,3 +1027,314 @@ Summary of what I read so far:
 - most of the text should be used later as a reference, ie dozen of times it lists a zillion of different integer types (specified by xml schema, etc)
 
 Next to read: chapter 4 (protocol examples).
+
+=== 2011-03-04
+
+Got reply from the starxpert guys, nothing helpful, but at least now I know
+they got my mail. Asked them if they have any plan to fix OPAL wrt OOo 3.3
+(since it works with 3.2 only here).
+
+We decided the Hungarian title of the thesis: "Nyílt forráskódú irodai
+programkomponensek vállalati környezetbe való integrációjának vizsgálata és
+implementációja".
+
+It could be something like: "Analysis and implementation of integrating
+open-source office program-components into enterprise environment."
+
+No SVN access at home (which is a pain), but Ivan is already on it.
+
+=== 2011-03-05
+
+At home, fired up MSO and Alfresco + Wireshark to sniff network traffic. The
+initial authentication (`tcp.stream eq 19` in `20110305.dump`) is like this:
+
+----
+GET /_vti_inf.html HTTP/1.1
+Date: Sat, 05 Mar 2011 22:53:40 GMT
+MIME-Version: 1.0
+Accept: */*
+User-Agent: Mozilla/4.0 (compatible; MS FrontPage 12.0)
+Host: 192.168.239.3:7070
+Accept: auth/sicily
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+HTTP/1.1 401 Unauthorized
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Set-Cookie: JSESSIONID=1r9brw0xkuqgx;Path=/
+WWW-Authenticate: BASIC realm="Alfresco Server"
+Content-Length: 0
+Server: Jetty(6.1.14)
+
+GET /_vti_inf.html HTTP/1.1
+Date: Sat, 05 Mar 2011 22:53:40 GMT
+MIME-Version: 1.0
+Accept: */*
+User-Agent: Mozilla/4.0 (compatible; MS FrontPage 12.0)
+Host: 192.168.239.3:7070
+Accept: auth/sicily
+Content-Length: 0
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=1r9brw0xkuqgx
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+HTTP/1.1 200 OK
+Public-Extension: http://schemas.microsoft.com/repl-2
+MicrosoftSharePointTeamServices: 14.00.0.000
+Cache-Control: private
+Content-Type: text/html
+Content-Length: 246
+Server: Jetty(6.1.14)
+
+<!-- FrontPage Configuration Information
+ FPVersion="14.00.0.000"
+FPShtmlScriptUrl="_vti_bin/shtml.dll/_vti_rpc"
+FPAuthorScriptUrl="_vti_bin/_vti_aut/author.dll"
+FPAdminScriptUrl="_vti_bin/_vti_adm/admin.dll"
+TPScriptUrl="_vti_bin/owssvr.dll"
+-->
+
+POST /_vti_bin/shtml.dll/_vti_rpc HTTP/1.1
+Date: Sat, 05 Mar 2011 22:53:44 GMT
+MIME-Version: 1.0
+User-Agent: MSFrontPage/12.0
+Host: 192.168.239.3:7070
+Accept: auth/sicily
+Content-Length: 42
+Content-Type: application/x-www-form-urlencoded
+X-Vermeer-Content-Type: application/x-www-form-urlencoded
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=1r9brw0xkuqgx
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+method=server+version%3a12%2e0%2e0%2e6211
+
+HTTP/1.1 200 OK
+MicrosoftSharePointTeamServices: 14.00.0.000
+Cache-Control: no-cache
+Content-Type: application/x-vermeer-rpc
+Connection: close
+Server: Jetty(6.1.14)
+
+<html><head><title>vermeer RPC packet</title></head>
+<body>
+<p>method=server version:14.0.0.4730
+<p>server version=
+<ul>
+<li>major ver=14
+<li>minor ver=0
+<li>phase ver=0
+<li>ver incr=4730
+</ul>
+<p>source control=1
+</body>
+</html>
+----
+
+So all starts with the client trying to access `_vti_inf.html` on the server.
+Not something in the spec. (I wonder: do I read the right spec?)
+
+Then the authentication is HTTP Basic, that's simple. Then it posts something
+to `/_vti_bin/shtml.dll/_vti_rpc`, no idea what is that, looks like RPCish, but
+not XML-based.
+
+The next flow (`tcp.stream eq 20`) is this:
+
+----
+POST /_vti_bin/shtml.dll/_vti_rpc HTTP/1.1
+Date: Sat, 05 Mar 2011 22:53:44 GMT
+MIME-Version: 1.0
+User-Agent: MSFrontPage/12.0
+Host: 192.168.239.3:7070
+Accept: auth/sicily
+Content-Length: 66
+Content-Type: application/x-www-form-urlencoded
+X-Vermeer-Content-Type: application/x-www-form-urlencoded
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=1r9brw0xkuqgx
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+method=url+to+web+url%3a12%2e0%2e0%2e6211&url=%2falfresco&flags=0
+
+HTTP/1.1 200 OK
+MicrosoftSharePointTeamServices: 14.00.0.000
+Cache-Control: no-cache
+Content-Type: application/x-vermeer-rpc
+Connection: close
+Server: Jetty(6.1.14)
+
+<html><head><title>vermeer RPC packet</title></head>
+<body>
+<p>method=url to web url:14.0.0.4730
+<p>webUrl=/alfresco
+<p>fileUrl=
+</body>
+</html>
+----
+
+I don't know yet where that `/alfresco` comes from, I did a logout before I
+started capturing in the hope of that will empty any cache, and obviously MSO
+won't speak about alfresco itself.
+
+Then flow #21 is:
+
+----
+POST /alfresco/_vti_bin/_vti_aut/author.dll HTTP/1.1
+Date: Sat, 05 Mar 2011 22:53:44 GMT
+MIME-Version: 1.0
+User-Agent: MSFrontPage/12.0
+Host: 192.168.239.3:7070
+Accept: auth/sicily
+Content-Length: 67
+Content-Type: application/x-www-form-urlencoded
+X-Vermeer-Content-Type: application/x-www-form-urlencoded
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=1r9brw0xkuqgx
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+method=open+service%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco
+----
+
+The answer omitted, it's the method response in this weird syntax, the point is
+that here the client knows alfresco already and it calls this `open service`
+method.
+
+Flow #22 is where the actual root directory listing is sent:
+
+----
+GET /alfresco/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*; HTTP/1.1
+Accept: */*
+Accept-Language: hu
+UA-CPU: x86
+Accept-Encoding: gzip, deflate
+User-Agent: Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727; InfoPath.2; AskTbFXTV5/5.9.1.14019)
+Host: 192.168.239.3:7070
+Connection: Keep-Alive
+Cookie: JSESSIONID=1r9brw0xkuqgx
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+----
+
+And the response is a HTML page with css, javascript and every other kind of
+fancy stuff. And that's the last flow in the dump, which was recorded during a:
+
+- Office -> Open
+- Enter URL
+- Give user / password
+
+Now the next step would be to figure out:
+
+- what is that weird RPC syntax
+- from where does MSO get the alfresco string
+- if it's cached, need to look after how can I empty such a cache
+
+=== 2011-03-06
+
+OK, I missed the fact that I passed the URL
+`http://192.168.239.3:7070/alfresco/` to MSO, so that's why it knew the
+alfresco path..
+
+The RPC syntax is documented here: http://msdn.microsoft.com/en-us/library/ms442469.aspx
+The list of used methods are here: http://msdn.microsoft.com/en-us/library/ms454298.aspx
+
+The sad thing is that it seems the folder list has to be parsed manually or we
+need Javascript... (the previous sounds saner to me).
+
+Given that The above documentation is more a reference than a guide describing
+a process of performing tasks, here is my understanding so far about loading
+the folder list - the following steps are required:
+
+1. Authorization - /_vti_inf.html
+2. Get server version - /_vti_bin/shtml.dll/_vti_rpc
+3. Translate /alfresco URL to web URL - /_vti_bin/shtml.dll/_vti_rpc
+4. Open service - /alfresco/_vti_bin/_vti_aut/author.dll
+5. Get info for File Open - /alfresco/_vti_bin/owssvr.dll
+
+Now, continuing yesterday's capture, I created a new dump, containing the download of SPP/documentLibrary/local.doc:
+
+- flow #16 is File Open, it also contains:
+
+----
+GET /alfresco/SPP/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*
+GET /alfresco/SPP/_vti_bin/owssvr.dll?location=documentLibrary&dialogview=FileOpen&FileDialogFilterValue=*.*
+----
+
+so that the filename is known.
+
+- flow #20 calls the checkout method:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll
+
+method=checkout+document%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&document%5fname=documentLibrary%2flocal%2edoc&force=0&timeout=10
+----
+
+- flow #21:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll
+
+method=getDocsMetaInfo%3a12%2e0%2e0%2e6211&url%5flist=%5bdocumentLibrary%2flocal%2edoc%5d&listHiddenDocs=false&listLinkInfo=false
+----
+
+- flow #22:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll
+
+method=uncheckout+document%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&document%5fname=documentLibrary%2flocal%2edoc&force=false&rlsshortterm=true
+----
+
+- flow #23:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll
+method=get+document%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&document%5fname=documentLibrary%2flocal%2edoc&old%5ftheme%5fhtml=false&force=false&get%5foption=chkoutExclusive&doc%5fversion=&timeout=10
+----
+
+The reply to this request is a html one, but after </html>, the binary doc arrives.
+
+- flow #24:
+
+----
+HEAD /alfresco/SPP/documentLibrary/local.doc HTTP/1.1
+----
+
+just to make sure?
+
+- flow #25:
+
+----
+POST /_vti_bin/webs.asmx HTTP/1.1
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/WebUrlFromPageUrl
+----
+
+This is a SOAP message, it just translates http://192.168.239.3:7070/alfresco/SPP/documentLibrary/local.doc to http://192.168.239.3:7070/alfresco/SPP
+
+- flow #26:
+
+----
+POST /alfresco/SPP/_vti_bin/workflow.asmx HTTP/1.1
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/workflow/GetWorkflowDataForItem
+----
+
+empty reply.
+
+Releasing a document (20110306-release.dump):
+
+- flow #2:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll
+method=uncheckout+document%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&document%5fname=documentLibrary%2flocal%2edoc&force=false&rlsshortterm=true
+----
+
+The above should be enough to write a simple client that can list directories,
+checkout a document, then uncheckout it.
+
+As a start, I wrote a small prototype that can just download a document from
+the server (no directory listing or checkout yet), called `proto.py`.
