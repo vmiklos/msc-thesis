@@ -1,0 +1,40 @@
+= How to install OPAL
+
+== OOo
+
+Install OOo 3.2 from http://download.services.openoffice.org/files/stable/3.2.1/
+
+== Alfresco
+
+Download and install Alfresco Community 3.4.d from http://wiki.alfresco.com/wiki/Download_and_Install_Alfresco
+
+== OPAL
+
+Download from http://forge.alfresco.com/frs/?group_id=196
+
+=== Server part
+
+Download 'InstallationLinux.zip' from the '3.1.4 Alfresco 3.2' section. The
+file 'Manuel_Installation_Opal_v1.2.pdf' contains the instructions, here is
+what I needed:
+
+1. Copy 'alfresco_3.2-opal_3.1.4.amp' to the `amps/` directory.
+2. Run `bin/apply_amps.sh`, notice the
+
+----
+Module 'opal' installed in 'tomcat/webapps/alfresco.war'
+----
+
+in its output.
+
+3. Restart alfresco using `./alfresco.sh restart`
+
+=== Client part
+
+1. Download 'alfresco_3.x-opal_3.1.4.oxt' from the '3.1.4 Alfresco 3.2'
+section.
+2. Start OOo, choose Tools -> Extension manager, and add the extension.
+3. Restart OOo, a new OPAL menu appears. Choose OPAL -> Open.
+4. Enter username / server / server parameters as needed. (Needed only the
+first time.)
+5. Select file to open.
