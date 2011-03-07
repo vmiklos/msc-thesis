@@ -1357,4 +1357,12 @@ Completed the prototype up to being able to download any file from the server
 (without checkout / uncheckout RPC calls), including directory listing.
 
 Created a separate document (opal-howto.txt) on how to set up OPAL, as
-requested by Ivan.
+requested by Ivan. Wasted a lot of time on it, for some reason I got a strange
+exception:
+
+----
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'LuceneFullTextSearchIndexer' defined in class path resource [alfresco/core-services-context.xml]: Cannot resolve reference to bean 'luceneFullTextSearchIndexer' while setting bean property 'target'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'luceneFullTextSearchIndexer' defined in class path resource [alfresco/core-services-context.xml]: Initialization of bean failed; nested exception is org.springframework.beans.factory.CannotLoadBeanClassException: Error loading class [fr.starxpert.opal.document.DownloadDocument] for bean with name 'webscript.fr.starxpert.opal.document.download.get' defined in file [/home/vmiklos/documents/bme/diploma1/alfresco/alfresco-3.4.d/tomcat/webapps/alfresco/WEB-INF/classes/alfresco/module/opal/module-context.xml]: problem with class file or dependent class; nested exception is java.lang.NoClassDefFoundError: org/alfresco/web/scripts/AbstractWebScript
+----
+
+on startup, at the end I worked it around by copying over the tomcat directory
+from the ULX machine where I already had OPAL set up.
