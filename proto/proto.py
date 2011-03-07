@@ -83,5 +83,18 @@ itemlist = parsehtml(html)
 print "available items:"
 for t, n in itemlist:
 	print "%s\t%s" % (n.replace(url, ''), t)
-item = ask('item', 'SPP')
-print item
+path += ask('item', 'SPP')
+
+# list selected folder
+conn = httplib.HTTPConnection(host, port)
+conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
+response = conn.getresponse()
+if response.status != 200:
+	raise Exception("failed to read selected dir")
+# extract the list of folders from the html response
+html = response.read()
+itemlist = parsehtml(html)
+print "available items:"
+for t, n in itemlist:
+	print "%s\t%s" % (n.split('/')[-1], t)
+path += "/" + ask('item', 'documentLibrary')
