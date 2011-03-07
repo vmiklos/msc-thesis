@@ -22,7 +22,7 @@ def parsehtml(page):
 	class HTMLParser(SGMLParser):
 		def reset(self):
 			SGMLParser.reset(self)
-			self.items = []
+			self.items = {}
 		def start_tr(self, attrs):
 			fileattribute = None
 			id = None
@@ -32,7 +32,7 @@ def parsehtml(page):
 				elif k == "id":
 					id = v
 			if fileattribute and id:
-				self.items.append((fileattribute, id))
+				self.items[id] = fileattribute
 	parser = HTMLParser()
 	parser.reset()
 	parser.feed(page)
@@ -81,7 +81,8 @@ if response.status != 200:
 html = response.read()
 itemlist = parsehtml(html)
 print "available items:"
-for t, n in itemlist:
+for n in sorted(itemlist.keys()):
+	t = itemlist[n]
 	print "%s\t%s" % (n.split('/')[-1], t)
 path += "/" + ask('item', 'SPP')
 
@@ -94,7 +95,8 @@ if response.status != 200:
 html = response.read()
 itemlist = parsehtml(html)
 print "available items:"
-for t, n in itemlist:
+for n in sorted(itemlist.keys()):
+	t = itemlist[n]
 	print "%s\t%s" % (n.split('/')[-1], t)
 path += "/" + ask('item', 'documentLibrary')
 
@@ -106,5 +108,6 @@ if response.status != 200:
 html = response.read()
 itemlist = parsehtml(html)
 print "available items:"
-for t, n in itemlist:
+for n in sorted(itemlist.keys()):
+	t = itemlist[n]
 	print "%s\t%s" % (n.split('/')[-1], t)
