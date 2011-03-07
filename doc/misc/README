@@ -1366,3 +1366,6 @@ org.springframework.beans.factory.BeanCreationException: Error creating bean wit
 
 on startup, at the end I worked it around by copying over the tomcat directory
 from the ULX machine where I already had OPAL set up.
+
+Next time I want to continue with proper open/close (checkout / uncheckout) and
+then Space creation, file save.
