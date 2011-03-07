@@ -1352,3 +1352,9 @@ Had a small meeting with Gabor and Ivan:
 - one-page description of my thesis will be handled by Ivan
 - this week I'll work on a simple Python commandline prototype
 - after that, I'll begin modifying the OPAL extension to use the sharepoint protocol
+
+Completed the prototype up to being able to download any file from the server
+(without checkout / uncheckout RPC calls), including directory listing.
+
+Created a separate document (opal-howto.txt) on how to set up OPAL, as
+requested by Ivan.
