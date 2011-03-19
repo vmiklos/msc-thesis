@@ -39,7 +39,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: open, save, saveas, list-versions, quit"
+			print "possible actions: open, open-older, save, saveas, list-versions, quit"
 			self.action = self.ask('action', self.action)
 
 			if self.action == "open":
@@ -55,6 +55,8 @@ class Handler:
 				break
 			elif self.action in ("list-versions", "l"):
 				self.handle_list_versions()
+			elif self.action in ("open-older", "oo"):
+				self.handle_open_older()
 
 	def ask(self, k, v):
 		line = None
@@ -118,9 +120,24 @@ class Handler:
 				return path, False
 		return path, True
 
-	def handle_open(self):
-		path, existing = self.select_remote_path()
-		print "ok, selected %s" % path
+	def handle_open_older(self):
+		# select remove path
+		remotepath, existing = self.select_remote_path()
+		remotepath = remotepath.replace(self.path, '')
+		print "The following versions are available:"
+		versions = self.handle_list_versions(remotepath)
+		version = self.ask('version', versions[0].version)
+		url = None
+		for i in versions:
+			if i.version == version:
+				url = i.url
+				break
+		self.handle_open(url.replace('http://%s:%s' % (self.host, self.port), ''))
+
+	def handle_open(self, path=None):
+		if not path:
+			path, existing = self.select_remote_path()
+			print "ok, selected %s" % path
 
 		conn = httplib.HTTPConnection(self.host, self.port)
 		conn.request("GET", path, headers = self.headers)
@@ -154,14 +171,15 @@ class Handler:
 		parser.close()
 		return parser.lastmod
 
-	def handle_list_versions(self):
+	def handle_list_versions(self, remotepath=None):
 		class Version:
-			def __init__(self, version, date, author, size, comment):
+			def __init__(self, version, date, author, size, comment, url):
 				self.version = version.replace('@', '')
 				self.date = date
 				self.author = author
 				self.size = size
 				self.comment = comment
+				self.url = url.replace('versionStore://', 'versionStore:/')
 			def __lt__(self, other):
 				key = lambda x: map(int, x.split('.'))
 				return key(self.version) < key(other.version)
@@ -170,9 +188,10 @@ class Handler:
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/GetVersions'
 
 		# select remove path
-		remotepath, existing = self.select_remote_path()
-		remotepath = remotepath.replace(self.path, '')
-
+		existing = True
+		if not remotepath:
+			remotepath, existing = self.select_remote_path()
+			remotepath = remotepath.replace(self.path, '')
 		if not existing:
 			raise Exception("can list of versions of existing files only")
 
@@ -199,11 +218,13 @@ class Handler:
 				i.getAttribute('created'),
 				i.getAttribute('createdBy'),
 				i.getAttribute('size'),
-				i.getAttribute('comments')))
+				i.getAttribute('comments'),
+				i.getAttribute('url')))
 		versions.sort(reverse=True)
 		print "No.\tModified\tModified By\tSize\tComments"
 		for i in versions:
 			print "\t".join([i.version, i.date, i.author, i.size, i.comment])
+		return versions
 
 	def handle_saveas(self, fro=None, remotepath=None):
 		headers = self.headers.copy()
