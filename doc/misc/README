@@ -1765,6 +1765,12 @@ prototype, but I'm not doing it right now as it gets really late.
 
 === 2011-03-16
 
+The title of the thesis is now final:
+
+----
+The analysis and integration of open-source office productivity software in an enterprise environment
+----
+
 Here is a thread from the LibreOffice user mailing list, where someone is
 interested in the extension I'm about to create:
 
@@ -1802,3 +1808,151 @@ The rest is pretty much just a dump of what is in the XML reply.
 
 As a result I implemented GetVersions in the proto, even with natural sorting
 of versions (after all, that was only two lines of code).
+
+=== 2011-03-19
+
+In ULX. The sharepoint server is not yet ready, so I continue with adding a few
+more features to the proto.
+
+Word has the ability to open, compare, restore and delete older versions of a
+document. Compare is probably a more complex operation, but the rest 3 should
+not be too hard to implement.
+
+Open:
+
+- a special url is returned by GetVersions for older versions of a document, like
+
+----
+http://127.0.0.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/b2108ee1-0fe9-4b5e-a88d-80fe9e45c1b8/aaa-test.txt
+----
+
+- a simple HTTP GET can reach this, once versionStore:// is replaced by versionStore:/ (why is that needed?)
+
+I implemented this in the prototype as an 'open-older' subcommand. Luckily I
+could reuse (ie. not copy&paste) most of the version lister and (last version)
+opener code.
+
+Restore:
+
+From the Word UI, it works the following way: let's say versions 1.0..1.4 are
+available, so 1.4 is the latest one. The user selects to 'restore' the 1.3
+version, then a new (major) 2.0 version will be created with the contents of
+the 1.3 one. Let's see how does this look like from Wireshark (20110319-restore.dump):
+
+- flow #21:
+
+----
+POST /alfresco/SPP/_vti_bin/versions.asmx HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/RestoreVersion
+X-Office-Version: 12.0.6213
+User-Agent: Microsoft Office/12.0 (Windows NT 5.1; Microsoft Office Word 12.0.6213; Pro)
+Host: 192.168.152.1:7070
+Content-Length: 322
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=otwdh3ghxtf1
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<RestoreVersion xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<fileName>documentLibrary/aaa-test.txt</fileName>
+<fileVersion>1.0</fileVersion>
+</RestoreVersion>
+</soap:Body>
+</soap:Envelope>
+----
+
+and the reply is:
+
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <RestoreVersionResponse xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+      <RestoreVersionResult>
+        <results>
+          <list id=""/>
+          <versioning enabled="1"/>
+          <settings url="http://192.168.152.1:7070/alfresco/SPP/documentDetails.vti?doc=/SPP/documentLibrary/aaa-test.txt"/>
+          <result version="@5.0" url="http://192.168.152.1:7070/alfresco/SPP/documentLibrary/aaa-test.txt" created="3/19/2011 3:46 PM" createdBy="admin" size="11" comments=""/>
+          <result version="1.0" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/51f70bd4-e582-4c22-a5aa-20fa1130bff5/aaa-test.txt" created="3/19/2011 2:50 PM" createdBy="admin" size="9" comments=""/>
+          <result version="1.1" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/5cedc688-1a59-42e1-acc0-17d82e33ac4d/aaa-test.txt" created="3/19/2011 2:59 PM" createdBy="admin" size="11" comments=""/>
+          <result version="1.2" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/faf6ada4-9231-4428-88b0-36cf264b9ae3/aaa-test.txt" created="3/19/2011 2:59 PM" createdBy="admin" size="11" comments=""/>
+          <result version="1.3" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/b2108ee1-0fe9-4b5e-a88d-80fe9e45c1b8/aaa-test.txt" created="3/19/2011 3:13 PM" createdBy="admin" size="48" comments=""/>
+          <result version="1.4" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/e1064b6d-4ce1-46a2-a17d-c4b2420994e3/aaa-test.txt" created="3/19/2011 3:13 PM" createdBy="admin" size="58" comments=""/>
+          <result version="2.0" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/87a58c35-b0af-45e1-b65c-0a358d2c3307/aaa-test.txt" created="3/19/2011 3:36 PM" createdBy="admin" size="58" comments=""/>
+          <result version="2.1" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/db971a09-d718-4bf0-b9f2-c42478e830d5/aaa-test.txt" created="3/19/2011 3:37 PM" createdBy="admin" size="48" comments=""/>
+          <result version="2.2" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/b7efdf0a-a87b-444a-852f-3e002920e4c0/aaa-test.txt" created="3/19/2011 3:37 PM" createdBy="admin" size="48" comments=""/>
+          <result version="3.0" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/3b6421a3-1faf-4777-9e9a-f5020eb01852/aaa-test.txt" created="3/19/2011 3:37 PM" createdBy="admin" size="48" comments=""/>
+          <result version="4.0" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/eb8f6b0b-9327-4a42-90f8-e271a57c2f5c/aaa-test.txt" created="3/19/2011 3:42 PM" createdBy="admin" size="58" comments=""/>
+        </results>
+      </RestoreVersionResult>
+    </RestoreVersionResponse>
+  </s:Body>
+</s:Envelope>
+----
+
+So this will be a SOAP call as well, and the new list of versions is returned.
+
+Version delete: this is not supported by Alfresco. From its log:
+
+----
+16:30:11,469 User:admin DEBUG [web.ws.DeleteVersionEndpoint] Soap Method with name DeleteVersion is started.
+16:30:11,470 User:admin DEBUG [web.ws.DeleteVersionEndpoint] Return error 'This operation is not supported by server.'
+----
+
+An other hardwired value in the proto right now is the type of a checkin. Documentation on possible values:
+http://msdn.microsoft.com/en-us/library/lists.lists.checkinfile%28v=office.12%29.aspx
+and
+http://msdn.microsoft.com/en-us/library/microsoft.sharepoint.spcheckintype%28v=office.12%29.aspx
+
+Though looking at the implementation at
+http://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/HEAD/root/modules/sharepoint/amp/source/java/org/alfresco/module/vti/web/ws/,
+CheckInFileEndpoint.execute() ignores that parameter, so that'll be again
+something that can be later tested with native sharepoint only.
+
+The next target is that we could support creating new spaces.
+
+Fun fact: uploading a txt file to an existing space is perfectly OK, but the
+initial document in a space must be a docx (or probably doc).
+
+Anyway, the space creation is a SOAP request as well
+(20110319-create-space.dump):
+
+- flow #2:
+
+----
+POST /alfresco/_vti_bin/dws.asmx HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/dws/CreateDws
+X-Office-Version: 12.0.6213
+User-Agent: Microsoft Office/12.0 (Windows NT 5.1; Microsoft Office Word 12.0.6213; Pro)
+Host: 192.168.152.1:7070
+Content-Length: 268
+Connection: Keep-Alive
+Cache-Control: no-cache
+
+<?xml version='1.0' ?><s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><CreateDws xmlns="http://schemas.microsoft.com/sharepoint/soap/dws/"><name></name><users></users><title>SPP_3</title><documents></documents></CreateDws></s:Body></s:Envelope>
+----
+
+reply:
+
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><CreateDwsResponse xmlns="http://schemas.microsoft.com/sharepoint/soap/dws/"><CreateDwsResult>&lt;Results&gt;&lt;Url&gt;http://192.168.152.1:7070/alfresco/SPP_3&lt;/Url&gt;&lt;DoclibUrl&gt;documentLibrary&lt;/DoclibUrl&gt;&lt;ParentWeb/&gt;&lt;FailedUsers&gt;&lt;/FailedUsers&gt;&lt;/Results&gt;</CreateDwsResult></CreateDwsResponse></s:Body></s:Envelope>
+----
+
+I implemented this as a 'create-space' subcommand in the proto.
+
+I also tried deleting a space, but that's not supported by alfresco.
+
+To sum up:
+
+- created 'create-space', 'open-older' and 'restore-version' features
+- 'checkin type', 'version delete' and 'space delete' is not supported by Alfresco
+
+Next, I want to continue with deleting files, so far what I checked is that
+alfresco supports it.
