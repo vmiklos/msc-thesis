@@ -6,6 +6,7 @@ import sys
 from sgmllib import SGMLParser
 import glob
 import os
+import time
 
 class Handler:
 	def __init__(self):
@@ -166,20 +167,23 @@ class Handler:
 		space = l[1]
 		to = '/'.join(l[2:])
 
-		# run getDocsMetaInfo
-		params = {
-			'method':'getDocsMetaInfo:12.0.0.6211',
-			'url_list':'[http://%s:%s%s/%s/%s]' % (self.host, self.port, self.path, space, to),
-			'listHiddenDocs':'false',
-			'listLinkInfo':'false'
-			}
-		conn = httplib.HTTPConnection(self.host, self.port)
-		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
-		response = conn.getresponse()
-		html = response.read()
-		if "failedUrls" in html:
-			raise Exception("failed to get meta info")
-		lastmod = self.parselastmod(html).split('|')[1]
+		if existing:
+			# run getDocsMetaInfo
+			params = {
+				'method':'getDocsMetaInfo:12.0.0.6211',
+				'url_list':'[http://%s:%s%s/%s/%s]' % (self.host, self.port, self.path, space, to),
+				'listHiddenDocs':'false',
+				'listLinkInfo':'false'
+				}
+			conn = httplib.HTTPConnection(self.host, self.port)
+			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
+			response = conn.getresponse()
+			html = response.read()
+			if "failedUrls" in html:
+				raise Exception("failed to get meta info")
+			lastmod = self.parselastmod(html).split('|')[1]
+		else:
+			lastmod = time.strftime("%d %b %Y %H:%M:%S -0000")
 
 		# run 'put document'
 		sock = open(fro)
