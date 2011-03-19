@@ -1,6 +1,7 @@
 import httplib
 import base64
 import urlparse
+import urllib
 import sys
 from sgmllib import SGMLParser
 import glob
@@ -21,7 +22,7 @@ class Handler:
 		pr = urlparse.urlparse(self.url)
 		self.host, self.port = pr.netloc.split(':')
 		self.path = pr.path
-		self.headers = {'Authorization' : 'Basic ' + base64.encodestring('%s:%s' % (self.user, self.password))}
+		self.headers = {'Authorization' : 'Basic ' + base64.encodestring('%s:%s' % (self.user, self.password)).strip()}
 
 		# log in
 		conn = httplib.HTTPConnection(self.host, self.port)
@@ -58,7 +59,7 @@ class Handler:
 		return line
 
 	def parsefileopen(self, page):
-		class HTMLParser(SGMLParser):
+		class FileopenParser(SGMLParser):
 			def reset(self):
 				SGMLParser.reset(self)
 				self.items = {}
@@ -72,13 +73,13 @@ class Handler:
 						id = v
 				if fileattribute and id:
 					self.items[id] = fileattribute
-		parser = HTMLParser()
+		parser = FileopenParser()
 		parser.reset()
 		parser.feed(page)
 		parser.close()
 		return parser.items
 
-	def handle_open(self):
+	def select_remote_path(self):
 		path = self.path
 		# list folders
 		while True:
@@ -98,8 +99,15 @@ class Handler:
 			item = self.ask('item', names[0].split('/')[-1])
 			itemurl = "/".join(names[0].split('/')[:-1]) + "/" + item
 			path += "/" + item
-			if itemlist[itemurl] == "file":
-				break
+			try:
+				if itemlist[itemurl] == "file":
+					break
+			except KeyError:
+				return path, False
+		return path, True
+
+	def handle_open(self):
+		path, existing = self.select_remote_path()
 		print "ok, selected %s" % path
 
 		conn = httplib.HTTPConnection(self.host, self.port)
@@ -114,7 +122,29 @@ class Handler:
 		sock.close()
 		print "downloaded to %s" % localpath
 
+	def parselastmod(self, page):
+		class LastmodParser(SGMLParser):
+			def reset(self):
+				SGMLParser.reset(self)
+				self.lastmod = None
+				self.nextmod = False
+			def handle_data(self, text):
+				if text.strip() == "vti_timelastmodified":
+					self.nextmod = True
+				elif self.nextmod and not self.lastmod:
+					self.nextmod = False
+					self.lastmod = text.strip()
+		parser = LastmodParser()
+		parser.reset()
+		parser.feed(page)
+		parser.close()
+		return parser.lastmod
+
 	def handle_saveas(self):
+		headers = self.headers.copy()
+		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
+		headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
+
 		print "selecting local source"
 		localpath = os.getcwd() + "/"
 
@@ -127,7 +157,31 @@ class Handler:
 			print "%s\tfile" % (i.split('/')[-1])
 		item = self.ask('item', names[0].split('/')[-1])
 		localpath += item
-		print "ok, selected local source: %s" % (localpath)
+		print "ok, selected local source: %s" % localpath
+
+		# select remove path
+		remotepath, existing = self.select_remote_path()
+		remotepath = remotepath.replace(self.path, '')
+		print "ok, selected remote target: %s" % remotepath
+		l = remotepath.split('/')
+		space = l[1]
+		to = '/'.join(l[2:])
+
+		# run getDocsMetaInfo
+		params = {
+			'method':'getDocsMetaInfo:12.0.0.6211',
+			'url_list':'[http://%s:%s%s/%s/%s]' % (self.host, self.port, self.path, space, to),
+			'listHiddenDocs':'false',
+			'listLinkInfo':'false'
+			}
+		conn = httplib.HTTPConnection(self.host, self.port)
+		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
+		response = conn.getresponse()
+		html = response.read()
+		if "failedUrls" in html:
+			raise Exception("failed to get meta info")
+		lastmod = self.parselastmod(html).split('|')[1]
+		print lastmod
 
 if __name__ == "__main__":
 	h = Handler()
