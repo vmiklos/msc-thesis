@@ -15,6 +15,8 @@ class Handler:
 		self.user = 'admin'
 		self.password = 'alfresco'
 		self.action = "open"
+		self.openedurl = None
+		self.openedfile = None
 
 		self.url = self.ask('url', self.url)
 		self.user = self.ask('user', self.user)
@@ -35,14 +37,19 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: open, saveas, exit"
+			print "possible actions: open, save, saveas, quit"
 			self.action = self.ask('action', self.action)
 
 			if self.action == "open":
 				self.handle_open()
+			elif self.action == "save":
+				if self.openedurl:
+					self.handle_saveas(self.openedfile, self.openedurl)
+				else:
+					print "no opened file!"
 			elif self.action == "saveas":
 				self.handle_saveas()
-			elif self.action in ("exit", "q"):
+			elif self.action in ("quit", "q"):
 				break
 
 	def ask(self, k, v):
@@ -122,6 +129,8 @@ class Handler:
 		sock.write(response.read())
 		sock.close()
 		print "downloaded to %s" % localpath
+		self.openedfile = localpath
+		self.openedurl = path.replace(self.path, '')
 
 	def parselastmod(self, page):
 		class LastmodParser(SGMLParser):
@@ -141,7 +150,7 @@ class Handler:
 		parser.close()
 		return parser.lastmod
 
-	def handle_saveas(self):
+	def handle_saveas(self, fro=None, remotepath=None):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
 		headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
@@ -149,20 +158,24 @@ class Handler:
 		print "selecting local source"
 		localpath = os.getcwd() + "/"
 
-		# select local path
-		names = glob.glob("*")
-		print "available items:"
-		for i in names:
-			if os.path.isdir(i):
-				continue
-			print "%s\tfile" % (i.split('/')[-1])
-		item = self.ask('item', names[0].split('/')[-1])
-		fro = localpath + item
-		print "ok, selected local source: %s" % localpath
+		if not fro:
+			# select local path
+			names = glob.glob("*")
+			print "available items:"
+			for i in names:
+				if os.path.isdir(i):
+					continue
+				print "%s\tfile" % (i.split('/')[-1])
+			item = self.ask('item', names[0].split('/')[-1])
+			fro = localpath + item
+		print "ok, selected local source: %s" % fro
 
-		# select remove path
-		remotepath, existing = self.select_remote_path()
-		remotepath = remotepath.replace(self.path, '')
+		if not remotepath:
+			# select remove path
+			remotepath, existing = self.select_remote_path()
+			remotepath = remotepath.replace(self.path, '')
+		else:
+			existing = True
 		l = remotepath.split('/')
 		space = l[1]
 		to = '/'.join(l[2:])
