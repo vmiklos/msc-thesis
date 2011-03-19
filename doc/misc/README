@@ -1369,3 +1369,154 @@ from the ULX machine where I already had OPAL set up.
 
 Next time I want to continue with proper open/close (checkout / uncheckout) and
 then Space creation, file save.
+
+=== 2011-03-11
+
+I'm collecting the features OPAL provides, that can server as a base on what to
+sniff with Wireshark regarding the sharepoint protocol:
+
+- Connection (login) [done]
+- Open [done]
+- Save
+- Save as
+- Properties (created/creator, modified/modifier, title, name) - get; also set for title
+- Versions (version, name, creator, date)
+
+Save in sharepoint (20110311-save.dump):
+
+- flow #4:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll
+method=getDocsMetaInfo%3a12%2e0%2e0%2e6211&url%5flist=%5bdocumentLibrary%2flocal%2edoc%5d&listHiddenDocs=false&listLinkInfo=false
+----
+
+part of the result is:
+
+----
+<li>vti_timelastwritten
+<li>TR|11 Mar 2011 16:39:35 +0000
+----
+
+- flow #6:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll HTTP/1.1
+method=put+document%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&document=%5bdocument%5fname%3ddocumentLibrary%2flocal%2edoc%3bmeta%5finfo%3d%5bvti%5ftimelastmodified%3bTW%7c11+Mar+2011+16%3a39%3a35+%2d0000%5d%5d&put%5foption=edit&comment=&keep%5fchecked%5fout=false
+<binary doc here>
+----
+
+Save as - saved `SPP/local.doc` as `SPP/local2.doc` (20110311-saveas.dump):
+
+- flow #14:
+
+----
+GET /alfresco/SPP/_vti_bin/owssvr.dll?location=documentLibrary&dialogview=FileSave&FileDialogFilterValue=*.doc; HTTP/1.1
+----
+
+- flow #16:
+
+----
+POST /_vti_bin/shtml.dll/_vti_rpc
+method=url+to+web+url%3a12%2e0%2e0%2e6211&url=%2falfresco%2fSPP%2fdocumentLibrary%2flocal3%2edoc&flags=0
+----
+
+- flow #17:
+
+----
+POST /_vti_bin/webs.asmx HTTP/1.1
+<lots of soap bloat here>
+----
+
+- flow #18:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll HTTP/1.1
+method=getDocsMetaInfo%3a12%2e0%2e0%2e6211&url%5flist=%5bdocumentLibrary%2flocal3%2edoc%5d&listHiddenDocs=false&listLinkInfo=false
+----
+
+The response to this is a list of failed URLs - ie. local2.doc does not exist yet.
+
+- flow #20:
+
+----
+OPTIONS / HTTP/1.1
+
+HTTP/1.1 200 OK
+Allow: GET, POST, OPTIONS, HEAD, MKCOL, PUT, PROPFIND, PROPPATCH, DELETE, MOVE, COPY, GETLIB, LOCK, UNLOCK
+
+OPTIONS /alfresco/SPP/documentLibrary/local3.doc HTTP/1.1
+
+HTTP/1.1 200 OK
+Allow: GET, POST, OPTIONS, HEAD, MKCOL, PUT, PROPFIND, PROPPATCH, DELETE, MOVE, COPY, GETLIB, LOCK, UNLOCK
+DocumentManagementServer: Properties Schema;Source Control;Version History;
+
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll HTTP/1.1
+method=getDocsMetaInfo%3a12%2e0%2e0%2e6211&url%5flist=%5bhttp%3a%2f%2f192%2e168%2e152%2e1%3a7070%2falfresco%2fSPP%2fdocumentLibrary%5d&listHiddenDocs=false&listLinkInfo=false
+...
+----
+
+- flow #25:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll HTTP/1.1
+method=put+document%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&document=%5bdocument%5fname%3ddocumentLibrary%2flocal3%2edoc%3bmeta%5finfo%3d%5b%5d%5d&put%5foption=edit&comment=&keep%5fchecked%5fout=false
+<contents of local3.doc comes here>
+----
+
+In short, it seems save as is the same as save; `put document` handles both.
+
+Version history (20110311-versions.dump):
+
+- flow #13:
+
+----
+POST /alfresco/SPP/_vti_bin/versions.asmx HTTP/1.1
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<GetVersions xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<fileName>documentLibrary/local.doc</fileName>
+</GetVersions>
+</soap:Body>
+</soap:Envelope>
+
+HTTP/1.1 200 OK
+MicrosoftSharePointTeamServices: 14.00.0.000
+Cache-Control: no-cache
+Content-Type: application/x-vermeer-rpc
+Connection: close
+Server: Jetty(6.1.14)
+
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <GetVersionsResponse xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+      <GetVersionsResult>
+        <results>
+          <list id=""/>
+          <versioning enabled="1"/>
+          <settings url="http://192.168.152.1:7070/alfresco/SPP/documentDetails.vti?doc=workspace://SpacesStore/4a40175f-a970-4761-8140-eeaffa3c315d"/>
+          <result version="@2.1" url="http://192.168.152.1:7070/alfresco/SPP/documentLibrary/local.doc" created="3/11/2011 5:40 PM" createdBy="admin" size="22016" comments=""/>
+          <result version="1.0" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/8376fb02-de19-457f-8911-5d9fa5a54f36/local.doc" created="2/27/2011 8:07 PM" createdBy="admin" size="22016" comments=""/>
+          <result version="1.1" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/32e2c176-94b3-40b0-9b66-052b72a1290b/local.doc" created="2/27/2011 8:08 PM" createdBy="admin" size="26112" comments=""/>
+          <result version="1.2" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/10289069-1d73-44ca-9d5d-412b3490c06c/local.doc" created="2/27/2011 9:00 PM" createdBy="admin" size="22016" comments=""/>
+          <result version="1.3" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/34c60cb2-1115-48d9-9ed4-e832637cd075/local.doc" created="2/27/2011 9:02 PM" createdBy="admin" size="22016" comments=""/>
+          <result version="1.4" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/64adf5da-a95e-41da-ae24-02704eba6dd5/local.doc" created="2/27/2011 9:02 PM" createdBy="admin" size="22016" comments=""/>
+          <result version="2.0" url="http://192.168.152.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/b766c852-b8ae-4afa-8ae3-faeaed2df7b2/local.doc" created="2/27/2011 9:06 PM" createdBy="admin" size="22016" comments="5th line"/>
+        </results>
+      </GetVersionsResult>
+    </GetVersionsResponse>
+  </s:Body>
+</s:Envelope>
+----
+
+(XML tidy by me.)
+
+So this one is SOAP - but at least a single request. Also note that simple save
+is just 1.2 -> 1.2, but when a comment is entered there is a major bump (1.4 ->
+2.0). I need to try out if this is just about the comment parameter (see above)
+on save, or something more complex is needed as well.
+
+For now - that's it. I'll continue tomorrow with implementing save
+(with/without comments) and version listing in the prototype.
