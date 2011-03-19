@@ -3,6 +3,8 @@ import base64
 import urlparse
 import sys
 from sgmllib import SGMLParser
+import glob
+import os
 
 class Handler:
 	def __init__(self):
@@ -11,7 +13,6 @@ class Handler:
 		self.user = 'admin'
 		self.password = 'alfresco'
 		self.action = "open"
-		self.openpath = None
 
 		self.url = self.ask('url', self.url)
 		self.user = self.ask('user', self.user)
@@ -32,13 +33,13 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: open, save, exit"
+			print "possible actions: open, saveas, exit"
 			self.action = self.ask('action', self.action)
 
 			if self.action == "open":
 				self.handle_open()
-			elif self.action == "save":
-				self.handle_save()
+			elif self.action == "saveas":
+				self.handle_saveas()
 			elif self.action in ("exit", "q"):
 				break
 
@@ -100,8 +101,6 @@ class Handler:
 			if itemlist[itemurl] == "file":
 				break
 		print "ok, selected %s" % path
-		# so that we can do a simple save later
-		self.openpath = path
 
 		conn = httplib.HTTPConnection(self.host, self.port)
 		conn.request("GET", path, headers = self.headers)
@@ -113,16 +112,22 @@ class Handler:
 		sock = open(localpath, "w")
 		sock.write(response.read())
 		sock.close()
-		print "saved to %s" % localpath
+		print "downloaded to %s" % localpath
 
-	def handle_save(self):
-		if not self.openpath:
-			print "have to open first!"
-			return
-		path = self.openpath
+	def handle_saveas(self):
+		print "selecting local source"
+		localpath = os.getcwd() + "/"
 
-		localpath = path.split('/')[-1]
-		print "uploading '%s' to '%s'" % (localpath, path)
+		# select local path
+		names = glob.glob("*")
+		print "available items:"
+		for i in names:
+			if os.path.isdir(i):
+				continue
+			print "%s\tfile" % (i.split('/')[-1])
+		item = self.ask('item', names[0].split('/')[-1])
+		localpath += item
+		print "ok, selected local source: %s" % (localpath)
 
 if __name__ == "__main__":
 	h = Handler()
