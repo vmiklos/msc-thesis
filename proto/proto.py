@@ -39,6 +39,41 @@ def parsehtml(page):
 	parser.close
 	return parser.items
 
+def handle_open(path):
+	# list folders
+	while True:
+		conn = httplib.HTTPConnection(host, port)
+		conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
+		response = conn.getresponse()
+		if response.status != 200:
+			raise Exception("failed to read dir '%s/'" % path)
+		# extract the list of folders from the html response
+		html = response.read()
+		itemlist = parsehtml(html)
+		print "available items:"
+		names = sorted(itemlist.keys())
+		for n in names:
+			t = itemlist[n]
+			print "%s\t%s" % (n.split('/')[-1], t)
+		item = ask('item', names[0].split('/')[-1])
+		itemurl = "/".join(names[0].split('/')[:-1]) + "/" + item
+		path += "/" + item
+		if itemlist[itemurl] == "file":
+			break
+	print "ok, selected %s" % path
+
+	conn = httplib.HTTPConnection(host, port)
+	conn.request("GET", path, headers = headers)
+	response = conn.getresponse()
+	if response.status != 200:
+		raise Exception("failed to read file '%s'" % path)
+
+	localpath = path.split('/')[-1]
+	sock = open(localpath, "w")
+	sock.write(response.read())
+	sock.close()
+	print "saved to %s" % localpath
+
 # defaults
 url = "http://127.0.0.1:7070/alfresco"
 user = 'admin'
@@ -61,36 +96,10 @@ if response.status != 200:
 	raise Exception("failed to log in")
 print "ok, logged in"
 
-# list folders
-while True:
-	conn = httplib.HTTPConnection(host, port)
-	conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = headers)
-	response = conn.getresponse()
-	if response.status != 200:
-		raise Exception("failed to read dir '%s/'" % path)
-	# extract the list of folders from the html response
-	html = response.read()
-	itemlist = parsehtml(html)
-	print "available items:"
-	names = sorted(itemlist.keys())
-	for n in names:
-		t = itemlist[n]
-		print "%s\t%s" % (n.split('/')[-1], t)
-	item = ask('item', names[0].split('/')[-1])
-	itemurl = "/".join(names[0].split('/')[:-1]) + "/" + item
-	path += "/" + item
-	if itemlist[itemurl] == "file":
-		break
-print "ok, selected %s" % path
+action = "open"
 
-conn = httplib.HTTPConnection(host, port)
-conn.request("GET", path, headers = headers)
-response = conn.getresponse()
-if response.status != 200:
-	raise Exception("failed to read file '%s'" % path)
+print "possible actions: open, save"
+action = ask('action', action)
 
-localpath = path.split('/')[-1]
-sock = open(localpath, "w")
-sock.write(response.read())
-sock.close()
-print "saved to %s" % localpath
+if action == "open":
+	handle_open(path)
