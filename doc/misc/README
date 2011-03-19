@@ -1760,3 +1760,15 @@ Authorization: Basic YWRtaW46YWxmcmVzY28=
 
 To sum up, now it should be easy to implement check in / check out in the
 prototype, but I'm not doing it right now as it gets really late.
+
+== 6th week
+
+=== 2011-03-16
+
+Here is a thread from the LibreOffice user mailing list, where someone is
+interested in the extension I'm about to create:
+
+http://nabble.documentfoundation.org/Sharepoint-td2676422.html
+
+Discussed the one-page diploma description with Akos, sent mail to ask a
+virtual machine at MIT.
