@@ -1521,7 +1521,7 @@ on save, or something more complex is needed as well.
 For now - that's it. I'll continue tomorrow with implementing save
 (with/without comments) and version listing in the prototype.
 
-=== 2011-03-11
+=== 2011-03-12
 
 I started implementing 'save' in the prototype, though it took some time - at
 one place in the http request header I missed up the CRLF (`\n` vs `\r\n`) and
