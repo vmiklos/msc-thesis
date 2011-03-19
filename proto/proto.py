@@ -39,7 +39,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: open, save, saveas, quit"
+			print "possible actions: open, save, saveas, list-versions, quit"
 			self.action = self.ask('action', self.action)
 
 			if self.action == "open":
@@ -53,6 +53,8 @@ class Handler:
 				self.handle_saveas()
 			elif self.action in ("quit", "q"):
 				break
+			elif self.action in ("list-versions", "l"):
+				self.handle_list_versions()
 
 	def ask(self, k, v):
 		line = None
@@ -151,6 +153,57 @@ class Handler:
 		parser.feed(page)
 		parser.close()
 		return parser.lastmod
+
+	def handle_list_versions(self):
+		class Version:
+			def __init__(self, version, date, author, size, comment):
+				self.version = version.replace('@', '')
+				self.date = date
+				self.author = author
+				self.size = size
+				self.comment = comment
+			# TODO: sort
+
+		headers = self.headers.copy()
+		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/GetVersions'
+
+		# select remove path
+		remotepath, existing = self.select_remote_path()
+		remotepath = remotepath.replace(self.path, '')
+
+		if not existing:
+			raise Exception("can list of versions of existing files only")
+
+		l = remotepath.split('/')
+		space = l[1]
+		to = '/'.join(l[2:])
+
+		conn = httplib.HTTPConnection(self.host, self.port)
+		soapheaders = self.headers.copy()
+		soapbody = """<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<GetVersions xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<fileName>%s</fileName>
+</GetVersions>
+</soap:Body>
+</soap:Envelope>""" % to
+		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, headers)
+		response = conn.getresponse()
+		xml = minidom.parseString(response.read())
+		#if xml.getElementsByTagName('CheckOutFileResult')[0].firstChild.toxml() != 'true':
+		#	raise Exception("failed to check out document")
+		versions = []
+		for i in xml.getElementsByTagName('result'):
+			versions.append(Version(i.getAttribute('version'),
+				i.getAttribute('created'),
+				i.getAttribute('createdBy'),
+				i.getAttribute('size'),
+				i.getAttribute('comments')))
+		#versions.sort()
+		print "No.\tModified\tModified By\tSize\tComments"
+		for i in versions:
+			print "\t".join([i.version, i.date, i.author, i.size, i.comment])
 
 	def handle_saveas(self, fro=None, remotepath=None):
 		headers = self.headers.copy()
