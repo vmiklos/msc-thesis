@@ -162,7 +162,8 @@ class Handler:
 				self.author = author
 				self.size = size
 				self.comment = comment
-			# TODO: sort
+			def __lt__(self, other):
+				return self.version < other.version
 
 		headers = self.headers.copy()
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/GetVersions'
@@ -191,8 +192,6 @@ class Handler:
 		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, headers)
 		response = conn.getresponse()
 		xml = minidom.parseString(response.read())
-		#if xml.getElementsByTagName('CheckOutFileResult')[0].firstChild.toxml() != 'true':
-		#	raise Exception("failed to check out document")
 		versions = []
 		for i in xml.getElementsByTagName('result'):
 			versions.append(Version(i.getAttribute('version'),
@@ -200,7 +199,7 @@ class Handler:
 				i.getAttribute('createdBy'),
 				i.getAttribute('size'),
 				i.getAttribute('comments')))
-		#versions.sort()
+		versions.sort(reverse=True)
 		print "No.\tModified\tModified By\tSize\tComments"
 		for i in versions:
 			print "\t".join([i.version, i.date, i.author, i.size, i.comment])
