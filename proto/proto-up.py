@@ -47,7 +47,7 @@ response = conn.getresponse()
 html = response.read()
 if "failedUrls" in html:
 	raise Exception("failed to get meta info")
-lastmod = parsehtml(response.read()).split('|')[1]
+lastmod = parsehtml(html).split('|')[1]
 
 sock = open('local.doc')
 buf = sock.read()
