@@ -39,7 +39,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: open|o, open-older|oo, save|s, save-as|sa, list-versions|lv, quit|q"
+			print "possible actions: open|o, open-older|oo, save|s, save-as|sa, list-versions|lv, restore-version|rv, quit|q"
 			self.action = self.ask('action', self.action)
 
 			if self.action in ("open", "o"):
@@ -57,6 +57,8 @@ class Handler:
 				self.handle_list_versions()
 			elif self.action in ("open-older", "oo"):
 				self.handle_open_older()
+			elif self.action in ("restore-version", "rv"):
+				self.handle_restore_version()
 
 	def ask(self, k, v):
 		line = None
@@ -226,6 +228,40 @@ class Handler:
 			print "\t".join([i.version, i.date, i.author, i.size, i.comment])
 		return versions
 
+	def handle_restore_version(self):
+		headers = self.headers.copy()
+		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/RestoreVersion'
+
+		# select remove path
+		remotepath, existing = self.select_remote_path()
+		remotepath = remotepath.replace(self.path, '')
+		if not existing:
+			raise Exception("can restore older version of existing files only")
+
+		l = remotepath.split('/')
+		space = l[1]
+		to = '/'.join(l[2:])
+
+		# select version
+		print "The following versions are available:"
+		versions = self.handle_list_versions(remotepath)
+		version = self.ask('version', versions[0].version)
+
+		conn = httplib.HTTPConnection(self.host, self.port)
+		soapheaders = self.headers.copy()
+		soapbody = """<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<RestoreVersion xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<fileName>%s</fileName>
+<fileVersion>%s</fileVersion>
+</RestoreVersion>
+</soap:Body>
+</soap:Envelope>""" % (to, version)
+		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/versions.asmx" % (self.path, space), soapbody, headers)
+		response = conn.getresponse()
+		xml = minidom.parseString(response.read())
+		print len(versions), len(xml.getElementsByTagName("result"))
 	def handle_saveas(self, fro=None, remotepath=None):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
