@@ -156,13 +156,12 @@ class Handler:
 				continue
 			print "%s\tfile" % (i.split('/')[-1])
 		item = self.ask('item', names[0].split('/')[-1])
-		localpath += item
+		fro = localpath + item
 		print "ok, selected local source: %s" % localpath
 
 		# select remove path
 		remotepath, existing = self.select_remote_path()
 		remotepath = remotepath.replace(self.path, '')
-		print "ok, selected remote target: %s" % remotepath
 		l = remotepath.split('/')
 		space = l[1]
 		to = '/'.join(l[2:])
@@ -181,7 +180,27 @@ class Handler:
 		if "failedUrls" in html:
 			raise Exception("failed to get meta info")
 		lastmod = self.parselastmod(html).split('|')[1]
-		print lastmod
+
+		# run 'put document'
+		sock = open(fro)
+		buf = sock.read()
+		sock.close()
+
+		params = {
+			'method': 'put document:12.0.0.6211',
+			'service_name': '%s/%s' % (self.path, space),
+			'document': '[document_name=%s;meta_info=[vti_timelastmodified;TW|%s]]' % (to, lastmod),
+			'put_option': 'edit',
+			'comment': '',
+			'keep_checked_out': 'false'
+			}
+		body = urllib.urlencode(params) + "\n" + buf
+		conn = httplib.HTTPConnection(self.host, self.port)
+		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), body, headers)
+		response = conn.getresponse()
+		if "successfully put document" not in response.read():
+			raise Exception("failed to put document")
+		print "uploaded to %s" % remotepath
 
 if __name__ == "__main__":
 	h = Handler()
