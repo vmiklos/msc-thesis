@@ -29,11 +29,15 @@ headers = {
 	}
 headers['Content-Type'] = 'application/x-vermeer-urlencoded'
 headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
+
 url = "http://127.0.0.1:7070/alfresco"
 fro = "local.doc"
-to = "/alfresco/SPP/documentLibrary/local.doc"
+space = "SPP"
+to = "documentLibrary/local.doc"
+
 pr = urlparse.urlparse(url)
 host, port = pr.netloc.split(':')
+urlpath = pr.path
 conn = httplib.HTTPConnection(host, port)
 conn.request("GET", "/_vti_inf.html", headers = headers)
 response = conn.getresponse()
@@ -44,12 +48,12 @@ print "ok, logged in"
 print "running getDocsMetaInfo..."
 params = {
 		'method':'getDocsMetaInfo:12.0.0.6211',
-		'url_list':'[http://%s:%s%s]' % (host, port, to),
+		'url_list':'[http://%s:%s%s/%s/%s]' % (host, port, urlpath, space, to),
 		'listHiddenDocs':'false',
 		'listLinkInfo':'false'
 	}
 conn = httplib.HTTPConnection(host, port)
-conn.request("POST", "/alfresco/SPP/_vti_bin/_vti_aut/author.dll", urllib.urlencode(params)+"\n", headers)
+conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (urlpath, space), urllib.urlencode(params)+"\n", headers)
 response = conn.getresponse()
 html = response.read()
 if "failedUrls" in html:
@@ -62,8 +66,8 @@ sock.close()
 
 params = {
 	'method': 'put document:12.0.0.6211',
-	'service_name': '/alfresco/SPP',
-	'document': '[document_name=documentLibrary/local.doc;meta_info=[vti_timelastmodified;TW|%s]]' % lastmod,
+	'service_name': '%s/%s' % (urlpath, space),
+	'document': '[document_name=%s;meta_info=[vti_timelastmodified;TW|%s]]' % (to, lastmod),
 	'put_option': 'edit',
 	'comment': '',
 	'keep_checked_out': 'false'
@@ -74,7 +78,7 @@ body = urllib.urlencode(params) + "\n" + buf
 headers['Content-Type'] = 'application/x-vermeer-urlencoded'
 headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
 conn = httplib.HTTPConnection(host, port)
-conn.request("POST", "/alfresco/SPP/_vti_bin/_vti_aut/author.dll", body, headers)
+conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (urlpath, space), body, headers)
 response = conn.getresponse()
 if "successfully put document" not in response.read():
 	raise Exception("failed to put document")
