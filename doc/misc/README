@@ -1779,3 +1779,26 @@ Got reply from MIT: I'll get the virtual machine early next week (they have air
 conditioning problems right now).
 
 Implemented CheckOutFile / CheckInFile in the proto.
+
+=== 2011-03-18
+
+Today's target is to implement listing of versions for opened files.
+
+The user interface in Word has the following columns:
+
+- No. (read: version)
+- Modified (date)
+- Modified By
+- Size
+- Comments
+
+`20110311-versions.dump` already contains a request-reply pair, a few facts I
+noticed in the meantime:
+
+- the list is not sorted
+- the actual version is prefixed with a @
+
+The rest is pretty much just a dump of what is in the XML reply.
+
+As a result I implemented GetVersions in the proto, even with natural sorting
+of versions (after all, that was only two lines of code).
