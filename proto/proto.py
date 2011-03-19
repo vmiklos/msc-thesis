@@ -163,7 +163,8 @@ class Handler:
 				self.size = size
 				self.comment = comment
 			def __lt__(self, other):
-				return self.version < other.version
+				key = lambda x: map(int, x.split('.'))
+				return key(self.version) < key(other.version)
 
 		headers = self.headers.copy()
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/GetVersions'
