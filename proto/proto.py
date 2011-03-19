@@ -39,7 +39,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: open|o, open-older|oo, save|s, save-as|sa, list-versions|lv, restore-version|rv, quit|q"
+			print "possible actions: create-space|cs, open|o, open-older|oo, save|s, save-as|sa, list-versions|lv, restore-version|rv, quit|q"
 			self.action = self.ask('action', self.action)
 
 			if self.action in ("open", "o"):
@@ -59,6 +59,8 @@ class Handler:
 				self.handle_open_older()
 			elif self.action in ("restore-version", "rv"):
 				self.handle_restore_version()
+			elif self.action in ("create-space", "cs"):
+				self.handle_create_space()
 
 	def ask(self, k, v):
 		line = None
@@ -227,6 +229,39 @@ class Handler:
 		for i in versions:
 			print "\t".join([i.version, i.date, i.author, i.size, i.comment])
 		return versions
+
+	def handle_create_space(self):
+		def unescape(s):
+			s = s.replace("&lt;", "<")
+			s = s.replace("&gt;", ">")
+			# this has to be last:
+			s = s.replace("&amp;", "&")
+			return s
+
+		headers = self.headers.copy()
+		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/dws/CreateDws'
+
+		space = self.ask('name', '')
+		conn = httplib.HTTPConnection(self.host, self.port)
+		soapbody = """<?xml version="1.0"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+<s:Body>
+<CreateDws xmlns="http://schemas.microsoft.com/sharepoint/soap/dws/">
+<name/>
+<users/>
+<title>%s</title>
+<documents/>
+</CreateDws>
+</s:Body>
+</s:Envelope>""" % space
+		# no space in the url, we're creating a new one!
+		conn.request("POST", "%s/_vti_bin/dws.asmx" % self.path, soapbody, headers)
+		response = conn.getresponse()
+		xml = minidom.parseString(response.read())
+		inner = unescape(xml.getElementsByTagName('CreateDwsResult')[0].firstChild.toxml())
+		xml = minidom.parseString(inner)
+		url = xml.getElementsByTagName('Url')[0].firstChild.toxml()
+		print 'created space at %s' % url
 
 	def handle_restore_version(self):
 		headers = self.headers.copy()
