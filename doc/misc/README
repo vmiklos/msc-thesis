@@ -1772,3 +1772,10 @@ http://nabble.documentfoundation.org/Sharepoint-td2676422.html
 
 Discussed the one-page diploma description with Akos, sent mail to ask a
 virtual machine at MIT.
+
+=== 2011-03-17
+
+Got reply from MIT: I'll get the virtual machine early next week (they have air
+conditioning problems right now).
+
+Implemented CheckOutFile / CheckInFile in the proto.

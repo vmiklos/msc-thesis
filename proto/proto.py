@@ -8,6 +8,7 @@ from sgmllib import SGMLParser
 import glob
 import os
 import time
+from xml.dom import minidom
 
 class Handler:
 	def __init__(self):
@@ -215,7 +216,9 @@ class Handler:
 </soap:Envelope>""" % (self.host, self.port, self.path, space, to, lastmod)
 			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			response = conn.getresponse()
-			print response.read()
+			xml = minidom.parseString(response.read())
+			if xml.getElementsByTagName('CheckOutFileResult')[0].firstChild.toxml() != 'true':
+				raise Exception("failed to check out document")
 
 		# run 'put document'
 		sock = open(fro)
@@ -251,7 +254,10 @@ class Handler:
 </soap:Envelope>""" % (self.host, self.port, self.path, space, to, cgi.escape(comment))
 			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			response = conn.getresponse()
-			print response.read()
+			xml = minidom.parseString(response.read())
+			if xml.getElementsByTagName('CheckInFileResult')[0].firstChild.toxml() != 'true':
+				raise Exception("failed to check in document")
+
 		print "uploaded to %s" % remotepath
 
 if __name__ == "__main__":
