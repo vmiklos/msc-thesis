@@ -11,6 +11,7 @@ class Handler:
 		self.user = 'admin'
 		self.password = 'alfresco'
 		self.action = "open"
+		self.openpath = None
 
 		self.url = self.ask('url', self.url)
 		self.user = self.ask('user', self.user)
@@ -38,7 +39,7 @@ class Handler:
 				self.handle_open()
 			elif self.action == "save":
 				self.handle_save()
-			elif self.action == "exit":
+			elif self.action in ("exit", "q"):
 				break
 
 	def ask(self, k, v):
@@ -55,7 +56,7 @@ class Handler:
 			line = v
 		return line
 
-	def parsehtml(self, page):
+	def parsefileopen(self, page):
 		class HTMLParser(SGMLParser):
 			def reset(self):
 				SGMLParser.reset(self)
@@ -73,7 +74,7 @@ class Handler:
 		parser = HTMLParser()
 		parser.reset()
 		parser.feed(page)
-		parser.close
+		parser.close()
 		return parser.items
 
 	def handle_open(self):
@@ -87,7 +88,7 @@ class Handler:
 				raise Exception("failed to read dir '%s/'" % path)
 			# extract the list of folders from the html response
 			html = response.read()
-			itemlist = self.parsehtml(html)
+			itemlist = self.parsefileopen(html)
 			print "available items:"
 			names = sorted(itemlist.keys())
 			for n in names:
@@ -99,6 +100,8 @@ class Handler:
 			if itemlist[itemurl] == "file":
 				break
 		print "ok, selected %s" % path
+		# so that we can do a simple save later
+		self.openpath = path
 
 		conn = httplib.HTTPConnection(self.host, self.port)
 		conn.request("GET", path, headers = self.headers)
@@ -113,7 +116,13 @@ class Handler:
 		print "saved to %s" % localpath
 
 	def handle_save(self):
-		pass
+		if not self.openpath:
+			print "have to open first!"
+			return
+		path = self.openpath
+
+		localpath = path.split('/')[-1]
+		print "uploading '%s' to '%s'" % (localpath, path)
 
 if __name__ == "__main__":
 	h = Handler()
