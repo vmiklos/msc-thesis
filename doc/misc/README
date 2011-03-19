@@ -1520,3 +1520,51 @@ on save, or something more complex is needed as well.
 
 For now - that's it. I'll continue tomorrow with implementing save
 (with/without comments) and version listing in the prototype.
+
+=== 2011-03-11
+
+I started implementing 'save' in the prototype, though it took some time - at
+one place in the http request header I missed up the CRLF (`\n` vs `\r\n`) and
+it took hours to debug it.
+
+So what the prototype does at the moment is calling the 'put document' method
+for an existing file, and I get 'A file already exsits.' as a response. I need
+to look at the dump again, I guess the problem is that right now I just try to
+do a 'put document' while it's required to check out a document before checking
+it in.
+
+The sequence without ignoring any detail (20110312-opensave.dump):
+
+- open service (flow #4)
+- getDocsMetaInfo (flow #6)
+- HEAD /alfresco/SPP/documentLibrary/local.doc (flow #7)
+- checkout+document (#8)
+- getDocsMetaInfo (#10)
+- uncheckout+document (#11)
+- get+document (#12)
+- HEAD /alfresco/SPP/documentLibrary/local.doc (#13)
+- getDocsMetaInfo (#15)
+- put+document (#16)
+- HEAD /alfresco/SPP/documentLibrary/local.doc (#17)
+
+One more pitfall: if there is no `\n` at the end of method= lines, alfresco
+gives a `java.lang.OutOfMemoryError` after a timeout.
+
+Given that I had no idea what did I do wrong, I looked up the source of the
+Alfresco VTI module (which implements the sharepoint support). It's here:
+
+http://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/HEAD/root/modules/sharepoint/amp/source/java/org/alfresco/module/vti
+
+From this it's easy, AlfrescoMethodHandler::putDocument() contains the code,
+and the modification date should not be the current time, but the one
+previously returned by getDocsMetaInfo().
+
+And that's it, uploading a file (overwriting an existing one on the server)
+works!
+
+Then I implemented 'save as' for non-existing files as well, that's just about
+generating the timestamp of the file using the system clock; and normal 'save'
+as well.
+
+That's all for today (this time I spent the whole day on this), tomorrow I want
+to have a look at how to attach comment to a save + how to list versions.
