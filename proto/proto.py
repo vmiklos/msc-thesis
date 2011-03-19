@@ -2,6 +2,7 @@ import httplib
 import base64
 import urlparse
 import urllib
+import cgi
 import sys
 from sgmllib import SGMLParser
 import glob
@@ -198,6 +199,24 @@ class Handler:
 		else:
 			lastmod = time.strftime("%d %b %Y %H:%M:%S -0000")
 
+		comment = self.ask('comment', None)
+
+		if comment:
+			# check out the document
+			conn = httplib.HTTPConnection(self.host, self.port)
+			soapheaders = self.headers.copy()
+			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckOutFile'
+			soapbody = """<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<CheckOutFile xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<pageUrl>http://%s:%s%s/%s/%s</pageUrl><checkoutToLocal>true</checkoutToLocal><lastmodified>%s</lastmodified></CheckOutFile>
+</soap:Body>
+</soap:Envelope>""" % (self.host, self.port, self.path, space, to, lastmod)
+			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
+			response = conn.getresponse()
+			print response.read()
+
 		# run 'put document'
 		sock = open(fro)
 		buf = sock.read()
@@ -217,6 +236,22 @@ class Handler:
 		response = conn.getresponse()
 		if "successfully put document" not in response.read():
 			raise Exception("failed to put document")
+
+		if comment:
+			# check in the document
+			conn = httplib.HTTPConnection(self.host, self.port)
+			soapheaders = self.headers.copy()
+			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckInFile'
+			soapbody = """<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<CheckInFile xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<pageUrl>http://%s:%s%s/%s/%s</pageUrl><comment>%s</comment><CheckinType>0</CheckinType></CheckInFile>
+</soap:Body>
+</soap:Envelope>""" % (self.host, self.port, self.path, space, to, cgi.escape(comment))
+			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
+			response = conn.getresponse()
+			print response.read()
 		print "uploaded to %s" % remotepath
 
 if __name__ == "__main__":
