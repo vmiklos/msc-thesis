@@ -1568,3 +1568,195 @@ as well.
 
 That's all for today (this time I spent the whole day on this), tomorrow I want
 to have a look at how to attach comment to a save + how to list versions.
+
+=== 2011-03-13
+
+Commented versions are created by a checkin+checkout pair, not using save. In
+alfresco terminology, we're creating a new (major) version, in this case.
+
+The tasks in detail:
+
+- check out
+- discard check out
+- check in
+
+In the first session I just did a check out + check in with comment (20110313-savecomment.dump):
+
+- flow #10:
+
+----
+POST /alfresco/SPP/_vti_bin/lists.asmx HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/CheckOutFile
+X-Office-Version: 12.0.6213
+User-Agent: Microsoft Office/12.0 (Windows NT 5.1; Microsoft Office Word 12.0.6213; Pro)
+Host: 192.168.152.1:7070
+Content-Length: 413
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=mpwdofjtdigl
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<CheckOutFile xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<pageUrl>http://192.168.152.1:7070/alfresco/SPP/documentLibrary/local.doc</pageUrl><checkoutToLocal>true</checkoutToLocal><lastmodified>13 Mar 2011 19:34:17 +0000</lastmodified></CheckOutFile>
+</soap:Body>
+</soap:Envelope>
+
+HTTP/1.1 200 OK
+MicrosoftSharePointTeamServices: 14.00.0.000
+Cache-Control: no-cache
+Content-Type: text/xml
+Connection: close
+Server: Jetty(6.1.14)
+
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><CheckOutFileResponse xmlns="http://schemas.microsoft.com/sharepoint/soap/"><CheckOutFileResult>true</CheckOutFileResult></CheckOutFileResponse></s:Body></s:Envelope>
+----
+
+- flow #26:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll HTTP/1.1
+method=put+document%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&document=%5bdocument%5fname%3ddocumentLibrary%2flocal%2edoc%3bmeta%5finfo%3d%5bvti%5ftimelastmodified%3bTW%7c13+Mar+2011+19%3a54%3a11+%2d0000%5d%5d&put%5foption=edit&comment=&keep%5fchecked%5fout=false
+----
+
+- flow #28:
+
+----
+POST /alfresco/SPP/_vti_bin/lists.asmx HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/CheckInFile
+X-Office-Version: 12.0.6213
+User-Agent: Microsoft Office/12.0 (Windows NT 5.1; Microsoft Office Word 12.0.6213; Pro)
+Host: 192.168.152.1:7070
+Content-Length: 367
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=mpwdofjtdigl
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<CheckInFile xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<pageUrl>http://192.168.152.1:7070/alfresco/SPP/documentLibrary/local.doc</pageUrl><comment>alma</comment><CheckinType>0</CheckinType></CheckInFile>
+</soap:Body>
+</soap:Envelope>
+
+HTTP/1.1 200 OK
+MicrosoftSharePointTeamServices: 14.00.0.000
+Cache-Control: no-cache
+Content-Type: text/xml
+Connection: close
+Server: Jetty(6.1.14)
+
+<?xml version="1.0" encoding="UTF-8"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/"><s:Body><CheckInFileResponse xmlns="http://schemas.microsoft.com/sharepoint/soap/"><CheckInFileResult>true</CheckInFileResult></CheckInFileResponse></s:Body></s:Envelope>
+----
+
+Now the problem is that when I try to send the first message, I get:
+
+----
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <s:Fault>
+      <faultcode>s:Server</faultcode>
+      <faultstring>class java.lang.NullPointerException</faultstring>
+      <detail>
+        <errorstring xmlns="http://schemas.microsoft.com/sharepoint/soap/">Unknown error</errorstring>
+      </detail>
+    </s:Fault>
+  </s:Body>
+</s:Envelope>
+----
+
+Now I'm digging in the config files on what debug logging to enable, as by
+default the stackstrace is not logged.
+
+So far what I've found:
+
+- tomcat/webapps/alfresco/WEB-INF/classes/log4j.properties controls the debug level of modules
+- http://forums.alfresco.com/en/viewtopic.php?t=8834 sounds helpful, but does not change the log output here
+
+After a bit more trying, it turned out that the problem is: the IP address of
+the server from the VM and in the host machine is of course different (from the
+VM: 192.168.152.1, from host: 127.0.0.1) and I should properly update the IP
+address in the message + update the 'Content-Length:' header.
+
+(Sigh, to figure this out, it took about 3 hours...)
+
+The new output is like this:
+
+----
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+  <s:Body>
+    <CheckOutFileResponse xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+      <CheckOutFileResult>false</CheckOutFileResult>
+    </CheckOutFileResponse>
+  </s:Body>
+</s:Envelope>
+----
+
+Now setting 'log4j.logger.org.alfresco.module.vti=debug' in log4j.properties, I
+finally get a usable error:
+
+----
+00:39:27,708 DEBUG [org.alfresco.module.vti.handler.alfresco.v3.AlfrescoCheckOutCheckInServiceHandler] Can't perform 'check out' operation for file '/SPP/documentLibrary/local.doc'
+org.alfresco.service.cmr.coci.CheckOutCheckInServiceException: 02140000 This node is already checked out.
+----
+
+and yes, I forgot to check in the test doc in the VM...
+
+To sum up, here are two soap messages I can send to the server to check out / check it (with message) a file:
+
+----
+POST /alfresco/SPP/_vti_bin/lists.asmx HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/CheckOutFile
+X-Office-Version: 12.0.6213
+User-Agent: Microsoft Office/12.0 (Windows NT 5.1; Microsoft Office Word 12.0.6213; Pro)
+Host: 127.0.0.1:7070
+Content-Length: 409
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=mpwdofjtdigl
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<CheckOutFile xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<pageUrl>http://127.0.0.1:7070/alfresco/SPP/documentLibrary/local.doc</pageUrl><checkoutToLocal>true</checkoutToLocal><lastmodified>13 Mar 2011 22:21:23 +0000</lastmodified></CheckOutFile>
+</soap:Body>
+</soap:Envelope>
+----
+
+and
+
+----
+POST /alfresco/SPP/_vti_bin/lists.asmx HTTP/1.1
+Content-Type: text/xml; charset=utf-8
+SOAPAction: http://schemas.microsoft.com/sharepoint/soap/CheckInFile
+X-Office-Version: 12.0.6213
+User-Agent: Microsoft Office/12.0 (Windows NT 5.1; Microsoft Office Word 12.0.6213; Pro)
+Host: 127.0.0.1:7070
+Content-Length: 368
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: JSESSIONID=mpwdofjtdigl
+Authorization: Basic YWRtaW46YWxmcmVzY28=
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<CheckInFile xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<pageUrl>http://127.0.0.1:7070/alfresco/SPP/documentLibrary/local.doc</pageUrl><comment>alma0048</comment><CheckinType>0</CheckinType></CheckInFile>
+</soap:Body>
+</soap:Envelope>
+----
+
+To sum up, now it should be easy to implement check in / check out in the
+prototype, but I'm not doing it right now as it gets really late.
