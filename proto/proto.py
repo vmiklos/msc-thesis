@@ -39,21 +39,21 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: open, open-older, save, saveas, list-versions, quit"
+			print "possible actions: open|o, open-older|oo, save|s, save-as|sa, list-versions|lv, quit|q"
 			self.action = self.ask('action', self.action)
 
-			if self.action == "open":
+			if self.action in ("open", "o"):
 				self.handle_open()
-			elif self.action == "save":
+			elif self.action in ("save", "s"):
 				if self.openedurl:
 					self.handle_saveas(self.openedfile, self.openedurl)
 				else:
 					print "no opened file!"
-			elif self.action == "saveas":
+			elif self.action in ("save-as", "sa"):
 				self.handle_saveas()
 			elif self.action in ("quit", "q"):
 				break
-			elif self.action in ("list-versions", "l"):
+			elif self.action in ("list-versions", "lv"):
 				self.handle_list_versions()
 			elif self.action in ("open-older", "oo"):
 				self.handle_open_older()
