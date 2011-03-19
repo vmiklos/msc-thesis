@@ -261,7 +261,8 @@ class Handler:
 		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/versions.asmx" % (self.path, space), soapbody, headers)
 		response = conn.getresponse()
 		xml = minidom.parseString(response.read())
-		print len(versions), len(xml.getElementsByTagName("result"))
+		if len(versions) + 1 != len(xml.getElementsByTagName("result")):
+			raise Exception("failed to create a new version")
 	def handle_saveas(self, fro=None, remotepath=None):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
