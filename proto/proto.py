@@ -51,7 +51,7 @@ password = ask('password', password)
 pr = urlparse.urlparse(url)
 host, port = pr.netloc.split(':')
 path = pr.path
-headers = {'Authorization' : 'Basic ' + base64.encodestring('admin:alfresco')}
+headers = {'Authorization' : 'Basic ' + base64.encodestring('%s:%s' % (user, password))}
 
 # log in
 conn = httplib.HTTPConnection(host, port)
