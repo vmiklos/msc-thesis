@@ -1956,3 +1956,86 @@ To sum up:
 
 Next, I want to continue with deleting files, so far what I checked is that
 alfresco supports it.
+
+== 7th week
+
+=== 2011-03-21
+
+In ULX. Creating a table about features (what is supported, what is not, etc).
+
+Checking in Wireshark how deleting documents from a space works (20110321-docdel.dump):
+
+- flow #3:
+
+----
+POST /alfresco/SPP/_vti_bin/_vti_aut/author.dll HTTP/1.1
+
+method=remove+documents%3a12%2e0%2e0%2e6211&service%5fname=%2falfresco%2fSPP&url%5flist=%5bdocumentLibrary%2flocal3%2edoc%5d
+----
+
+response:
+
+----
+<html><head><title>vermeer RPC packet</title></head>
+<body>
+<p>method=remove documents:14.0.0.4730
+<p>message=successfully removed documents
+...
+----
+
+so it's a 'remove documents' method in that weird RPC syntax. I implemented
+this feature in the proto.
+
+At this point I think the proto has enough features that I could start
+implementing the extension. OTOH sadly the virtual machine providing sharepoint
+is not yet ready, and it would be nice to be sure the proto is working with
+sharepoint before I start turning the proto to Java code.
+
+In the meantime I'm setting up Eclipse + OOEclipse + Alfresco SDK on my
+machine, which has been partly done already on the ULX box.
+
+The tutorial which one I already tried:
+
+http://wiki.services.openoffice.org/wiki/JavaEclipseTuto
+
+Given that I had the best results with 3.5 (Galileo) and stable OOEclipse, I
+try these now.
+
+Wasted a lot of time to find a working galileo mirror, it seems most of them
+don't contain anything older than helios (this time I needed a 32bit linux
+binary). This one is fast:
+http://cloud.eclipsesource.com/SR2/eclipse-SDK-3.5.2-linux-gtk.tar.gz
+
+As described on 2010-02-28, tweaking PATH is necessary before starting Eclipse:
+
+----
+export PATH=$HOME/git/libreoffice/ooo-build-3-2-1/usr/lib/openoffice.org/program:$PATH
+----
+
+(that's where I have the 3.2 version installed)
+
+There is that weird OOo Basic language, and it seems I can't really avoid
+learning a bit of it, as the loader of the OPAL contains some Basic code as
+well. So here is a guide:
+
+http://openoffice.ozlady.com/2010/09/openoffice-org-3-2-guide-to-programming-in-ooo-basic-how-to-guide/
+
+Even if it's 172 pages long, it does not explain how to run a hello world macro...
+
+So given the code of a Basic function, it can be added to a document using:
+
+Macros -> Organise macros -> OpenOffice.org basic, then there edit Main, paste
+the code to the end of the edit window, File -> Save, File -> Close, then
+select Tools -> Macros -> Run macro, and there select My Macros -> Standard ->
+Module1, and there it's possible to select testHelloworld. And finally, for the
+first time, it can call my Java code! :)
+
+Now let's see what is the workflow from hacking to testing working code. It
+seems the best I can do is:
+
+- remove previous version of the extension in OOo, restart it
+- hack hack hack in Eclipse
+- right click on project -> Properties (UNO part already selected), OK (that is necessary as after every export Eclipse forgets the OOo SDK path...)
+- File -> Export (UNO already selected), next, finish. Deploy? Yes. OK to install? OK.
+- Close the extension manager.
+- Tools -> Macros -> Run macro will run the new version of the extension now.
