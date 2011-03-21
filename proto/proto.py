@@ -41,7 +41,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: create-space|cs, open|o, open-older|oo, save|s, save-as|sa, list-versions|lv, restore-version|rv, quit|q"
+			print "possible actions: create-space|cs, open|o, open-older|oo, save|s, save-as|sa, delete|d, list-versions|lv, restore-version|rv, quit|q"
 			self.action = self.ask('action', self.action)
 
 			if self.action in ("open", "o"):
@@ -53,6 +53,8 @@ class Handler:
 					print "no opened file!"
 			elif self.action in ("save-as", "sa"):
 				self.handle_saveas()
+			elif self.action in ("delete", "d"):
+				self.handle_delete()
 			elif self.action in ("quit", "q"):
 				break
 			elif self.action in ("list-versions", "lv"):
@@ -300,6 +302,35 @@ class Handler:
 		xml = minidom.parseString(response.read())
 		if len(versions) + 1 != len(xml.getElementsByTagName("result")):
 			raise Exception("failed to create a new version")
+
+	def handle_delete(self):
+		headers = self.headers.copy()
+		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
+		headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
+
+		# select remote path
+		remotepath, existing = self.select_remote_path()
+		remotepath = remotepath.replace(self.path, '')
+
+		if not existing:
+			raise Exceptin("non-existing document")
+		l = remotepath.split('/')
+		space = l[1]
+		to = '/'.join(l[2:])
+
+		# run getDocsMetaInfo
+		params = {
+			'method':'remove documents:12.0.0.6211',
+			'service_name':'%s/%s' % (self.path, space),
+			'url_list':'[%s]' % to
+			}
+		conn = httplib.HTTPConnection(self.host, self.port)
+		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
+		response = conn.getresponse()
+		html = response.read()
+		if "successfully removed documents" not in html:
+			raise Exception("failed to remove document")
+		print "deleted %s" % remotepath
 
 	def handle_saveas(self, fro=None, remotepath=None):
 		headers = self.headers.copy()
