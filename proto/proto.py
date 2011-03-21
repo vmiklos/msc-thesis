@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import httplib
 import base64
 import urlparse
@@ -298,6 +300,7 @@ class Handler:
 		xml = minidom.parseString(response.read())
 		if len(versions) + 1 != len(xml.getElementsByTagName("result")):
 			raise Exception("failed to create a new version")
+
 	def handle_saveas(self, fro=None, remotepath=None):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
