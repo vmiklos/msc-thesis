@@ -1,0 +1,12 @@
+#ifndef __org_openoffice_helloworld_helloworld_idl__
+#define __org_openoffice_helloworld_helloworld_idl__
+
+#include <org/openoffice/helloworld/XHelloworld.idl>
+module org { module openoffice { module helloworld { 	
+
+	service Helloworld : org::openoffice::helloworld::XHelloworld {
+
+	};
+
+ }; }; };
+#endif

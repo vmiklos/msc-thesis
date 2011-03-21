@@ -1,0 +1,13 @@
+#ifndef __org_openoffice_helloworld_xhelloworld_idl__
+#define __org_openoffice_helloworld_xhelloworld_idl__
+
+module org { module openoffice { module helloworld { 	
+
+	interface XHelloworld {
+		[attribute] string Ladyname;
+		string sayHello([in] boolean isBadBoy);
+
+	};
+
+ }; }; };
+#endif
