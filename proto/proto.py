@@ -117,9 +117,7 @@ class Handler:
 		path = self.path
 		# list folders
 		while True:
-			conn = httplib.HTTPConnection(self.host, self.port)
-			conn.request("GET", "%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = self.headers)
-			response = conn.getresponse()
+			response = self.urlopen("%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = self.headers)
 			if response.status != 200:
 				raise Exception("failed to read dir '%s/'" % path)
 			# extract the list of folders from the html response
@@ -159,9 +157,7 @@ class Handler:
 			path, existing = self.select_remote_path()
 			print "ok, selected %s" % path
 
-		conn = httplib.HTTPConnection(self.host, self.port)
-		conn.request("GET", path, headers = self.headers)
-		response = conn.getresponse()
+		response = self.urlopen(path, headers = self.headers)
 		if response.status != 200:
 			raise Exception("failed to read file '%s'" % path)
 
@@ -219,7 +215,6 @@ class Handler:
 		space = l[1]
 		to = '/'.join(l[2:])
 
-		conn = httplib.HTTPConnection(self.host, self.port)
 		soapheaders = self.headers.copy()
 		soapbody = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -229,8 +224,7 @@ class Handler:
 </GetVersions>
 </soap:Body>
 </soap:Envelope>""" % to
-		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, headers)
-		response = conn.getresponse()
+		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, headers)
 		xml = minidom.parseString(response.read())
 		versions = []
 		for i in xml.getElementsByTagName('result'):
@@ -258,7 +252,6 @@ class Handler:
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/dws/CreateDws'
 
 		space = self.ask('name', '')
-		conn = httplib.HTTPConnection(self.host, self.port)
 		soapbody = """<?xml version="1.0"?>
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
 <s:Body>
@@ -271,8 +264,7 @@ class Handler:
 </s:Body>
 </s:Envelope>""" % space
 		# no space in the url, we're creating a new one!
-		conn.request("POST", "%s/_vti_bin/dws.asmx" % self.path, soapbody, headers)
-		response = conn.getresponse()
+		response = self.urlopen("%s/_vti_bin/dws.asmx" % self.path, soapbody, headers)
 		xml = minidom.parseString(response.read())
 		inner = unescape(xml.getElementsByTagName('CreateDwsResult')[0].firstChild.toxml())
 		xml = minidom.parseString(inner)
@@ -298,7 +290,6 @@ class Handler:
 		versions = self.handle_list_versions(remotepath)
 		version = self.ask('version', versions[0].version)
 
-		conn = httplib.HTTPConnection(self.host, self.port)
 		soapheaders = self.headers.copy()
 		soapbody = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
@@ -309,8 +300,7 @@ class Handler:
 </RestoreVersion>
 </soap:Body>
 </soap:Envelope>""" % (to, version)
-		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/versions.asmx" % (self.path, space), soapbody, headers)
-		response = conn.getresponse()
+		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/versions.asmx" % (self.path, space), soapbody, headers)
 		xml = minidom.parseString(response.read())
 		if len(versions) + 1 != len(xml.getElementsByTagName("result")):
 			raise Exception("failed to create a new version")
@@ -336,9 +326,7 @@ class Handler:
 			'service_name':'%s/%s' % (self.path, space),
 			'url_list':'[%s]' % to
 			}
-		conn = httplib.HTTPConnection(self.host, self.port)
-		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
-		response = conn.getresponse()
+		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
 		html = response.read()
 		if "successfully removed documents" not in html:
 			raise Exception("failed to remove document")
@@ -382,9 +370,7 @@ class Handler:
 				'listHiddenDocs':'false',
 				'listLinkInfo':'false'
 				}
-			conn = httplib.HTTPConnection(self.host, self.port)
-			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
-			response = conn.getresponse()
+			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
 			html = response.read()
 			if "failedUrls" in html:
 				raise Exception("failed to get meta info")
@@ -396,7 +382,6 @@ class Handler:
 
 		if comment:
 			# check out the document
-			conn = httplib.HTTPConnection(self.host, self.port)
 			soapheaders = self.headers.copy()
 			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckOutFile'
 			soapbody = """<?xml version="1.0" encoding="utf-8"?>
@@ -406,8 +391,7 @@ class Handler:
 <pageUrl>http://%s:%s%s/%s/%s</pageUrl><checkoutToLocal>true</checkoutToLocal><lastmodified>%s</lastmodified></CheckOutFile>
 </soap:Body>
 </soap:Envelope>""" % (self.host, self.port, self.path, space, to, lastmod)
-			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
-			response = conn.getresponse()
+			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			xml = minidom.parseString(response.read())
 			if xml.getElementsByTagName('CheckOutFileResult')[0].firstChild.toxml() != 'true':
 				raise Exception("failed to check out document")
@@ -426,15 +410,12 @@ class Handler:
 			'keep_checked_out': 'false'
 			}
 		body = urllib.urlencode(params) + "\n" + buf
-		conn = httplib.HTTPConnection(self.host, self.port)
-		conn.request("POST", "%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), body, headers)
-		response = conn.getresponse()
+		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), body, headers)
 		if "successfully put document" not in response.read():
 			raise Exception("failed to put document")
 
 		if comment:
 			# check in the document
-			conn = httplib.HTTPConnection(self.host, self.port)
 			soapheaders = self.headers.copy()
 			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckInFile'
 			soapbody = """<?xml version="1.0" encoding="utf-8"?>
@@ -444,8 +425,7 @@ class Handler:
 <pageUrl>http://%s:%s%s/%s/%s</pageUrl><comment>%s</comment><CheckinType>0</CheckinType></CheckInFile>
 </soap:Body>
 </soap:Envelope>""" % (self.host, self.port, self.path, space, to, cgi.escape(comment))
-			conn.request("POST", "%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
-			response = conn.getresponse()
+			response = conn.request("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			xml = minidom.parseString(response.read())
 			if xml.getElementsByTagName('CheckInFileResult')[0].firstChild.toxml() != 'true':
 				raise Exception("failed to check in document")
