@@ -2121,3 +2121,111 @@ opened a document with a single http://go.microsoft.com/fwlink?LinkID=96177
 link with them (couldn't they display a messagebox with a clickable URL
 there?). Allright, installing share sharepoint updates, leading to the end of
 the day.
+
+=== 2011-03-27
+
+After installing all updates on the server, MSO can connect to it without
+problems.
+
+Regaring proto, it can create a space after fixing the http header. The next
+problem is that in Alfresco you can directly perform actions on
+/SPP/documentLibrary, while in sharepoint you have to perform action on the
+root dir (/SPP) with a location=documentLibrary parameter. Given that Alfresco
+supports this, I changed this. (Now that I have automatic tests, I can fix
+native sharepoint without breaking Alfresco's sharepoint support.)
+
+Now listing dirs works recursively, the next failing operation is 'put
+document', it errors out with:
+
+----
+Exception: failed to put document: '<html dir="ltr">
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" name="CharsetDefinition">
+</HEAD><body ID=idErr><p><H2>Access denied.</H2></p>
+
+<p>You do not have permission to perform this action or access this resource.</p>
+
+<!-- commentElt Access denied. --></body></html>
+'
+----
+
+I need to have a look at the dump again, probably some step which was
+unnecessary for Alfresco is now necessary here.
+
+BTW, the issues seems to be generic, I get the same for deleting a document as
+well.
+
+I've created a new dump file for file deletion with sharepoint
+(`20110327-sp-docdel.dump`):
+
+The interesting part:
+
+- flow #8:
+
+----
+POST /_vti_bin/shtml.dll/_vti_rpc HTTP/1.1
+
+method=server+version%3a12%2e0%2e0%2e6211
+----
+
+- flow #9:
+
+----
+POST /_vti_bin/_vti_aut/author.dll HTTP/1.1
+
+method=open+service%3a12%2e0%2e0%2e6211&service%5fname=%2f
+----
+
+The 'server version' calls is OK from the proto as well, but I get access
+denied for the 'open service' call for some reason.
+
+flow #9 with full HTTP headers:
+
+----
+POST /_vti_bin/_vti_aut/author.dll HTTP/1.1
+Date: Sun, 27 Mar 2011 12:14:28 GMT
+MIME-Version: 1.0
+User-Agent: MSFrontPage/12.0
+Host: vmiklos-sp
+Accept: auth/sicily
+Content-Length: 59
+Content-Type: application/x-www-form-urlencoded
+X-Vermeer-Content-Type: application/x-www-form-urlencoded
+Connection: Keep-Alive
+Cache-Control: no-cache
+Cookie: MSOWebPartPage_AnonymousAccessCookie=80; WSS_KeepSessionAuthenticated=80
+Authorization: Negotiate TlRMTVNTUAADAAAAGAAYAIYAAAAYABgAngAAABQAFABIAAAAGgAaAFwAAAAQABAAdgAAAAAAAAC2AAAABYKIogUBKAoAAAAPdgBtAGkAawBsAG8AcwAtAHMAcABBAGQAbQBpAG4AaQBzAHQAcgBhAHQAbwByAFcASQBOAFgAUAAtAFYATQAuNVDqsNPFKAAAAAAAAAAAAAAAAAAAAABNOAMK2ddimSH0omg9fGSOR5kMwrVNq8w=
+
+method=open+service%3a12%2e0%2e0%2e6211&service%5fname=%2f
+----
+
+It's possible that I hit some NTLM-related error, as it works from curl:
+
+----
+curl -H 'X-Vermeer-Content-Type: application/x-vermeer-urlencoded' \
+	-H 'Content-Type: application/x-vermeer-urlencoded' \
+	-u 'vmiklos-sp\Administrator:LaborImage' \
+	-d 'method=open+service%3a12%2e0%2e0%2e6211&service%5fname=%2f' \
+	--ntlm http://vmiklos-sp/_vti_bin/_vti_aut/author.dll
+----
+
+And at this point it turned out that the crappy native sharepoint server makes
+a difference if the HTTP POST payload has
+
+----
+foo=1&bar=2
+----
+
+or
+
+----
+bar=2&foo=1
+----
+
+Of course alfresco and probably everyone else on earth ignores that difference.
+
+And yes, after doing an own urllib.urlencode() implementation which preserves
+ordering, deleting a doc works!
+
+Also, testing shows that in fact everything works, except opening older
+versions of documents, I'll have a look at that issue tomorrow.
