@@ -181,7 +181,6 @@ class Handler:
 		parser.reset()
 		parser.feed(page)
 		parser.close()
-		print parser.items
 		return parser.items
 
 	def select_remote_path(self):
@@ -196,7 +195,6 @@ class Handler:
 				raise Exception("failed to read dir '%s/'" % path)
 			# extract the list of folders from the html response
 			html = response.read()
-			print "debug, html response is '%s'" % html
 			itemlist = self.parsefileopen(html)
 			print "available items:"
 			names = sorted(itemlist.keys())
