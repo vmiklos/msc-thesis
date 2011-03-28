@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import httplib
 import base64
 import urlparse
 import urllib
@@ -41,17 +40,13 @@ class Handler:
 
 		# log in
 		response = self.urlopen("/_vti_inf.html", headers = self.headers)
-		if response.status != 200:
+		if response.code != 200:
 			raise Exception("failed to log in")
 		print "ok, logged in"
 
 	def urlopen(self, path, body = None, headers = None):
-		conn = httplib.HTTPConnection(self.host, self.port)
-		if not body:
-			conn.request("GET", path, headers = headers)
-		else:
-			conn.request("POST", path, body, headers)
-		return conn.getresponse()
+		req = urllib2.Request("http://%s:%s%s" % (self.host, self.port, path), data = body, headers = headers)
+		return urllib2.urlopen(req)
 	
 	def handle(self):
 		while True:
@@ -122,8 +117,7 @@ class Handler:
 		self.handle_delete('/SPP/documentLibrary/test.txt')
 
 		print "-> testing list-versions"
-		assert len(self.handle_list_versions('/SPP/documentLibrary/test.txt')) == 0
-		# now put two versions
+		# put two versions
 		self.update_file("test.txt", content="foo")
 		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
 		self.update_file("test.txt", content="bar")
@@ -179,7 +173,7 @@ class Handler:
 		# list folders
 		while True:
 			response = self.urlopen("%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = self.headers)
-			if response.status != 200:
+			if response.code != 200:
 				raise Exception("failed to read dir '%s/'" % path)
 			# extract the list of folders from the html response
 			html = response.read()
@@ -223,7 +217,7 @@ class Handler:
 			path = self.path + path
 
 		response = self.urlopen(path, headers = self.headers)
-		if response.status != 200:
+		if response.code != 200:
 			raise Exception("failed to read file '%s'" % path)
 
 		localpath = path.split('/')[-1]
