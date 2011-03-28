@@ -107,45 +107,49 @@ class Handler:
 	def test(self):
 		# To test: folder listing, create space
 
+		if "--alfresco" in sys.argv:
+			dir = "documentLibrary"
+		else:
+			dir = "Shared Documents"
 		print "-> testing save-as"
 		self.update_file("test.txt", "w")
 		try:
-			self.handle_delete('/SPP/documentLibrary/test.txt')
+			self.handle_delete('/SPP/%s/test.txt' % dir)
 		except Exception:
 			# we just want to make sure we upload a new file
 			pass
-		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+		self.handle_saveas("test.txt", "/SPP/%s/test.txt" % dir, None)
 
 		print "-> testing save"
 		self.update_file("test.txt")
-		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+		self.handle_saveas("test.txt", "/SPP/%s/test.txt" % dir, None)
 
 		print "-> testing save with a comment"
 		self.update_file("test.txt")
-		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", "test")
+		self.handle_saveas("test.txt", "/SPP/%s/test.txt" % dir, "test")
 
 		print "-> testing open"
 		os.unlink("test.txt")
-		self.handle_open("/SPP/documentLibrary/test.txt")
+		self.handle_open("/SPP/%s/test.txt" % dir)
 
 		print "-> testing delete"
-		self.handle_delete('/SPP/documentLibrary/test.txt')
+		self.handle_delete('/SPP/%s/test.txt' % dir)
 
 		print "-> testing list-versions"
 		# put two versions
 		self.update_file("test.txt", content="foo")
-		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+		self.handle_saveas("test.txt", "/SPP/%s/test.txt" % dir, None)
 		self.update_file("test.txt", content="bar")
-		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
-		assert len(self.handle_list_versions('/SPP/documentLibrary/test.txt')) == 2
+		self.handle_saveas("test.txt", "/SPP/%s/test.txt" % dir, None)
+		assert len(self.handle_list_versions('/SPP/%s/test.txt' % dir)) == 2
 
 		print "-> testing restore-version"
-		self.handle_restore_version('/SPP/documentLibrary/test.txt', '1.0')
-		self.handle_open("/SPP/documentLibrary/test.txt")
+		self.handle_restore_version('/SPP/%s/test.txt' % dir, '1.0')
+		self.handle_open("/SPP/%s/test.txt" % dir)
 		assert not "bar" in self.read_file("test.txt")
 
 		print "-> testing open-older"
-		self.handle_open_older('/SPP/documentLibrary/test.txt', '1.1')
+		self.handle_open_older('/SPP/%s/test.txt' % dir, '1.1')
 		assert "bar" in self.read_file("test.txt")
 
 	def ask(self, k, v):
