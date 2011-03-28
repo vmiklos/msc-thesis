@@ -2053,24 +2053,71 @@ example creating a space doesn't work from MSO, either, so I dropped the idea.
 As an interim solution, I installed a Windows 2003 Server Enterprise + Office
 Sharepoint Server 2007 Enterprise from MSDNAA on a KVM box I have access to.
 
-The trick is that there I can forward port 80 of the IIS to localhost:8080
+The trick is that there I can forward port 80 of the IIS to localhost:80
 (where Alfresco was) with a single:
 
 ----
-ssh -L 8080:192.168.122.246:80 <kvm box>
+ssh -L 192.168.152.1:80:192.168.122.246:80 vmiklos@helicon
 ----
 
-Where 192.168.122.246 is the internal ip of sharepoint.
+Where 192.168.152.1 is my local IP (visible to MSO), 192.168.122.246 is the
+internal ip of sharepoint, and 'helicon' is the remote KVM box.
+
+I also added
+
+----
+192.168.152.1 vmiklos-sp
+----
+
+to `/etc/hosts`.
 
 At the end of the day
 
 ----
-http://127.0.0.1:8080/_vti_bin/dws.asmx?wsdl
+http://vmiklos-sp/_vti_bin/dws.asmx?wsdl
 ----
 
-returns the WSDL of the space url!
+returns the WSDL of the space url on my laptop!
 
 Username: vmiklos-sp\Administrator, pass: LaborImage
 
 Needless to say that even login doesn't work from the proto, but I'll sort that
 out tomorrow.
+
+=== 2011-03-26
+
+So the problem with login is that sharepoint accepts NTLM authentication, while
+alfresco was happy with the poor basic (plaintext) one as well.
+
+NTLM auth support is not part of the standard python library, but there is a
+separate library:
+
+http://code.google.com/p/python-ntlm/
+
+which works fine. The only problem with it it that it hooks itself to the
+urllib2 module, while the proto uses the httplib module. (urllib2 is a
+higher-level module, which uses httplib for http:// urls. I choosed the httplib
+module in the proto as I don't want to handle other url types and this avoided
+the unnecessary abstraction.)
+
+Before doing such a refactoring, I think it's a good time to add automated
+tests for the 10 features I have marked 'working' in the calc file.
+
+Of course that pointed out existing bugs, a nasty one is that if I want to save
+a document with a comment, I have to check it out first, then put it, finally
+check in. Now "last modified date" is needed for check out and put document as
+well, and I used the same timestamp for both operations. Now this sometimes
+completed under a second, so it did not fail, but sometimes it failed... I now
+fixed the code to update the last modified date before two operations so
+finally now random failures went away.
+
+After that, porting from httplib to urllib2 was easy. And of course then
+setting up the NTLM support was about 5 lines of code only. As a result, the
+proto can now log into sharepoint. When I try to create a space, it returns
+HTTP error 415 (unsupported media type), probably some missing HTTP header.
+
+In the meantime, I tried to connect to sharepoint from MSO, funnily enough it
+opened a document with a single http://go.microsoft.com/fwlink?LinkID=96177
+link with them (couldn't they display a messagebox with a clickable URL
+there?). Allright, installing share sharepoint updates, leading to the end of
+the day.
