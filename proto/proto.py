@@ -286,6 +286,7 @@ class Handler:
 
 		headers = self.headers.copy()
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/GetVersions'
+		headers['Content-Type'] = 'text/xml; charset=utf-8'
 
 		# select remove path
 		existing = True
@@ -308,7 +309,7 @@ class Handler:
 </GetVersions>
 </soap:Body>
 </soap:Envelope>""" % to
-		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, headers)
+		response = self.urlopen("%s/%s/_vti_bin/versions.asmx" % (self.path, space), soapbody, headers)
 		xml = minidom.parseString(response.read())
 		versions = []
 		for i in xml.getElementsByTagName('result'):
@@ -365,6 +366,7 @@ class Handler:
 	def handle_restore_version(self, remotepath=None, version=None):
 		headers = self.headers.copy()
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/RestoreVersion'
+		headers['Content-Type'] = 'text/xml; charset=utf-8'
 
 		# select remove path
 		if not remotepath:
@@ -490,6 +492,7 @@ class Handler:
 			lastmod = self.get_lastmod(existing, space, to, headers)
 			soapheaders = self.headers.copy()
 			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckOutFile'
+			soapheaders['Content-Type'] = 'text/xml; charset=utf-8'
 			soapbody = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
@@ -497,7 +500,7 @@ class Handler:
 <pageUrl>http://%s:%s%s/%s/%s</pageUrl><checkoutToLocal>true</checkoutToLocal><lastmodified>%s</lastmodified></CheckOutFile>
 </soap:Body>
 </soap:Envelope>""" % (self.host, self.port, self.path, space, to, lastmod)
-			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
+			response = self.urlopen("%s/%s/_vti_bin/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			xml = minidom.parseString(response.read())
 			if xml.getElementsByTagName('CheckOutFileResult')[0].firstChild.toxml() != 'true':
 				raise Exception("failed to check out document")
@@ -527,6 +530,7 @@ class Handler:
 			# check in the document
 			soapheaders = self.headers.copy()
 			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckInFile'
+			soapheaders['Content-Type'] = 'text/xml; charset=utf-8'
 			soapbody = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
@@ -534,7 +538,7 @@ class Handler:
 <pageUrl>http://%s:%s%s/%s/%s</pageUrl><comment>%s</comment><CheckinType>0</CheckinType></CheckInFile>
 </soap:Body>
 </soap:Envelope>""" % (self.host, self.port, self.path, space, to, cgi.escape(comment))
-			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
+			response = self.urlopen("%s/%s/_vti_bin/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			xml = minidom.parseString(response.read())
 			if xml.getElementsByTagName('CheckInFileResult')[0].firstChild.toxml() != 'true':
 				raise Exception("failed to check in document")
