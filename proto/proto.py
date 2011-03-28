@@ -242,7 +242,10 @@ class Handler:
 			if i.version == version:
 				url = i.url
 				break
-		self.handle_open(url.replace('http://%s:%s%s' % (self.host, self.port, self.path), ''))
+		# strip url with port (alfresco) and without (sharepoint)
+		url = url.replace('http://%s:%s%s' % (self.host, self.port, self.path), '')
+		url = url.replace('http://%s%s' % (self.host, self.path), '')
+		self.handle_open(url)
 
 	def handle_open(self, path=None):
 		if not path:
