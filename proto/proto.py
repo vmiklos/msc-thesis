@@ -391,6 +391,13 @@ class Handler:
 		if len(versions) + 1 != len(xml.getElementsByTagName("result")):
 			raise Exception("failed to create a new version")
 
+	def urlencode(self, l):
+		"""a version of urllib.urlencode that preserves ordering"""
+		ret = []
+		for k, v in l:
+			ret.append("%s=%s" % (urllib.quote(k), urllib.quote(v)))
+		return "&".join(ret)
+
 	def handle_delete(self, remotepath=None):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
@@ -408,12 +415,12 @@ class Handler:
 		to = '/'.join(l[2:])
 
 		# run 'remove documents'
-		params = {
-			'method':'remove documents:12.0.0.6211',
-			'service_name':'%s/%s' % (self.path, space),
-			'url_list':'[%s]' % to
-			}
-		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
+		params = self.urlencode([
+			('method','remove documents:12.0.0.6211'),
+			('service_name','%s/%s' % (self.path, space)),
+			('url_list','[%s]' % to)
+			])
+		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), params+"\n", headers)
 		html = response.read()
 		if "successfully removed documents" not in html:
 			raise Exception("failed to remove document: '%s'" % html)
