@@ -297,8 +297,6 @@ class Handler:
 				key = lambda x: map(int, x.split('.'))
 				return key(self.version) < key(other.version)
 
-		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/GetVersions')
-
 		# select remove path
 		existing = True
 		if not remotepath:
@@ -311,7 +309,7 @@ class Handler:
 		space = l[1]
 		to = '/'.join(l[2:])
 
-		soapheaders = self.headers.copy()
+		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/GetVersions')
 		soapbody = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
