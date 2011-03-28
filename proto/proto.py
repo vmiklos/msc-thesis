@@ -79,21 +79,28 @@ class Handler:
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
 	def test(self):
-		if not os.path.exists("local.doc"):
-			raise Exception("please create 'local.doc'")
+		sock = open("test.txt", "w")
+		sock.write("a\n")
+		sock.close()
 		print "-> testing save-as"
 		try:
-			self.handle_delete('/SPP/documentLibrary/local.doc')
+			self.handle_delete('/SPP/documentLibrary/test.txt')
 		except Exception:
 			# we just want to make sure we upload a new file
 			pass
-		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", None)
+		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
 		print "-> testing save"
-		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", None)
+		sock = open("test.txt", "a")
+		sock.write("b\n")
+		sock.close()
+		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
 		print "-> testing save with a comment"
-		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", "test")
-		return
+		sock = open("test.txt", "a")
+		sock.write("c\n")
+		sock.close()
+		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", "test")
 		print "-> testing open"
+		os.unlink("test.txt")
 		self.handle_open("/SPP/documentLibrary/test.txt")
 		print "-> testing delete"
 		self.handle_delete('/SPP/documentLibrary/test.txt')
@@ -359,6 +366,25 @@ class Handler:
 			raise Exception("failed to remove document")
 		print "deleted %s" % remotepath
 
+	def get_lastmod(self, existing, space, to, headers):
+		if existing:
+			# run getDocsMetaInfo
+			params = {
+				'method':'getDocsMetaInfo:12.0.0.6211',
+				'url_list':'[http://%s:%s%s/%s/%s]' % (self.host, self.port, self.path, space, to),
+				'listHiddenDocs':'false',
+				'listLinkInfo':'false'
+				}
+			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
+			html = response.read()
+			if "failedUrls" in html:
+				existing = False
+			else:
+				lastmod = self.parselastmod(html).split('|')[1]
+		if not existing:
+			lastmod = time.strftime("%d %b %Y %H:%M:%S -0000")
+		return lastmod
+
 	def handle_saveas(self, fro=None, remotepath=None, comment=False):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
@@ -389,28 +415,12 @@ class Handler:
 		space = l[1]
 		to = '/'.join(l[2:])
 
-		if existing:
-			# run getDocsMetaInfo
-			params = {
-				'method':'getDocsMetaInfo:12.0.0.6211',
-				'url_list':'[http://%s:%s%s/%s/%s]' % (self.host, self.port, self.path, space, to),
-				'listHiddenDocs':'false',
-				'listLinkInfo':'false'
-				}
-			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
-			html = response.read()
-			if "failedUrls" in html:
-				existing = False
-			else:
-				lastmod = self.parselastmod(html).split('|')[1]
-		if not existing:
-			lastmod = time.strftime("%d %b %Y %H:%M:%S -0000")
-
 		if comment == False:
 			comment = self.ask('comment', None)
 
 		if comment:
 			# check out the document
+			lastmod = self.get_lastmod(existing, space, to, headers)
 			soapheaders = self.headers.copy()
 			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckOutFile'
 			soapbody = """<?xml version="1.0" encoding="utf-8"?>
@@ -426,6 +436,7 @@ class Handler:
 				raise Exception("failed to check out document")
 
 		# run 'put document'
+		lastmod = self.get_lastmod(existing, space, to, headers)
 		sock = open(fro)
 		buf = sock.read()
 		sock.close()
@@ -441,8 +452,9 @@ class Handler:
 		body = urllib.urlencode(params) + "\n" + buf
 		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), body, headers)
 		ret = response.read()
+		failed = None
 		if "successfully put document" not in ret:
-			raise Exception("failed to put document: '%s'" % ret)
+			failed = ret
 
 		if comment:
 			# check in the document
@@ -459,6 +471,9 @@ class Handler:
 			xml = minidom.parseString(response.read())
 			if xml.getElementsByTagName('CheckInFileResult')[0].firstChild.toxml() != 'true':
 				raise Exception("failed to check in document")
+		if failed:
+			# don't raise it earlier, so we check in even if put failed
+			raise Exception("failed to put document: '%s'" % failed)
 
 		print "uploaded to %s" % remotepath
 
