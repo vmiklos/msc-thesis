@@ -72,7 +72,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: create-space|cs, open|o, open-older|oo, save|s, save-as|sa, delete|d, list-versions|lv, restore-version|rv, quit|q"
+			print "possible actions: create-space|cs, delete-space|ds, open|o, open-older|oo, save|s, save-as|sa, delete|d, list-versions|lv, restore-version|rv, quit|q"
 			self.action = self.ask('action', self.action)
 
 			if self.action in ("open", "o"):
@@ -96,6 +96,8 @@ class Handler:
 				self.handle_restore_version()
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
+			elif self.action in ("delete-space", "ds"):
+				self.handle_delete_space()
 
 	def update_file(self, f, mode="a", content=None):
 		sock = open(f, mode)
@@ -112,7 +114,7 @@ class Handler:
 		return buf
 
 	def test(self):
-		# To test: folder listing, create space
+		# To test: folder listing, create space, delete space
 
 		if "--alfresco" in sys.argv:
 			dir = "documentLibrary"
@@ -341,6 +343,21 @@ class Handler:
 		for i in versions:
 			print "\t".join([i.version, i.date, i.author, i.size, i.comment])
 		return versions
+
+	def handle_delete_space(self):
+		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/dws/DeleteDws')
+		space = self.ask('name', '')
+		soapbody = """<?xml version='1.0' ?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+<s:Body>
+<DeleteDws xmlns="http://schemas.microsoft.com/sharepoint/soap/dws/">
+</DeleteDws>
+</s:Body>
+</s:Envelope>"""
+		response = self.urlopen("%s/%s/_vti_bin/dws.asmx" % (self.path, space), soapbody, headers)
+		if response.code != 200:
+			raise Exception("failed to delete space, http error %s" % response.code)
+		print 'deleted space %s' % space
 
 	def handle_create_space(self):
 		def unescape(s):
