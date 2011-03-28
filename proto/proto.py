@@ -79,19 +79,24 @@ class Handler:
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
 	def test(self):
+		if not os.path.exists("local.doc"):
+			raise Exception("please create 'local.doc'")
 		print "-> testing save-as"
-		sock = open("test.txt", "w")
-		sock.write("a\nb\nc\nd\n")
-		sock.close()
-		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
-		os.unlink("test.txt")
-		print "-> testing save-as with comment"
+		try:
+			self.handle_delete('/SPP/documentLibrary/local.doc')
+		except Exception:
+			# we just want to make sure we upload a new file
+			pass
+		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", None)
+		print "-> testing save"
+		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", None)
+		print "-> testing save with a comment"
 		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", "test")
+		return
 		print "-> testing open"
 		self.handle_open("/SPP/documentLibrary/test.txt")
 		print "-> testing delete"
 		self.handle_delete('/SPP/documentLibrary/test.txt')
-		print "-> testing save"
 		print "-> testing list-versions"
 		print "-> testnig open-older"
 		print "-> testing restore-version"
@@ -435,8 +440,9 @@ class Handler:
 			}
 		body = urllib.urlencode(params) + "\n" + buf
 		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), body, headers)
-		if "successfully put document" not in response.read():
-			raise Exception("failed to put document")
+		ret = response.read()
+		if "successfully put document" not in ret:
+			raise Exception("failed to put document: '%s'" % ret)
 
 		if comment:
 			# check in the document
