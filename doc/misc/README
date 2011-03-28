@@ -1829,8 +1829,8 @@ http://127.0.0.1:7070/alfresco/SPP/_vti_history/versionStore://version2Store/b21
 - a simple HTTP GET can reach this, once versionStore:// is replaced by versionStore:/ (why is that needed?)
 
 I implemented this in the prototype as an 'open-older' subcommand. Luckily I
-could reuse (ie. not copy&paste) most of the version lister and (last version)
-opener code.
+could reuse (ie. not copy&paste) most of the version lister and (latest
+version) opener code.
 
 Restore:
 
@@ -2229,3 +2229,56 @@ ordering, deleting a doc works!
 
 Also, testing shows that in fact everything works, except opening older
 versions of documents, I'll have a look at that issue tomorrow.
+
+== 8th week
+
+=== 2011-03-28
+
+In ULX. Had an in-person meething:
+
+- alfresco-level proto support for native sharepoint is almost there, should be
+  finished in a few days
+- initial openoffice extension is planned in two weeks
+- additional fixing is possible till 2011-05-01 (4 weeks from now)
+- will write thesis paper after that (if not even sooner), which is needed for
+  the uni
+
+So, back to development.
+
+Trying to figure out why opening an older version of a doc fails with
+native SP. Checking the problem a bit more carefully, the first issue is that
+checking out a file tries to access
+http://vmiklos-sp/SPP/_vti_bin/_vti_aut/lists.asmx, which works with alfresco,
+but not with SP.
+
+There were two problems:
+
+- it's _vti_bin/lists.asmx, not _vti_bin/_vti_aut/lists.asmx
+- the content-type header was missing in some of the soap calls, now I
+  introduced a method to generate soap headers (to avoid such inconsistency in
+  the future)
+
+Now the next problem is that saving with or without a comment does not create
+any minor or major version. It turns that this feature is disabled by default.
+Here is how to enable, for the space 'SPP':
+
+- go to site root (http://vmiklos-sp/)
+- choose SPP
+- site actions -> site settings
+- site administration -> site libraries and lists
+- customize "shared documents"
+- general settings -> versioning settings
+- select 'create major and minor (draft) versions' -> OK
+
+Finally there was a bug about I always expected the port to be part of the url
+returned by the server, now that string is parsed properly.
+
+According to features.ods, there are 3 features that I wanted to implement, but
+did not work with Alfreso:
+
+- checkin types (minor, major, overwrite)
+- version delete
+- space delete
+
+As a start, I implemented space delete (uses SOAP), the testcase is not yet
+there.
