@@ -88,7 +88,7 @@ class Handler:
 		print "-> testing save-as with comment"
 		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", "test")
 		print "-> testing open"
-		self.handle_open("/alfresco/SPP/documentLibrary/test.txt")
+		self.handle_open("/SPP/documentLibrary/test.txt")
 		print "-> testing delete"
 		self.handle_delete('/SPP/documentLibrary/test.txt')
 		print "-> testing save"
@@ -169,12 +169,14 @@ class Handler:
 			if i.version == version:
 				url = i.url
 				break
-		self.handle_open(url.replace('http://%s:%s' % (self.host, self.port), ''))
+		self.handle_open(url.replace('http://%s:%s%s' % (self.host, self.port, self.path), ''))
 
 	def handle_open(self, path=None):
 		if not path:
 			path, existing = self.select_remote_path()
 			print "ok, selected %s" % path
+		else:
+			path = self.path + path
 
 		response = self.urlopen(path, headers = self.headers)
 		if response.status != 200:
