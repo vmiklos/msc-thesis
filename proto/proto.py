@@ -339,6 +339,8 @@ class Handler:
 </s:Envelope>""" % space
 		# no space in the url, we're creating a new one!
 		response = self.urlopen("%s/_vti_bin/dws.asmx" % self.path, soapbody, headers)
+		if response.code != 200:
+			raise Exception("failed to create space, http error %s" % response.code)
 		xml = minidom.parseString(response.read())
 		inner = unescape(xml.getElementsByTagName('CreateDwsResult')[0].firstChild.toxml())
 		xml = minidom.parseString(inner)
