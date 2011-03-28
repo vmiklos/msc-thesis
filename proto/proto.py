@@ -16,6 +16,7 @@ from xml.dom import minidom
 class Handler:
 	def __init__(self):
 		# defaults
+		self.c = 0 # test file counter
 		if "--alfresco" in sys.argv:
 			self.url = "http://127.0.0.1:7070/alfresco"
 			self.user = 'admin'
@@ -78,34 +79,48 @@ class Handler:
 				self.handle_restore_version()
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
-	def test(self):
-		sock = open("test.txt", "w")
-		sock.write("a\n")
+
+	def update_file(self, f, mode="a"):
+		sock = open(f, mode)
+		self.c += 1
+		sock.write("%s\n" % self.c)
 		sock.close()
+
+	def test(self):
+		# check in, check out and open folder are implicit features
+
 		print "-> testing save-as"
+		self.update_file("test.txt", "w")
 		try:
 			self.handle_delete('/SPP/documentLibrary/test.txt')
 		except Exception:
 			# we just want to make sure we upload a new file
 			pass
 		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+
 		print "-> testing save"
-		sock = open("test.txt", "a")
-		sock.write("b\n")
-		sock.close()
+		self.update_file("test.txt")
 		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+
 		print "-> testing save with a comment"
-		sock = open("test.txt", "a")
-		sock.write("c\n")
-		sock.close()
+		self.update_file("test.txt")
 		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", "test")
+
 		print "-> testing open"
 		os.unlink("test.txt")
 		self.handle_open("/SPP/documentLibrary/test.txt")
+
 		print "-> testing delete"
 		self.handle_delete('/SPP/documentLibrary/test.txt')
+
 		print "-> testing list-versions"
-		print "-> testnig open-older"
+		assert len(self.handle_list_versions('/SPP/documentLibrary/test.txt')) == 0
+		# now put two versions
+		self.update_file("test.txt")
+		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+		self.update_file("test.txt")
+		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+		assert len(self.handle_list_versions('/SPP/documentLibrary/test.txt')) == 2
 		print "-> testing restore-version"
 		print "-> testing create-space"
 
