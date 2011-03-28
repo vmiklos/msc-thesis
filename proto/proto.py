@@ -324,6 +324,7 @@ class Handler:
 
 		headers = self.headers.copy()
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/dws/CreateDws'
+		headers['Content-Type'] = 'text/xml; charset=utf-8'
 
 		space = self.ask('name', '')
 		soapbody = """<?xml version="1.0"?>
@@ -341,11 +342,15 @@ class Handler:
 		response = self.urlopen("%s/_vti_bin/dws.asmx" % self.path, soapbody, headers)
 		if response.code != 200:
 			raise Exception("failed to create space, http error %s" % response.code)
-		xml = minidom.parseString(response.read())
-		inner = unescape(xml.getElementsByTagName('CreateDwsResult')[0].firstChild.toxml())
-		xml = minidom.parseString(inner)
-		url = xml.getElementsByTagName('Url')[0].firstChild.toxml()
-		print 'created space at %s' % url
+		ret = response.read()
+		try:
+			xml = minidom.parseString(ret)
+			inner = unescape(xml.getElementsByTagName('CreateDwsResult')[0].firstChild.toxml())
+			xml = minidom.parseString(inner)
+			url = xml.getElementsByTagName('Url')[0].firstChild.toxml()
+			print 'created space at %s' % url
+		except Exception:
+			print "response is invalid xml: '%s'" % ret
 
 	def handle_restore_version(self, remotepath=None, version=None):
 		headers = self.headers.copy()
