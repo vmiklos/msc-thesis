@@ -271,6 +271,12 @@ class Handler:
 		parser.close()
 		return parser.lastmod
 
+	def soapheaders(self, action):
+		headers = self.headers.copy()
+		headers['SOAPAction'] = action
+		headers['Content-Type'] = 'text/xml; charset=utf-8'
+		return headers
+
 	def handle_list_versions(self, remotepath=None):
 		class Version:
 			def __init__(self, version, date, author, size, comment, url):
@@ -284,9 +290,7 @@ class Handler:
 				key = lambda x: map(int, x.split('.'))
 				return key(self.version) < key(other.version)
 
-		headers = self.headers.copy()
-		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/GetVersions'
-		headers['Content-Type'] = 'text/xml; charset=utf-8'
+		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/GetVersions')
 
 		# select remove path
 		existing = True
@@ -333,9 +337,7 @@ class Handler:
 			s = s.replace("&amp;", "&")
 			return s
 
-		headers = self.headers.copy()
-		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/dws/CreateDws'
-		headers['Content-Type'] = 'text/xml; charset=utf-8'
+		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/dws/CreateDws')
 
 		space = self.ask('name', '')
 		soapbody = """<?xml version="1.0"?>
@@ -364,9 +366,7 @@ class Handler:
 			print "response is invalid xml: '%s'" % ret
 
 	def handle_restore_version(self, remotepath=None, version=None):
-		headers = self.headers.copy()
-		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/RestoreVersion'
-		headers['Content-Type'] = 'text/xml; charset=utf-8'
+		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/RestoreVersion')
 
 		# select remove path
 		if not remotepath:
@@ -490,9 +490,7 @@ class Handler:
 		if comment:
 			# check out the document
 			lastmod = self.get_lastmod(existing, space, to, headers)
-			soapheaders = self.headers.copy()
-			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckOutFile'
-			soapheaders['Content-Type'] = 'text/xml; charset=utf-8'
+			soapheaders = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/CheckOutFile')
 			soapbody = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
@@ -528,9 +526,7 @@ class Handler:
 
 		if comment:
 			# check in the document
-			soapheaders = self.headers.copy()
-			soapheaders['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/CheckInFile'
-			soapheaders['Content-Type'] = 'text/xml; charset=utf-8'
+			soapheaders = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/CheckInFile')
 			soapbody = """<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
