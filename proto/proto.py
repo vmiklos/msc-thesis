@@ -425,7 +425,7 @@ class Handler:
 <pageUrl>http://%s:%s%s/%s/%s</pageUrl><comment>%s</comment><CheckinType>0</CheckinType></CheckInFile>
 </soap:Body>
 </soap:Envelope>""" % (self.host, self.port, self.path, space, to, cgi.escape(comment))
-			response = conn.request("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
+			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			xml = minidom.parseString(response.read())
 			if xml.getElementsByTagName('CheckInFileResult')[0].firstChild.toxml() != 'true':
 				raise Exception("failed to check in document")
