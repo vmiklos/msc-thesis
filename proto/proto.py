@@ -4,6 +4,7 @@ import httplib
 import base64
 import urlparse
 import urllib
+import urllib2
 import cgi
 import sys
 from sgmllib import SGMLParser
@@ -37,12 +38,18 @@ class Handler:
 		self.headers = {'Authorization' : 'Basic ' + base64.encodestring('%s:%s' % (self.user, self.password)).strip()}
 
 		# log in
-		conn = httplib.HTTPConnection(self.host, self.port)
-		conn.request("GET", "/_vti_inf.html", headers = self.headers)
-		response = conn.getresponse()
+		response = self.urlopen("/_vti_inf.html", headers = self.headers)
 		if response.status != 200:
 			raise Exception("failed to log in")
 		print "ok, logged in"
+
+	def urlopen(self, path, body = None, headers = None):
+		conn = httplib.HTTPConnection(self.host, self.port)
+		if not body:
+			conn.request("GET", path, headers = headers)
+		else:
+			conn.request("POST", path, body, headers)
+		return conn.getresponse()
 	
 	def handle(self):
 		while True:
