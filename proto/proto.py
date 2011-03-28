@@ -174,13 +174,14 @@ class Handler:
 					if k == "fileattribute":
 						fileattribute = v
 					elif k == "id":
-						id = v
+						id = urllib.unquote(v)
 				if fileattribute and id:
 					self.items[id] = fileattribute
 		parser = FileopenParser()
 		parser.reset()
 		parser.feed(page)
 		parser.close()
+		print parser.items
 		return parser.items
 
 	def select_remote_path(self):
@@ -189,7 +190,7 @@ class Handler:
 		while True:
 			items = path.split('/')
 			path_space = "/".join(items[:2])
-			path_location = "/".join(items[2:])
+			path_location = urllib.quote("/".join(items[2:]))
 			response = self.urlopen("%s/_vti_bin/owssvr.dll?location=%s&dialogview=FileOpen&FileDialogFilterValue=*.*" % (path_space, path_location), headers = self.headers)
 			if response.code != 200:
 				raise Exception("failed to read dir '%s/'" % path)
