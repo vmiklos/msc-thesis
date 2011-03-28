@@ -17,13 +17,12 @@ class Handler:
 	def __init__(self):
 		self.c = 0 # test file counter
 		self.headers = {}
-		basic_auth = False
+		self.basic_auth = False
 
 		if "--alfresco" in sys.argv:
 			self.url = "http://127.0.0.1:7070/alfresco"
 			self.user = 'admin'
 			self.password = 'alfresco'
-			basic_auth = True
 		else:
 			self.url = "http://vmiklos-sp:80"
 			self.user = r'vmiklos-sp\Administrator'
@@ -40,8 +39,13 @@ class Handler:
 		pr = urlparse.urlparse(self.url)
 		self.host, self.port = pr.netloc.split(':')
 		self.path = pr.path
-		if basic_auth:
-			self.headers = {'Authorization' : 'Basic ' + base64.encodestring('%s:%s' % (self.user, self.password)).strip()}
+
+		# see if we can do ntlm, otherwise fail back to basic auth
+		try:
+			response = urllib2.urlopen(url = "http://%s:%s" % (self.host, self.port))
+		except urllib2.HTTPError, he:
+			if not 'NTLM' in he.hdrs['WWW-Authenticate']:
+				self.basic_auth = True
 
 		# log in
 		response = self.urlopen("/_vti_inf.html", headers = self.headers)
@@ -49,16 +53,19 @@ class Handler:
 			raise Exception("failed to log in")
 		print "ok, logged in"
 
-	def urlopen(self, path, body = None, headers = None):
+	def urlopen(self, path, body = None, headers = {}):
 		url = "http://%s:%s%s" % (self.host, self.port, path)
 
-		# create and install NTLM authentication handler + opener
-		passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
-		passman.add_password(None, url, self.user, self.password)
+		if self.basic_auth:
+			headers['Authorization'] = 'Basic ' + base64.encodestring('%s:%s' % (self.user, self.password)).strip()
+		else:
+			# create and install NTLM authentication handler + opener
+			passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+			passman.add_password(None, url, self.user, self.password)
 
-		auth_NTLM = HTTPNtlmAuthHandler.HTTPNtlmAuthHandler(passman)
-		opener = urllib2.build_opener(auth_NTLM)
-		urllib2.install_opener(opener)
+			auth_NTLM = HTTPNtlmAuthHandler.HTTPNtlmAuthHandler(passman)
+			opener = urllib2.build_opener(auth_NTLM)
+			urllib2.install_opener(opener)
 
 		req = urllib2.Request(url, data = body, headers = headers)
 		return urllib2.urlopen(req)
