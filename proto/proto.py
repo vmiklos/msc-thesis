@@ -187,11 +187,15 @@ class Handler:
 		path = self.path
 		# list folders
 		while True:
-			response = self.urlopen("%s/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*" % path, headers = self.headers)
+			items = path.split('/')
+			path_space = "/".join(items[:2])
+			path_location = "/".join(items[2:])
+			response = self.urlopen("%s/_vti_bin/owssvr.dll?location=%s&dialogview=FileOpen&FileDialogFilterValue=*.*" % (path_space, path_location), headers = self.headers)
 			if response.code != 200:
 				raise Exception("failed to read dir '%s/'" % path)
 			# extract the list of folders from the html response
 			html = response.read()
+			print "debug, html response is '%s'" % html
 			itemlist = self.parsefileopen(html)
 			print "available items:"
 			names = sorted(itemlist.keys())
