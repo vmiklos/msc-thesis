@@ -333,7 +333,7 @@ class Handler:
 		remotepath = remotepath.replace(self.path, '')
 
 		if not existing:
-			raise Exceptin("non-existing document")
+			raise Exception("non-existing document")
 		l = remotepath.split('/')
 		space = l[1]
 		to = '/'.join(l[2:])
