@@ -429,13 +429,13 @@ class Handler:
 	def get_lastmod(self, existing, space, to, headers):
 		if existing:
 			# run getDocsMetaInfo
-			params = {
-				'method':'getDocsMetaInfo:12.0.0.6211',
-				'url_list':'[http://%s:%s%s/%s/%s]' % (self.host, self.port, self.path, space, to),
-				'listHiddenDocs':'false',
-				'listLinkInfo':'false'
-				}
-			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
+			params = self.urlencode([
+				('method','getDocsMetaInfo:12.0.0.6211'),
+				('url_list','[http://%s:%s%s/%s/%s]' % (self.host, self.port, self.path, space, to)),
+				('listHiddenDocs','false'),
+				('listLinkInfo','false')
+				])
+			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), params+"\n", headers)
 			html = response.read()
 			if "failedUrls" in html:
 				existing = False
@@ -501,15 +501,15 @@ class Handler:
 		buf = sock.read()
 		sock.close()
 
-		params = {
-			'method': 'put document:12.0.0.6211',
-			'service_name': '%s/%s' % (self.path, space),
-			'document': '[document_name=%s;meta_info=[vti_timelastmodified;TW|%s]]' % (to, lastmod),
-			'put_option': 'edit',
-			'comment': '',
-			'keep_checked_out': 'false'
-			}
-		body = urllib.urlencode(params) + "\n" + buf
+		params = self.urlencode([
+			('method', 'put document:12.0.0.6211'),
+			('service_name', '%s/%s' % (self.path, space)),
+			('document', '[document_name=%s;meta_info=[vti_timelastmodified;TW|%s]]' % (to, lastmod)),
+			('put_option', 'edit'),
+			('comment', ''),
+			('keep_checked_out', 'false')
+			])
+		body = params + "\n" + buf
 		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), body, headers)
 		ret = response.read()
 		failed = None
