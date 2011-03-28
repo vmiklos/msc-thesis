@@ -80,14 +80,22 @@ class Handler:
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
 
-	def update_file(self, f, mode="a"):
+	def update_file(self, f, mode="a", content=None):
 		sock = open(f, mode)
 		self.c += 1
-		sock.write("%s\n" % self.c)
+		if not content:
+			content = self.c
+		sock.write("%s\n" % content)
 		sock.close()
 
+	def read_file(self, path):
+		sock = open(path)
+		buf = sock.read()
+		sock.close()
+		return buf
+
 	def test(self):
-		# check in, check out and open folder are implicit features
+		# To test: folder listing, create space
 
 		print "-> testing save-as"
 		self.update_file("test.txt", "w")
@@ -116,13 +124,16 @@ class Handler:
 		print "-> testing list-versions"
 		assert len(self.handle_list_versions('/SPP/documentLibrary/test.txt')) == 0
 		# now put two versions
-		self.update_file("test.txt")
+		self.update_file("test.txt", content="foo")
 		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
-		self.update_file("test.txt")
+		self.update_file("test.txt", content="bar")
 		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
 		assert len(self.handle_list_versions('/SPP/documentLibrary/test.txt')) == 2
+
 		print "-> testing restore-version"
-		print "-> testing create-space"
+		self.handle_restore_version('/SPP/documentLibrary/test.txt', '1.0')
+		self.handle_open("/SPP/documentLibrary/test.txt")
+		assert not "bar" in self.read_file("test.txt")
 
 	def ask(self, k, v):
 		line = None
@@ -319,15 +330,16 @@ class Handler:
 		url = xml.getElementsByTagName('Url')[0].firstChild.toxml()
 		print 'created space at %s' % url
 
-	def handle_restore_version(self):
+	def handle_restore_version(self, remotepath=None, version=None):
 		headers = self.headers.copy()
 		headers['SOAPAction'] = 'http://schemas.microsoft.com/sharepoint/soap/RestoreVersion'
 
 		# select remove path
-		remotepath, existing = self.select_remote_path()
-		remotepath = remotepath.replace(self.path, '')
-		if not existing:
-			raise Exception("can restore older version of existing files only")
+		if not remotepath:
+			remotepath, existing = self.select_remote_path()
+			remotepath = remotepath.replace(self.path, '')
+			if not existing:
+				raise Exception("can restore older version of existing files only")
 
 		l = remotepath.split('/')
 		space = l[1]
@@ -336,7 +348,8 @@ class Handler:
 		# select version
 		print "The following versions are available:"
 		versions = self.handle_list_versions(remotepath)
-		version = self.ask('version', versions[0].version)
+		if not version:
+			version = self.ask('version', versions[0].version)
 
 		soapheaders = self.headers.copy()
 		soapbody = """<?xml version="1.0" encoding="utf-8"?>
