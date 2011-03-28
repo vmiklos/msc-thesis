@@ -234,7 +234,7 @@ class Handler:
 		else:
 			path = self.path + path
 
-		response = self.urlopen(path, headers = self.headers)
+		response = self.urlopen(urllib.quote(path), headers = self.headers)
 		if response.code != 200:
 			raise Exception("failed to read file '%s'" % path)
 
