@@ -234,7 +234,10 @@ class Handler:
 		else:
 			path = self.path + path
 
-		response = self.urlopen(urllib.quote(path), headers = self.headers)
+		# hack, we need quote paths (in case dir name contains space,
+		# etc) but opening older version has versionStore:// and there
+		# we must not quote ':'...
+		response = self.urlopen(urllib.quote(path).replace('%3A', ':'), headers = self.headers)
 		if response.code != 200:
 			raise Exception("failed to read file '%s'" % path)
 
