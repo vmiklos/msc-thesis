@@ -2039,3 +2039,38 @@ seems the best I can do is:
 - File -> Export (UNO already selected), next, finish. Deploy? Yes. OK to install? OK.
 - Close the extension manager.
 - Tools -> Macros -> Run macro will run the new version of the extension now.
+
+=== 2011-03-25
+
+Got the virtual machine, but it requires VPN access, which does not seem to
+work on Linux at the moment. So probably I can access the machine only next
+week, which is sad, as I wanted to continue the work this weekend...
+
+Found a site, http://www.wssdemo.com/ (user: corp\demouser, pass: pass@word1)
+where they run a public sharepoint server, but it seems to be restirced, for
+example creating a space doesn't work from MSO, either, so I dropped the idea.
+
+As an interim solution, I installed a Windows 2003 Server Enterprise + Office
+Sharepoint Server 2007 Enterprise from MSDNAA on a KVM box I have access to.
+
+The trick is that there I can forward port 80 of the IIS to localhost:8080
+(where Alfresco was) with a single:
+
+----
+ssh -L 8080:192.168.122.246:80 <kvm box>
+----
+
+Where 192.168.122.246 is the internal ip of sharepoint.
+
+At the end of the day
+
+----
+http://127.0.0.1:8080/_vti_bin/dws.asmx?wsdl
+----
+
+returns the WSDL of the space url!
+
+Username: vmiklos-sp\Administrator, pass: LaborImage
+
+Needless to say that even login doesn't work from the proto, but I'll sort that
+out tomorrow.
