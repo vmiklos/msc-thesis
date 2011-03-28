@@ -417,7 +417,7 @@ class Handler:
 		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
 		html = response.read()
 		if "successfully removed documents" not in html:
-			raise Exception("failed to remove document")
+			raise Exception("failed to remove document: '%s'" % html)
 		print "deleted %s" % remotepath
 
 	def get_lastmod(self, existing, space, to, headers):
