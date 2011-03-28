@@ -146,17 +146,23 @@ class Handler:
 		# put two versions
 		self.update_file("test.txt", content="foo")
 		self.handle_saveas("test.txt", "/SPP/%s/test.txt" % dir, None)
+		# introduce bar
 		self.update_file("test.txt", content="bar")
 		self.handle_saveas("test.txt", "/SPP/%s/test.txt" % dir, None)
 		assert len(self.handle_list_versions('/SPP/%s/test.txt' % dir)) == 2
 
 		print "-> testing restore-version"
-		self.handle_restore_version('/SPP/%s/test.txt' % dir, '1.0')
+		# alfresco has 1.0, 1.1, etc; sp has 0.1, 0.2 so let's not hardwire version numbers
+		versions = self.handle_list_versions('/SPP/%s/test.txt' % dir)
+		# restore latest-1, not containing bar
+		self.handle_restore_version('/SPP/%s/test.txt' % dir, versions[1].version)
 		self.handle_open("/SPP/%s/test.txt" % dir)
 		assert not "bar" in self.read_file("test.txt")
 
 		print "-> testing open-older"
-		self.handle_open_older('/SPP/%s/test.txt' % dir, '1.1')
+		versions = self.handle_list_versions('/SPP/%s/test.txt' % dir)
+		# restore latest-1 will now contain bar
+		self.handle_open_older('/SPP/%s/test.txt' % dir, versions[1].version)
 		assert "bar" in self.read_file("test.txt")
 
 	def ask(self, k, v):
