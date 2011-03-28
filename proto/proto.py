@@ -90,6 +90,7 @@ class Handler:
 		print "-> testing open"
 		self.handle_open("/alfresco/SPP/documentLibrary/test.txt")
 		print "-> testing delete"
+		self.handle_delete('/SPP/documentLibrary/test.txt')
 		print "-> testing save"
 		print "-> testing list-versions"
 		print "-> testnig open-older"
@@ -323,22 +324,23 @@ class Handler:
 		if len(versions) + 1 != len(xml.getElementsByTagName("result")):
 			raise Exception("failed to create a new version")
 
-	def handle_delete(self):
+	def handle_delete(self, remotepath=None):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
 		headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
 
 		# select remote path
-		remotepath, existing = self.select_remote_path()
-		remotepath = remotepath.replace(self.path, '')
+		if not remotepath:
+			remotepath, existing = self.select_remote_path()
+			remotepath = remotepath.replace(self.path, '')
 
-		if not existing:
-			raise Exception("non-existing document")
+			if not existing:
+				raise Exception("non-existing document")
 		l = remotepath.split('/')
 		space = l[1]
 		to = '/'.join(l[2:])
 
-		# run getDocsMetaInfo
+		# run 'remove documents'
 		params = {
 			'method':'remove documents:12.0.0.6211',
 			'service_name':'%s/%s' % (self.path, space),
@@ -391,9 +393,10 @@ class Handler:
 			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), urllib.urlencode(params)+"\n", headers)
 			html = response.read()
 			if "failedUrls" in html:
-				raise Exception("failed to get meta info")
-			lastmod = self.parselastmod(html).split('|')[1]
-		else:
+				existing = False
+			else:
+				lastmod = self.parselastmod(html).split('|')[1]
+		if not existing:
 			lastmod = time.strftime("%d %b %Y %H:%M:%S -0000")
 
 		if comment == False:
