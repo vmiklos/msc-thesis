@@ -400,10 +400,11 @@ class Handler:
 </RestoreVersion>
 </soap:Body>
 </soap:Envelope>""" % (to, version)
-		response = self.urlopen("%s/%s/_vti_bin/_vti_aut/versions.asmx" % (self.path, space), soapbody, headers)
-		xml = minidom.parseString(response.read())
-		if len(versions) + 1 != len(xml.getElementsByTagName("result")):
-			raise Exception("failed to create a new version")
+		response = self.urlopen("%s/%s/_vti_bin/versions.asmx" % (self.path, space), soapbody, headers)
+		ret = response.read()
+		xml = minidom.parseString(ret)
+		if len(xml.getElementsByTagName('soap:Fault')) > 0:
+			raise Exception("failed to create a new version: '%s'" % xml.getElementsByTagName('soap:Fault')[0].toxml())
 
 	def urlencode(self, l):
 		"""a version of urllib.urlencode that preserves ordering"""
