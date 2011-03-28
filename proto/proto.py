@@ -16,7 +16,7 @@ from xml.dom import minidom
 class Handler:
 	def __init__(self):
 		# defaults
-		if len(sys.argv) > 1 and sys.argv[1] == "--alfresco":
+		if "--alfresco" in sys.argv:
 			self.url = "http://127.0.0.1:7070/alfresco"
 			self.user = 'admin'
 			self.password = 'alfresco'
@@ -28,9 +28,10 @@ class Handler:
 		self.openedurl = None
 		self.openedfile = None
 
-		self.url = self.ask('url', self.url)
-		self.user = self.ask('user', self.user)
-		self.password = self.ask('password', self.password)
+		if not "--test" in sys.argv:
+			self.url = self.ask('url', self.url)
+			self.user = self.ask('user', self.user)
+			self.password = self.ask('password', self.password)
 
 		pr = urlparse.urlparse(self.url)
 		self.host, self.port = pr.netloc.split(':')
@@ -77,6 +78,23 @@ class Handler:
 				self.handle_restore_version()
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
+	def test(self):
+		print "-> testing save-as"
+		sock = open("test.txt", "w")
+		sock.write("a\nb\nc\nd\n")
+		sock.close()
+		self.handle_saveas("test.txt", "/SPP/documentLibrary/test.txt", None)
+		os.unlink("test.txt")
+		print "-> testing save-as with comment"
+		self.handle_saveas("local.doc", "/SPP/documentLibrary/local.doc", "test")
+		print "-> testing open"
+		self.handle_open("/alfresco/SPP/documentLibrary/test.txt")
+		print "-> testing delete"
+		print "-> testing save"
+		print "-> testing list-versions"
+		print "-> testnig open-older"
+		print "-> testing restore-version"
+		print "-> testing create-space"
 
 	def ask(self, k, v):
 		line = None
@@ -332,7 +350,7 @@ class Handler:
 			raise Exception("failed to remove document")
 		print "deleted %s" % remotepath
 
-	def handle_saveas(self, fro=None, remotepath=None):
+	def handle_saveas(self, fro=None, remotepath=None, comment=False):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
 		headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
@@ -378,7 +396,8 @@ class Handler:
 		else:
 			lastmod = time.strftime("%d %b %Y %H:%M:%S -0000")
 
-		comment = self.ask('comment', None)
+		if comment == False:
+			comment = self.ask('comment', None)
 
 		if comment:
 			# check out the document
@@ -434,4 +453,7 @@ class Handler:
 
 if __name__ == "__main__":
 	h = Handler()
-	h.handle()
+	if not "--test" in sys.argv:
+		h.handle()
+	else:
+		h.test()
