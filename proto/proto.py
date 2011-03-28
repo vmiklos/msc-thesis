@@ -11,15 +11,19 @@ import glob
 import os
 import time
 from xml.dom import minidom
+from ntlm import HTTPNtlmAuthHandler
 
 class Handler:
 	def __init__(self):
-		# defaults
 		self.c = 0 # test file counter
+		self.headers = {}
+		basic_auth = False
+
 		if "--alfresco" in sys.argv:
 			self.url = "http://127.0.0.1:7070/alfresco"
 			self.user = 'admin'
 			self.password = 'alfresco'
+			basic_auth = True
 		else:
 			self.url = "http://vmiklos-sp:80"
 			self.user = r'vmiklos-sp\Administrator'
@@ -36,7 +40,8 @@ class Handler:
 		pr = urlparse.urlparse(self.url)
 		self.host, self.port = pr.netloc.split(':')
 		self.path = pr.path
-		self.headers = {'Authorization' : 'Basic ' + base64.encodestring('%s:%s' % (self.user, self.password)).strip()}
+		if basic_auth:
+			self.headers = {'Authorization' : 'Basic ' + base64.encodestring('%s:%s' % (self.user, self.password)).strip()}
 
 		# log in
 		response = self.urlopen("/_vti_inf.html", headers = self.headers)
@@ -45,7 +50,17 @@ class Handler:
 		print "ok, logged in"
 
 	def urlopen(self, path, body = None, headers = None):
-		req = urllib2.Request("http://%s:%s%s" % (self.host, self.port, path), data = body, headers = headers)
+		url = "http://%s:%s%s" % (self.host, self.port, path)
+
+		# create and install NTLM authentication handler + opener
+		passman = urllib2.HTTPPasswordMgrWithDefaultRealm()
+		passman.add_password(None, url, self.user, self.password)
+
+		auth_NTLM = HTTPNtlmAuthHandler.HTTPNtlmAuthHandler(passman)
+		opener = urllib2.build_opener(auth_NTLM)
+		urllib2.install_opener(opener)
+
+		req = urllib2.Request(url, data = body, headers = headers)
 		return urllib2.urlopen(req)
 	
 	def handle(self):
