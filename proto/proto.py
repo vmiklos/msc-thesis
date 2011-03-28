@@ -135,6 +135,10 @@ class Handler:
 		self.handle_open("/SPP/documentLibrary/test.txt")
 		assert not "bar" in self.read_file("test.txt")
 
+		print "-> testing open-older"
+		self.handle_open_older('/SPP/documentLibrary/test.txt', '1.1')
+		assert "bar" in self.read_file("test.txt")
+
 	def ask(self, k, v):
 		line = None
 		try:
@@ -195,13 +199,15 @@ class Handler:
 				return path, False
 		return path, True
 
-	def handle_open_older(self):
+	def handle_open_older(self, remotepath=None, version=None):
 		# select remove path
-		remotepath, existing = self.select_remote_path()
-		remotepath = remotepath.replace(self.path, '')
+		if not remotepath:
+			remotepath, existing = self.select_remote_path()
+			remotepath = remotepath.replace(self.path, '')
 		print "The following versions are available:"
 		versions = self.handle_list_versions(remotepath)
-		version = self.ask('version', versions[0].version)
+		if not version:
+			version = self.ask('version', versions[0].version)
 		url = None
 		for i in versions:
 			if i.version == version:
