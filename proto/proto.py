@@ -17,7 +17,7 @@ class Handler:
 	def __init__(self):
 		self.c = 0 # test file counter
 		self.headers = {}
-		self.basic_auth = False
+		self.basic_auth = False # try to use ntlm by default
 
 		if "--alfresco" in sys.argv:
 			self.url = "http://127.0.0.1:7070/alfresco"
