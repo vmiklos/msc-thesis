@@ -22,11 +22,10 @@ class Handler:
 		if "--alfresco" in sys.argv:
 			self.url = "http://127.0.0.1:7070/alfresco"
 			self.user = 'admin'
-			self.password = 'alfresco'
 		else:
 			self.url = "http://vmiklos-sp:80"
 			self.user = r'vmiklos-sp\Administrator'
-			self.password = 'LaborImage'
+		self.password = 'alfresco'
 		self.action = "open"
 		self.openedurl = None
 		self.openedfile = None
