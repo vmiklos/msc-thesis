@@ -522,7 +522,7 @@ class Handler:
 			lastmod = time.strftime("%d %b %Y %H:%M:%S -0000")
 		return lastmod
 
-	def handle_saveas(self, fro=None, remotepath=None, comment=False):
+	def handle_saveas(self, fro=None, remotepath=None, comment=False, citype=0):
 		headers = self.headers.copy()
 		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
 		headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
@@ -553,7 +553,15 @@ class Handler:
 		to = '/'.join(l[2:])
 
 		if comment == False:
+			cidict = {
+				'minor':0,
+				'major':1,
+				'overwrite':2
+				}
 			comment = self.ask('comment', None)
+			if comment:
+				print "possible checkin types: minor, major, overwrite"
+				citype = cidict[self.ask('checkin type', 'minor')]
 
 		if comment:
 			# check out the document
@@ -599,9 +607,9 @@ class Handler:
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
 <soap:Body>
 <CheckInFile xmlns="http://schemas.microsoft.com/sharepoint/soap/">
-<pageUrl>http://%s:%s%s/%s/%s</pageUrl><comment>%s</comment><CheckinType>0</CheckinType></CheckInFile>
+<pageUrl>http://%s:%s%s/%s/%s</pageUrl><comment>%s</comment><CheckinType>%s</CheckinType></CheckInFile>
 </soap:Body>
-</soap:Envelope>""" % (self.host, self.port, self.path, space, to, cgi.escape(comment))
+</soap:Envelope>""" % (self.host, self.port, self.path, space, to, cgi.escape(comment), citype)
 			response = self.urlopen("%s/%s/_vti_bin/lists.asmx" % (self.path, space), soapbody, soapheaders)
 			xml = minidom.parseString(response.read())
 			if xml.getElementsByTagName('CheckInFileResult')[0].firstChild.toxml() != 'true':
