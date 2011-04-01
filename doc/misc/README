@@ -2282,3 +2282,42 @@ did not work with Alfreso:
 
 As a start, I implemented space delete (uses SOAP), the testcase is not yet
 there.
+
+=== 2011-03-30
+
+We sorted out the VPN problems (after all, it was my fault), I did the same
+install/update/configuration on this new vSphere machine than on the old KVM
+one.
+
+For the record, the two install images were:
+
+[images-install (1)] microsoft/servers/SharePoint/Office SharePoint Server 2007 Standard and Enterprise Editions (x86 and x64) - DVD (English)/en_office_sharepoint_server_2007_standard_and_enterprise_x86_x64_dvd_X13-38823.iso
+microsoft/windows/windows_server_2003_R2_Ent_eng/Windows_Server_2003_Ent_Eng_R2_Vol_Disc1.iso
+
+The only glitch so far is that the VPN uses ipsec and somehow wireshark can see
+the response from vSphere, but not the traffic to it.
+
+Also Ivan solved the the remote access to ULX SVN, I just need to type:
+
+----
+ssh -p 323 -D 9090 gw.ulx.hu
+----
+
+and then
+
+----
+socksify git svn dcommit
+----
+
+will commit properly, even when I'm at home.
+
+There are two features what did not work with Alfresco, but I still want to have in the proto:
+
+- deleting older version of a doc: it's a soap call, similar to RestoreVersion,
+  see 20110330-sp-verdel.dump
+- different types of checkings (currently I hardwire a type=0 in the soap
+  request). I just followed the documentation I linked on 2011-03-19 and tested
+  that it works as expected.
+
+I implemented these now. At this point I consider the proto fairly
+feature-complete and I'll start working on the real extension.
