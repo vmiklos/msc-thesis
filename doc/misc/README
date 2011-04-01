@@ -2321,3 +2321,60 @@ There are two features what did not work with Alfresco, but I still want to have
 
 I implemented these now. At this point I consider the proto fairly
 feature-complete and I'll start working on the real extension.
+
+=== 2011-04-01
+
+Did you read Novell bought SharePoint from Microsoft and they are releasing it
+under GPL? See here for details: http://t.co/yYQqwNj
+
+In the meantime, I'm continuing development: today I want to get an overall
+understanding on the existing OPAL codebase and start porting features from the
+proto, which will lead to the first cut of the extension.
+
+I already described the list of steps on 2011-02-28 about how to get modified
+Java source code running in OOo, but it turns out the last step (reinstalling
+the extension in OOo) is a lot of clicking, takes too much time. So here is
+what I found out:
+
+----
+./soffice.bin -nologo -norestore
+----
+
+Just '^C' this if you want to restart. And here is how to reinstall the extension
+from cmdline when OOo is not running:
+
+----
+./unopkg remove org.openoffice.legacy.OPAL_OOo_Alf3_trunk.uno.pkg
+./unopkg add -v ~/documents/bme/diploma1/unohello/OPAL_OOo_Alf3_trunk.uno.pkg
+----
+
+(That 'legacy' sounds wrong there...)
+
+Sadly the later sometimes hang, in case it's after "unopkg done", '^C' is fine
+here as well, just remove the lockfile:
+
+----
+rm ~/.ooo3/.lock
+----
+
+(It hangs in a futex() syscall, I don't really want to debug it.)
+
+So the first step is to be able to login. The proto uses the python urllib2
+module for this, opal uses org.apache.commons.httpclient, which seems to be a
+sane choice, so I need to figure out how its api look like. Documentation:
+
+http://hc.apache.org/httpcomponents-client-ga/tutorial/html/
+
+And again, looks like what Alfresco uses is something legacy, as it uses
+GetMethod instead of HttpGet, old doc here:
+
+http://hc.apache.org/httpclient-legacy/tutorial.html
+
+For now I'm using this, but it may make sense to use the new api, dunno.
+
+I also had to waste time with Eclipse memory settings, it keeps running out of
+memory so I raised its limits.
+
+At the end of the day all I managed is to determine if the server wants NTLM or
+basic auth. The next step is to write a method that uses the necessary auth
+method based on that info.
