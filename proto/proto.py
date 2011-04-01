@@ -71,7 +71,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: create-space|cs, delete-space|ds, open|o, open-older|oo, save|s, save-as|sa, delete|d, list-versions|lv, restore-version|rv, quit|q"
+			print "possible actions: create-space|cs, delete-space|ds, open|o, open-older|oo, save|s, save-as|sa, delete|d, list-versions|lv, restore-version|rv, delete-version|dv, quit|q"
 			self.action = self.ask('action', self.action)
 
 			if self.action in ("open", "o"):
@@ -93,6 +93,8 @@ class Handler:
 				self.handle_open_older()
 			elif self.action in ("restore-version", "rv"):
 				self.handle_restore_version()
+			elif self.action in ("delete-version", "dv"):
+				self.handle_delete_version()
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
 			elif self.action in ("delete-space", "ds"):
@@ -393,6 +395,42 @@ class Handler:
 			print 'created space at %s' % url
 		except Exception:
 			print "response is invalid xml: '%s'" % ret
+
+	def handle_delete_version(self, remotepath=None, version=None):
+		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/DeleteVersion')
+
+		# select remove path
+		if not remotepath:
+			remotepath, existing = self.select_remote_path()
+			remotepath = remotepath.replace(self.path, '')
+			if not existing:
+				raise Exception("can delete older version of existing files only")
+
+		l = remotepath.split('/')
+		space = l[1]
+		to = '/'.join(l[2:])
+
+		# select version
+		print "The following versions are available:"
+		versions = self.handle_list_versions(remotepath)
+		if not version:
+			version = self.ask('version', versions[0].version)
+
+		soapheaders = self.headers.copy()
+		soapbody = """<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+<soap:Body>
+<DeleteVersion xmlns="http://schemas.microsoft.com/sharepoint/soap/">
+<fileName>%s</fileName>
+<fileVersion>%s</fileVersion>
+</DeleteVersion>
+</soap:Body>
+</soap:Envelope>""" % (to, version)
+		response = self.urlopen("%s/%s/_vti_bin/versions.asmx" % (self.path, space), soapbody, headers)
+		ret = response.read()
+		xml = minidom.parseString(ret)
+		if len(xml.getElementsByTagName('soap:Fault')) > 0:
+			raise Exception("failed to delete version: '%s'" % xml.getElementsByTagName('soap:Fault')[0].toxml())
 
 	def handle_restore_version(self, remotepath=None, version=None):
 		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/RestoreVersion')
