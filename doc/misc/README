@@ -2378,3 +2378,20 @@ memory so I raised its limits.
 At the end of the day all I managed is to determine if the server wants NTLM or
 basic auth. The next step is to write a method that uses the necessary auth
 method based on that info.
+
+=== 2011-04-03
+
+It turns out httpclient-legacy's NTLM supports (v1) does not work with Windows
+2003 (MS IIS, NTLM v2). I'm trying out what does httpclient-4.1.1 provide.
+Luckily the class fqdn is not the same, so I can have both lib in the extension
+for now. NTLM v2 documentation is here:
+
+http://hc.apache.org/httpcomponents-client-ga/tutorial/html/authentication.html#ntlm
+
+After hours of debugging, it turns out that while the legacy version had NTLM
+support on by default, the new has all the auth schemas disabled. Once I turned
+on BASIC and NTLM, it worked.
+
+Adding support for both at the same time is a bit more tricky, but doable. For
+now a class named `Test2` contains all the working code, tomorrow I'll
+integrate that to the extension.
