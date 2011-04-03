@@ -47,7 +47,7 @@ class Handler:
 				self.basic_auth = True
 
 		# log in
-		response = self.urlopen("/_vti_inf.html", headers = self.headers)
+		response = self.urlopen("/_vti_inf.html")
 		if response.code != 200:
 			raise Exception("failed to log in")
 		print "ok, logged in"
