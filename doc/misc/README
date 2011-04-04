@@ -2395,3 +2395,69 @@ on BASIC and NTLM, it worked.
 Adding support for both at the same time is a bit more tricky, but doable. For
 now a class named `Test2` contains all the working code, tomorrow I'll
 integrate that to the extension.
+
+== 9th week
+
+=== 2011-04-04
+
+In ULX. Created a separate Handler class that can decide if we need basic/ntlm
+auth, can retreive urls and thus can log in.
+
+I modified the extension to use the login method of this handler class, but
+currently it crashes:
+
+----
+Exception during event dispatch:
+java.lang.IllegalStateException: Failure initializing default SSL context
+   at org.apache.http.conn.ssl.SSLSocketFactory.createDefaultSSLContext(SSLSocketFactory.java:211)
+   at org.apache.http.conn.ssl.SSLSocketFactory.<init>(SSLSocketFactory.java:333)
+   at org.apache.http.conn.ssl.SSLSocketFactory.getSocketFactory(SSLSocketFactory.java:165)
+   at org.apache.http.impl.conn.SchemeRegistryFactory.createDefault(SchemeRegistryFactory.java:45)
+   at org.apache.http.impl.client.AbstractHttpClient.createClientConnectionManager(AbstractHttpClient.java:294)
+   at org.apache.http.impl.client.AbstractHttpClient.getConnectionManager(AbstractHttpClient.java:445)
+   at org.apache.http.impl.client.AbstractHttpClient.createHttpContext(AbstractHttpClient.java:274)
+   at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:797)
+   at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:754)
+   at org.apache.http.impl.client.AbstractHttpClient.execute(AbstractHttpClient.java:732)
+   at hu.vmiklos.opsp.Handler.needsBasicAuth(Handler.java:82)
+   at hu.vmiklos.opsp.Handler.setURL(Handler.java:50)
+   at fr.starxpert.opal.comp.ConnectionImpl.connect(ConnectionImpl.java:110)
+   at fr.starxpert.opal.comp.ui.ConnectionDialog.authentication(ConnectionDialog.java:324)
+   at fr.starxpert.opal.comp.ui.ConnectionDialog.okPressed(ConnectionDialog.java:253)
+   at fr.starxpert.opal.comp.ui.AbstractDialog$1.actionPerformed(AbstractDialog.java:164)
+   at javax.swing.AbstractButton.fireActionPerformed(libgcj.so.11)
+----
+
+It turns out the problem is that this old OOo uses a JDK (gcj) different to the
+one Eclipse uses (openjdk). After fixing that setting, it fails in a more
+reasonable place:
+
+----
+Exception occurred during event dispatching:
+java.lang.ArrayIndexOutOfBoundsException: 1
+        at hu.vmiklos.opsp.Handler.urlopen(Handler.java:133)
+----
+
+which seems to be about the extension thinks ntlm auth is needed for alfresco,
+which is not true.
+
+OK, I found out that it was just about a mistyped port number, fixed now: login
+works! :)
+
+The next task I did was to get rid of my System.out/err.println calls and use
+commons logging instead, so later we can just disabled the info calls if we
+want so.
+
+After that, I added a new exception type to the idl (it has a "nice" syntax for
+that ;) ) and then updated the code to give reasonable error message when login
+fails.
+
+The next feature is to be able to open documents: that consists of the download
+itself and the folder lister code. I'm doing the downloader first. The initial
+problem here is that the legacy jars provided a URIUtil.encodePath() method to
+encode paths ("foo bar" -> "foo%20bar"), but that got removed, and the standard
+JDK does not allow you do encode the path only.
+
+At the end of the day, I have a method in the handler that can provide an
+InputStream to the doc from the server, that should be later integrated to the
+UI.
