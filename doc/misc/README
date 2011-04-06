@@ -2461,3 +2461,39 @@ JDK does not allow you do encode the path only.
 At the end of the day, I have a method in the handler that can provide an
 InputStream to the doc from the server, that should be later integrated to the
 UI.
+
+=== 2011-04-06
+
+First, I'm trying to undertend how the opal document opening control flow goes.
+
+The menu is declared in /Addons.xcu, that calls the 'OPAL.menu.openFile' basic
+macro. 'OPAL/menu.xba' contains the implementation of that function, which
+calls the execute() method of the 'fr.starxpert.opal.ui.AlfrescoFilePicker' uno
+service (after setting its Connection + IsOpen - to true, so this is not save -
+property).
+
+The only entry point of the Java part is the 'RegistrationHandler' handler
+class, that registers the 'AlfrescoFilePickerImpl' class for the above service.
+Oh, and one more missing part: the UNO interface for this service is in the
+'XAlfrescoFilePicker.idl' file.
+
+That means: AlfrescoFilePickerImpl.execute() -> AbstractDialog.run() ->
+FilePickerDialog.execute() -> FilePickerDialog.updateSpace(), and that's where
+the interesting stuff happens. Inside that, there is an inner class named
+'SpaceContentModel extends AbstractListModel' and that contains the dirs /
+files received from the server. One more important detail: each item in that
+list is a 'SpaceChildDescriptor' class.
+
+All these above will be required sooner or later, though only after I can
+actually parse the response from the server.
+
+I added some code to the 'Test' class to get the HTML content of the space
+list, now I need to decide what jar to use for HTML parsing. I did not waste
+too much time evaluating alternatives, tagsoup sounded good: it implements the
+SAX api (which I'm familiar with already) and its last release is from 2010.
+
+I've created a 'FileOpenParser' class to parse the "file open" html response
+with it on the fly, works properly so far.
+
+The next will be to move this new 'selectRemotePath()' method to the handler
+and integrate it with the GUI.
