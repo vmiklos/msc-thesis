@@ -2497,3 +2497,33 @@ with it on the fly, works properly so far.
 
 The next will be to move this new 'selectRemotePath()' method to the handler
 and integrate it with the GUI.
+
+=== 2011-04-10
+
+Moved 'selectRemotePath()' to the handler. So far I only tested it with
+retreiving the space list, now I improved it to handle the space list and
+folders inside spaces.
+
+Now to integrate this with the GUI. I split this to the following tasks:
+
+- make the default open dialog display the space list [done]
+- make it possible to navigate inside a space [done]
+- make it possible to navigate inside a space's folder [done]
+
+The next step is to integrate Handler.handleOpen() with the GUI. Currently
+opening results in the following stacktrace:
+
+----
+fr.starxpert.opal.AlfrescoException: Invalid Alfresco node reference: http://vmiklos-sp/SPP/Shared Documents/test.txt
+        at fr.starxpert.opal.comp.utils.AlfrescoUtils.splitReferenceForUrl(AlfrescoUtils.java:45)
+        at fr.starxpert.opal.comp.AlfrescoDocumentImpl.open(AlfrescoDocumentImpl.java:213)
+        at fr.starxpert.opal.comp.ui.FilePickerDialog.openFile(FilePickerDialog.java:419)
+        at fr.starxpert.opal.comp.ui.FilePickerDialog.enteredNode(FilePickerDialog.java:287)
+        at fr.starxpert.opal.comp.ui.FilePickerDialog$2.mouseClicked(FilePickerDialog.java:203)
+----
+
+To keep things simple, for now I'm not renaming AlfrescoDocument to
+SharepointDocument, once it's working, I can do those renames.
+
+I expect that AlfrescoDocumentImpl.open() will be the method I have to modify
+to use Handler.handleOpen() - I'll give it a shot tomorrow.
