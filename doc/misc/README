@@ -2527,3 +2527,24 @@ SharepointDocument, once it's working, I can do those renames.
 
 I expect that AlfrescoDocumentImpl.open() will be the method I have to modify
 to use Handler.handleOpen() - I'll give it a shot tomorrow.
+
+== 10th week
+
+=== 2011-04-11
+
+In ULX. As outlined yesterday, I've updated AlfrescoDocumentImpl.open() to call
+my Handler, and opening a doc works now! :)
+
+The next target is save, but there are multiple minor steps before that. First,
+I need to get the last modification date from the server. (get_lastmod()
+function of the proto.) After porting the necessary functions from the proto,
+this is running properly.
+
+Second, I need to implement a handleSave() to the Handler, which supposed to
+contain the "business logic", ie. the complex part, which is separated from the
+extension itself. A nice side effect is that this way I can test it from the
+cmdline Test class directly.
+
+The handleSaveis almost complete, one bug is that it strips the last '\n' from
+a textfile. -- And that is now solved as well, once I stipped using the jdk
+Scanner class for this purpose.
