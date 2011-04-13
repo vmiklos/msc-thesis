@@ -2545,6 +2545,22 @@ contain the "business logic", ie. the complex part, which is separated from the
 extension itself. A nice side effect is that this way I can test it from the
 cmdline Test class directly.
 
-The handleSaveis almost complete, one bug is that it strips the last '\n' from
+The handleSave is almost complete, one bug is that it strips the last '\n' from
 a textfile. -- And that is now solved as well, once I stipped using the jdk
 Scanner class for this purpose.
+
+=== 2011-04-13
+
+As mentioned earlier, the extension has a thin Basic layer that is hooked into
+the menu, and that calls Java via UNO. The error messages from that layer are
+just French, I translated some of those to English now.
+
+After that, I needed to debug some basic to get it to at least call into java
+when trying to save the doc.
+
+Then I added a new variand of handleSave(), that takes a local absolute path
+and an URL (that's what I get from OOo), and it figures out the location /
+space needed for the upload.
+
+Once this was in place, all I needed was to hack AlfrescoDocumentImpl to use my
+handleSave. This is now done, save works!

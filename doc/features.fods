@@ -42,21 +42,22 @@
       <meta:editing-cycles>17</meta:editing-cycles>
       <meta:generator>LibreOffice/3.3$Linux LibreOffice_project/330m19$Build-202</meta:generator>
       
-      <meta:document-statistic meta:table-count="1" meta:cell-count="58" meta:object-count="0"/>
+      
+      <meta:document-statistic meta:table-count="1" meta:cell-count="59" meta:object-count="0"/>
    </office:meta>
    <office:settings>
       <config:config-item-set config:name="ooo:view-settings">
          <config:config-item config:name="VisibleAreaTop" config:type="int">0</config:config-item>
          <config:config-item config:name="VisibleAreaLeft" config:type="int">0</config:config-item>
          <config:config-item config:name="VisibleAreaWidth" config:type="int">24693</config:config-item>
-         <config:config-item config:name="VisibleAreaHeight" config:type="int">7832</config:config-item>
+         <config:config-item config:name="VisibleAreaHeight" config:type="int">7769</config:config-item>
          <config:config-item-map-indexed config:name="Views">
             <config:config-item-map-entry>
                <config:config-item config:name="ViewId" config:type="string">view1</config:config-item>
                <config:config-item-map-named config:name="Tables">
                   <config:config-item-map-entry config:name="Features">
                      <config:config-item config:name="CursorPositionX" config:type="int">3</config:config-item>
-                     <config:config-item config:name="CursorPositionY" config:type="int">5</config:config-item>
+                     <config:config-item config:name="CursorPositionY" config:type="int">6</config:config-item>
                      <config:config-item config:name="HorizontalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="VerticalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="HorizontalSplitPosition" config:type="int">0</config:config-item>
@@ -207,11 +208,11 @@
          <style:table-column-properties fo:break-before="auto" style:column-width="2.267cm"/>
       </style:style>
       <style:style style:name="ro1" style:family="table-row">
-         <style:table-row-properties style:row-height="0.489cm" fo:break-before="auto"
+         <style:table-row-properties style:row-height="0.457cm" fo:break-before="auto"
                                      style:use-optimal-row-height="true"/>
       </style:style>
       <style:style style:name="ro2" style:family="table-row">
-         <style:table-row-properties style:row-height="0.457cm" fo:break-before="auto"
+         <style:table-row-properties style:row-height="0.489cm" fo:break-before="auto"
                                      style:use-optimal-row-height="true"/>
       </style:style>
       <style:style style:name="ta1" style:family="table" style:master-page-name="Default">
@@ -279,7 +280,7 @@
             </style:region-left>
             <style:region-right>
                <text:p>
-                  <text:date style:data-style-name="N2" text:date-value="2011-04-11">2011.04.11</text:date>, <text:time>15:20:56</text:time> 
+                  <text:date style:data-style-name="N2" text:date-value="2011-04-13">2011.04.13</text:date>, <text:time>23:47:39</text:time> 
                </text:p>
             </style:region-right>
          </style:header>
@@ -315,7 +316,7 @@
                </table:table-cell>
                <table:table-cell table:style-name="ce1" table:number-columns-repeated="1020"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Creating a Document Workspace</text:p>
                </table:table-cell>
@@ -347,7 +348,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1019"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Checking in a document</text:p>
                </table:table-cell>
@@ -363,7 +364,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1019"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Checking in a document as a minor/overwrite change</text:p>
                </table:table-cell>
@@ -407,9 +408,12 @@
                <table:table-cell office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
-               <table:table-cell table:number-columns-repeated="1021"/>
+               <table:table-cell office:value-type="string">
+                  <text:p>working</text:p>
+               </table:table-cell>
+               <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Listing versions of a document</text:p>
                </table:table-cell>
@@ -421,7 +425,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Viewing a previous version of a document</text:p>
                </table:table-cell>
@@ -433,7 +437,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Restoring a previous version</text:p>
                </table:table-cell>
@@ -445,7 +449,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Adding document to a workspace (save as)</text:p>
                </table:table-cell>
@@ -457,7 +461,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Managing users inside a workspace (incl. roles)</text:p>
                </table:table-cell>
@@ -469,7 +473,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Deleting a version of a document</text:p>
                </table:table-cell>
@@ -481,7 +485,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Deleting a document</text:p>
                </table:table-cell>
@@ -493,7 +497,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Deleting a workspace</text:p>
                </table:table-cell>
@@ -505,7 +509,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Managing tasks inside a workspace</text:p>
                </table:table-cell>
@@ -517,7 +521,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Managing links inside a workspace</text:p>
                </table:table-cell>
