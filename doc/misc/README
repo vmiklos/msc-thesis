@@ -2564,3 +2564,50 @@ space needed for the upload.
 
 Once this was in place, all I needed was to hack AlfrescoDocumentImpl to use my
 handleSave. This is now done, save works!
+
+=== 2011-04-15
+
+I modified Handler.handleSave() to support save as, ie when the target document
+is not yet existing.
+
+The next step is to use this from the GUI as well -
+FilePickerDialog.createFile() is doing this. The problem is that when I don't
+select any file in the "save as" filepicker, just type in a new filename, it
+seems that string is not accessed:
+
+----
+createfile, selected: 'null', server url: 'http://vmiklos-sp:80'
+com.sun.star.uno.RuntimeException: [jni_uno bridge error] UNO calling Java method createInstanceWithArgumentsAndContext: non-UNO exception occurred: java.lang.NullPointerException
+java stack trace:
+java.lang.NullPointerException
+        at fr.starxpert.opal.comp.AlfrescoDocumentImpl.initialize(AlfrescoDocumentImpl.java:99)
+        at com.sun.star.lib.uno.helper.Factory.createInstanceWithArgumentsAndContext(Factory.java:218)
+        at com.sun.star.bridges.jni_uno.JNI_proxy.dispatch_call(Native Method)
+        at com.sun.star.bridges.jni_uno.JNI_proxy.invoke(JNI_proxy.java:175)
+        at $Proxy3.createInstanceWithArgumentsAndContext(Unknown Source)
+        at fr.starxpert.opal.comp.ui.FilePickerDialog.createFile(FilePickerDialog.java:474)
+        at fr.starxpert.opal.comp.ui.FilePickerDialog.okPressed(FilePickerDialog.java:380)
+----
+
+After updating the createFile() method to pass a full url (just how we do for
+open) to the UNO service, it reaches, AlfrescoDocumentImpl.saveAs(), which of
+course fails, since I did not touch it at all.
+
+Save as internally means:
+
+- closing the old document
+- removing the local copy (/tmp)
+- writing the new local copy
+- uploading it
+
+Once I ported that to the new uploadFile() API I'm already using for save, it
+works! (Including the removal of the old tmp file properly.)
+
+Tomorrow I want to contine with checkout/checkin support. There will be two
+inputs:
+
+- comment from user [string]
+- checkin type [minor|major|overwrite]
+
+The current behaviour is the "no comment / minor" case, I'll need
+checkout/checkin in any other cases.

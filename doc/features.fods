@@ -43,7 +43,8 @@
       <meta:generator>LibreOffice/3.3$Linux LibreOffice_project/330m19$Build-202</meta:generator>
       
       
-      <meta:document-statistic meta:table-count="1" meta:cell-count="59" meta:object-count="0"/>
+      
+      <meta:document-statistic meta:table-count="1" meta:cell-count="60" meta:object-count="0"/>
    </office:meta>
    <office:settings>
       <config:config-item-set config:name="ooo:view-settings">
@@ -57,7 +58,7 @@
                <config:config-item-map-named config:name="Tables">
                   <config:config-item-map-entry config:name="Features">
                      <config:config-item config:name="CursorPositionX" config:type="int">3</config:config-item>
-                     <config:config-item config:name="CursorPositionY" config:type="int">6</config:config-item>
+                     <config:config-item config:name="CursorPositionY" config:type="int">1</config:config-item>
                      <config:config-item config:name="HorizontalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="VerticalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="HorizontalSplitPosition" config:type="int">0</config:config-item>
@@ -280,7 +281,7 @@
             </style:region-left>
             <style:region-right>
                <text:p>
-                  <text:date style:data-style-name="N2" text:date-value="2011-04-13">2011.04.13</text:date>, <text:time>23:47:39</text:time> 
+                  <text:date style:data-style-name="N2" text:date-value="2011-04-15">2011.04.15</text:date>, <text:time>23:17:52</text:time> 
                </text:p>
             </style:region-right>
          </style:header>
@@ -398,7 +399,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1019"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Put document (without comment)</text:p>
                </table:table-cell>
@@ -449,7 +450,7 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro1">
+            <table:table-row table:style-name="ro2">
                <table:table-cell office:value-type="string">
                   <text:p>Adding document to a workspace (save as)</text:p>
                </table:table-cell>
@@ -459,7 +460,10 @@
                <table:table-cell office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
-               <table:table-cell table:number-columns-repeated="1021"/>
+               <table:table-cell office:value-type="string">
+                  <text:p>working</text:p>
+               </table:table-cell>
+               <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
             <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
