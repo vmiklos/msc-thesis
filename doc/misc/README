@@ -2603,7 +2603,7 @@ Save as internally means:
 Once I ported that to the new uploadFile() API I'm already using for save, it
 works! (Including the removal of the old tmp file properly.)
 
-Tomorrow I want to contine with checkout/checkin support. There will be two
+Tomorrow I want to continue with checkout/checkin support. There will be two
 inputs:
 
 - comment from user [string]
@@ -2611,3 +2611,26 @@ inputs:
 
 The current behaviour is the "no comment / minor" case, I'll need
 checkout/checkin in any other cases.
+
+=== 2011-04-16
+
+Implemented handleCheckin() and handleCheckout() in the API. I needed xml
+escaping here, so to keep things short, I added the commons-lang jar to the
+project.
+
+When integrating with the GUI, some rework is needed, as Alfresco supports
+'boolean isMinor', while sharepoint supports more (see above), so the plan is
+to replace that JCheckBox with a JRadioButton group.
+
+I did this, but the problem first was that I continued right after the dialog
+was shown, so I always got the default values. After reading some API doc, this
+is now fixed.
+
+To put it all together, I connected the GUI to the API, and it seems to work
+properly. ;)
+
+Note: the SOAP calls return an XML with anonymous namespaces, I did not figure
+out so far how to use XPath on that, so error handling is missing there. An
+alternative would be to use w3c's dom API, as described here:
+
+http://www.developerfusion.com/code/2064/a-simple-way-to-read-an-xml-file-in-java/
