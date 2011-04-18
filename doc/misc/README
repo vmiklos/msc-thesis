@@ -2634,3 +2634,23 @@ out so far how to use XPath on that, so error handling is missing there. An
 alternative would be to use w3c's dom API, as described here:
 
 http://www.developerfusion.com/code/2064/a-simple-way-to-read-an-xml-file-in-java/
+
+== 11th week
+
+=== 2011-04-18
+
+In ULX.
+
+Smaller tasks:
+
+- error handling in checkin/out
+- get rid of my "join" method, and use the one from commons-lang jar
+
+Larger tasks:
+
+- implemented "listing versions" feature in the API & GUI
+- "open older" in the API & GUI
+
+Had a short conversion with Ivan: once I'm mostly ready with porting features
+from the proto, the next target should be fixing the extension to work with OOo
+3.3 (it works with 3.2.1 only at the moment).
