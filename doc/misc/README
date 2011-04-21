@@ -2654,3 +2654,55 @@ Larger tasks:
 Had a short conversion with Ivan: once I'm mostly ready with porting features
 from the proto, the next target should be fixing the extension to work with OOo
 3.3 (it works with 3.2.1 only at the moment).
+
+=== 2011-04-21
+
+First two targets for today:
+
+- implementing restore of a revision
+- implementing deletion of a revision
+
+Both needs implementation in the API and in the GUI as well.
+
+I first worked on restore. The API went fine, the GUI was more tricky, as I had
+to figure out how to notify the table model about the content changed. There
+were two missing bits:
+
+- the table model got the table data in the ctor, I needed a new setData() method
+- I needed to find that the fireTableDataChanged() method is what repaints the
+  table after the data reference is updated
+
+The second target is deletion. It's similar to restore, but I had to add a new
+button to the GUI and that raised the underlying problem that I forgot ~
+everything about GridBagLayout. I read this howto:
+
+http://download.oracle.com/javase/tutorial/uiswing/layout/gridbag.html
+
+Then fixing up the layout wasn't a big problem, I just had to avoid using
+GridBagConstraints.REMAINDER for two buttons (because then the second will be
+invisible).
+
+Looked at the "OOo >3.2.1 breaks" problem. When I click on the "Open" menu
+item, it raises:
+
+----
+com.sun.star.uno.Exception: com.sun.star.configuration.ConfigurationProvider factory: unknown argument enablesync
+        at com.sun.star.bridges.jni_uno.JNI_proxy.dispatch_call(Native Method)
+        at com.sun.star.bridges.jni_uno.JNI_proxy.invoke(JNI_proxy.java:175)
+        at $Proxy3.createInstanceWithArgumentsAndContext(Unknown Source)
+        at fr.starxpert.opal.comp.utils.UnoUtils.getConfigAccess(UnoUtils.java:121)
+        at fr.starxpert.opal.comp.ui.ConnectionDialog.updateListServer(ConnectionDialog.java:207)
+        at fr.starxpert.opal.comp.ui.ConnectionDialog.execute(ConnectionDialog.java:237)
+        at fr.starxpert.opal.comp.ui.AbstractDialog.run(AbstractDialog.java:94)
+        at fr.starxpert.opal.comp.AuthenticationManagerImpl.execute(AuthenticationManagerImpl.java:130)
+----
+
+This is in fact thrown in a C++ method, see here:
+
+http://opengrok.libreoffice.org/xref/libs-core/configmgr/source/configurationprovider.cxx#505
+
+Looks like the source of the problem is that the configmgr module got rewritten
+and silently they renamed 'enablesync' to 'enableasync'.
+
+Then I had a look at the feature table and tested all the existing features,
+they are working fine!

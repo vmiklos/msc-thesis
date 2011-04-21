@@ -1,0 +1,6 @@
+- build without "SDK AlfrescoEmbedded"
+- build without "commons-httpclient" (3.x) - port everything to httpcore/httpclient (4.x)
+- port testcases from the proto
+- get rid of fr.starxpert namespace
+- l10n of the interface
+- save fails when server url is given without explicit port ':80'?

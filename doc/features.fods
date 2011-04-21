@@ -46,21 +46,22 @@
       
       
       
-      <meta:document-statistic meta:table-count="1" meta:cell-count="68" meta:object-count="0"/>
+      
+      <meta:document-statistic meta:table-count="1" meta:cell-count="70" meta:object-count="0"/>
    </office:meta>
    <office:settings>
       <config:config-item-set config:name="ooo:view-settings">
          <config:config-item config:name="VisibleAreaTop" config:type="int">0</config:config-item>
          <config:config-item config:name="VisibleAreaLeft" config:type="int">0</config:config-item>
          <config:config-item config:name="VisibleAreaWidth" config:type="int">24693</config:config-item>
-         <config:config-item config:name="VisibleAreaHeight" config:type="int">7895</config:config-item>
+         <config:config-item config:name="VisibleAreaHeight" config:type="int">7737</config:config-item>
          <config:config-item-map-indexed config:name="Views">
             <config:config-item-map-entry>
                <config:config-item config:name="ViewId" config:type="string">view1</config:config-item>
                <config:config-item-map-named config:name="Tables">
                   <config:config-item-map-entry config:name="Features">
                      <config:config-item config:name="CursorPositionX" config:type="int">3</config:config-item>
-                     <config:config-item config:name="CursorPositionY" config:type="int">1</config:config-item>
+                     <config:config-item config:name="CursorPositionY" config:type="int">10</config:config-item>
                      <config:config-item config:name="HorizontalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="VerticalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="HorizontalSplitPosition" config:type="int">0</config:config-item>
@@ -214,10 +215,6 @@
          <style:table-row-properties style:row-height="0.457cm" fo:break-before="auto"
                                      style:use-optimal-row-height="true"/>
       </style:style>
-      <style:style style:name="ro2" style:family="table-row">
-         <style:table-row-properties style:row-height="0.489cm" fo:break-before="auto"
-                                     style:use-optimal-row-height="true"/>
-      </style:style>
       <style:style style:name="ta1" style:family="table" style:master-page-name="Default">
          <style:table-properties table:display="true" style:writing-mode="lr-tb"/>
       </style:style>
@@ -283,7 +280,7 @@
             </style:region-left>
             <style:region-right>
                <text:p>
-                  <text:date style:data-style-name="N2" text:date-value="2011-04-18">2011.04.18</text:date>, <text:time>18:00:41</text:time> 
+                  <text:date style:data-style-name="N2" text:date-value="2011-04-22">2011.04.22</text:date>, <text:time>00:36:20</text:time> 
                </text:p>
             </style:region-right>
          </style:header>
@@ -323,10 +320,7 @@
                <table:table-cell office:value-type="string">
                   <text:p>Creating a Document Workspace</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="2" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell/>
@@ -339,16 +333,7 @@
                <table:table-cell table:style-name="ce2" office:value-type="string">
                   <text:p>Checking out a document</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="4" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1019"/>
@@ -357,13 +342,7 @@
                <table:table-cell office:value-type="string">
                   <text:p>Checking in a document</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell office:value-type="string">
@@ -393,13 +372,7 @@
                <table:table-cell office:value-type="string">
                   <text:p>Get document (read-only)</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell office:value-type="string">
@@ -411,43 +384,25 @@
                <table:table-cell office:value-type="string">
                   <text:p>Put document (without comment)</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Listing versions of a document</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Viewing a previous version of a document</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1020"/>
@@ -456,40 +411,25 @@
                <table:table-cell office:value-type="string">
                   <text:p>Restoring a previous version</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell table:number-columns-repeated="1021"/>
+               <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
             <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Adding document to a workspace (save as)</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Managing users inside a workspace (incl. roles)</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>haven't tried</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>haven't tried</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>haven't tried</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1020"/>
@@ -504,16 +444,16 @@
                <table:table-cell office:value-type="string">
                   <text:p>working (no test yet)</text:p>
                </table:table-cell>
-               <table:table-cell table:number-columns-repeated="1021"/>
+               <table:table-cell office:value-type="string">
+                  <text:p>working</text:p>
+               </table:table-cell>
+               <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
             <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Deleting a document</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>working</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="2" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
@@ -530,32 +470,20 @@
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1021"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Managing tasks inside a workspace</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>haven't tried</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>haven't tried</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>haven't tried</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
-            <table:table-row table:style-name="ro2">
+            <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
                   <text:p>Managing links inside a workspace</text:p>
                </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>haven't tried</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
-                  <text:p>haven't tried</text:p>
-               </table:table-cell>
-               <table:table-cell office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>haven't tried</text:p>
                </table:table-cell>
                <table:table-cell table:number-columns-repeated="1020"/>
