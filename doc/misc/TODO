@@ -1,4 +1,3 @@
-- build without "SDK AlfrescoEmbedded"
 - build without "commons-httpclient" (3.x) - port everything to httpcore/httpclient (4.x)
 
 done, but it's still in classpath, otherwise unopkg add fails:
