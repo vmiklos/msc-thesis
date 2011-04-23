@@ -13,4 +13,3 @@ unopkg failed.
 - get rid of fr.starxpert namespace
 - l10n of the interface
 - save fails when server url is given without explicit port ':80'?
-- "up" in the filepicker is broken

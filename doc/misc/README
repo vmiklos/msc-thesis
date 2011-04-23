@@ -2740,3 +2740,13 @@ http://stackoverflow.com/questions/4413310/setvisible-method-in-java-swing-hangs
 
 At the end of the day, the only missing feature (vs. the proto) is deleting a
 space, I'll implement that tomorrow.
+
+=== 2011-04-23
+
+Bigger tasks:
+
+- implemented space delete in the API and GUI
+- fixed "up" in the filepicker
+
+With this, the feature table is filled, so the extension should have all the
+features what the proto has. I tested it with native sharepoint only, though.
