@@ -2682,8 +2682,12 @@ Then fixing up the layout wasn't a big problem, I just had to avoid using
 GridBagConstraints.REMAINDER for two buttons (because then the second will be
 invisible).
 
-Looked at the "OOo >3.2.1 breaks" problem. When I click on the "Open" menu
-item, it raises:
+Looked at the "OOo >3.2.1 breaks" problem. Again, so far I worked with
+OpenOffice.org 3.2.1, but the goal is to get this working with
+OpenOffice.org/LibreOffice 3.3. I'm using LibreOffice to test the problem, but
+OpenOffice.org 3.3 should be the same in this aspect.
+
+When I click on the "Open" menu item, it raises:
 
 ----
 com.sun.star.uno.Exception: com.sun.star.configuration.ConfigurationProvider factory: unknown argument enablesync
@@ -2706,3 +2710,33 @@ and silently they renamed 'enablesync' to 'enableasync'.
 
 Then I had a look at the feature table and tested all the existing features,
 they are working fine!
+
+=== 2011-04-22
+
+Cosmetics: so far the project name was 'OPAL_OOo_Alf3_trunk' with the menu item
+OPAL. That standed for "Openoffice Plugin for ALfresco". Given that this is
+about SharePoint and LibreOffice, I renamed the project & menu item to 'LPSP'.
+
+The commands to re-deploy the extension are still similar for LibreOffice, too:
+
+----
+unopkg remove org.openoffice.legacy.LPSP.uno.pkg
+unopkg add -v ~/documents/bme/diploma1/unohello/LPSP.uno.pkg
+rm /tmp/.~*test*.txt* /tmp/*test*.txt*; soffice -nologo -norestore
+----
+
+Back to real work. Trying to add support for deleting a document.
+
+- firt step: supporting it from the API
+- second step: call it for the delete key from the filepicker dialog
+
+Next: creating a space. This included the API, and the GUI as usual. The API
+part was easy, the GUI is a bit more complicated, but it was just about reading
+JOptionPane documentation.
+
+Note to self: if it turns out this takes some time, a possible popup is described here:
+
+http://stackoverflow.com/questions/4413310/setvisible-method-in-java-swing-hangs-system
+
+At the end of the day, the only missing feature (vs. the proto) is deleting a
+space, I'll implement that tomorrow.

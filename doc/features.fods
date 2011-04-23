@@ -47,7 +47,9 @@
       
       
       
-      <meta:document-statistic meta:table-count="1" meta:cell-count="70" meta:object-count="0"/>
+      
+      
+      <meta:document-statistic meta:table-count="1" meta:cell-count="72" meta:object-count="0"/>
    </office:meta>
    <office:settings>
       <config:config-item-set config:name="ooo:view-settings">
@@ -61,7 +63,7 @@
                <config:config-item-map-named config:name="Tables">
                   <config:config-item-map-entry config:name="Features">
                      <config:config-item config:name="CursorPositionX" config:type="int">3</config:config-item>
-                     <config:config-item config:name="CursorPositionY" config:type="int">10</config:config-item>
+                     <config:config-item config:name="CursorPositionY" config:type="int">14</config:config-item>
                      <config:config-item config:name="HorizontalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="VerticalSplitMode" config:type="short">0</config:config-item>
                      <config:config-item config:name="HorizontalSplitPosition" config:type="int">0</config:config-item>
@@ -148,7 +150,7 @@
    </office:font-face-decls>
    <office:styles>
       <style:default-style style:family="table-cell">
-         <style:paragraph-properties style:tab-stop-distance="1.25cm"/>
+         <style:paragraph-properties style:tab-stop-distance="0.4921in"/>
          <style:text-properties style:font-name="Arial" fo:language="en" fo:country="US"
                                 style:font-name-asian="DejaVu Sans Condensed"
                                 style:language-asian="zh"
@@ -160,18 +162,18 @@
       <number:number-style style:name="N0">
          <number:number number:min-integer-digits="1"/>
       </number:number-style>
-      <number:currency-style style:name="N107P0" style:volatile="true">
+      <number:currency-style style:name="N117P0" style:volatile="true">
          <number:number number:decimal-places="2" number:min-integer-digits="1" number:grouping="true"/>
          <number:text> </number:text>
          <number:currency-symbol number:language="hu" number:country="HU">Ft</number:currency-symbol>
       </number:currency-style>
-      <number:currency-style style:name="N107">
+      <number:currency-style style:name="N117">
          <style:text-properties fo:color="#ff0000"/>
          <number:text>-</number:text>
          <number:number number:decimal-places="2" number:min-integer-digits="1" number:grouping="true"/>
          <number:text> </number:text>
          <number:currency-symbol number:language="hu" number:country="HU">Ft</number:currency-symbol>
-         <style:map style:condition="value()&gt;=0" style:apply-style-name="N107P0"/>
+         <style:map style:condition="value()&gt;=0" style:apply-style-name="N117P0"/>
       </number:currency-style>
       <style:style style:name="Default" style:family="table-cell">
          <style:text-properties style:font-name-asian="Droid Sans Fallback"/>
@@ -183,7 +185,7 @@
                                 fo:font-weight="bold"/>
       </style:style>
       <style:style style:name="Result2" style:family="table-cell" style:parent-style-name="Result"
-                   style:data-style-name="N107"/>
+                   style:data-style-name="N117"/>
       <style:style style:name="Heading" style:family="table-cell"
                    style:parent-style-name="Default">
          <style:table-cell-properties style:text-align-source="fix" style:repeat-content="false"/>
@@ -197,22 +199,22 @@
    </office:styles>
    <office:automatic-styles>
       <style:style style:name="co1" style:family="table-column">
-         <style:table-column-properties fo:break-before="auto" style:column-width="9.185cm"/>
+         <style:table-column-properties fo:break-before="auto" style:column-width="3.6161in"/>
       </style:style>
       <style:style style:name="co2" style:family="table-column">
-         <style:table-column-properties fo:break-before="auto" style:column-width="4.329cm"/>
+         <style:table-column-properties fo:break-before="auto" style:column-width="1.7043in"/>
       </style:style>
       <style:style style:name="co3" style:family="table-column">
-         <style:table-column-properties fo:break-before="auto" style:column-width="5.184cm"/>
+         <style:table-column-properties fo:break-before="auto" style:column-width="2.0409in"/>
       </style:style>
       <style:style style:name="co4" style:family="table-column">
-         <style:table-column-properties fo:break-before="auto" style:column-width="3.822cm"/>
+         <style:table-column-properties fo:break-before="auto" style:column-width="1.5047in"/>
       </style:style>
       <style:style style:name="co5" style:family="table-column">
-         <style:table-column-properties fo:break-before="auto" style:column-width="2.267cm"/>
+         <style:table-column-properties fo:break-before="auto" style:column-width="0.8925in"/>
       </style:style>
       <style:style style:name="ro1" style:family="table-row">
-         <style:table-row-properties style:row-height="0.457cm" fo:break-before="auto"
+         <style:table-row-properties style:row-height="0.1799in" fo:break-before="auto"
                                      style:use-optimal-row-height="true"/>
       </style:style>
       <style:style style:name="ta1" style:family="table" style:master-page-name="Default">
@@ -228,30 +230,30 @@
       <style:page-layout style:name="pm1">
          <style:page-layout-properties style:writing-mode="lr-tb"/>
          <style:header-style>
-            <style:header-footer-properties fo:min-height="0.751cm" fo:margin-left="0cm" fo:margin-right="0cm"
-                                            fo:margin-bottom="0.25cm"/>
+            <style:header-footer-properties fo:min-height="0.2957in" fo:margin-left="0in" fo:margin-right="0in"
+                                            fo:margin-bottom="0.0984in"/>
          </style:header-style>
          <style:footer-style>
-            <style:header-footer-properties fo:min-height="0.751cm" fo:margin-left="0cm" fo:margin-right="0cm"
-                                            fo:margin-top="0.25cm"/>
+            <style:header-footer-properties fo:min-height="0.2957in" fo:margin-left="0in" fo:margin-right="0in"
+                                            fo:margin-top="0.0984in"/>
          </style:footer-style>
       </style:page-layout>
       <style:page-layout style:name="pm2">
          <style:page-layout-properties style:writing-mode="lr-tb"/>
          <style:header-style>
-            <style:header-footer-properties fo:min-height="0.751cm" fo:margin-left="0cm" fo:margin-right="0cm"
-                                            fo:margin-bottom="0.25cm"
-                                            fo:border="0.088cm solid #000000"
-                                            fo:padding="0.018cm"
+            <style:header-footer-properties fo:min-height="0.2957in" fo:margin-left="0in" fo:margin-right="0in"
+                                            fo:margin-bottom="0.0984in"
+                                            fo:border="0.0346in solid #000000"
+                                            fo:padding="0.0071in"
                                             fo:background-color="#c0c0c0">
                <style:background-image/>
             </style:header-footer-properties>
          </style:header-style>
          <style:footer-style>
-            <style:header-footer-properties fo:min-height="0.751cm" fo:margin-left="0cm" fo:margin-right="0cm"
-                                            fo:margin-top="0.25cm"
-                                            fo:border="0.088cm solid #000000"
-                                            fo:padding="0.018cm"
+            <style:header-footer-properties fo:min-height="0.2957in" fo:margin-left="0in" fo:margin-right="0in"
+                                            fo:margin-top="0.0984in"
+                                            fo:border="0.0346in solid #000000"
+                                            fo:padding="0.0071in"
                                             fo:background-color="#c0c0c0">
                <style:background-image/>
             </style:header-footer-properties>
@@ -280,7 +282,7 @@
             </style:region-left>
             <style:region-right>
                <text:p>
-                  <text:date style:data-style-name="N2" text:date-value="2011-04-22">2011.04.22</text:date>, <text:time>00:36:20</text:time> 
+                  <text:date style:data-style-name="N2" text:date-value="2011-04-23">04/23/2011</text:date>, <text:time>03:03:28</text:time> 
                </text:p>
             </style:region-right>
          </style:header>
@@ -320,10 +322,9 @@
                <table:table-cell office:value-type="string">
                   <text:p>Creating a Document Workspace</text:p>
                </table:table-cell>
-               <table:table-cell table:number-columns-repeated="2" office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
-               <table:table-cell/>
                <table:table-cell office:value-type="string">
                   <text:p>states:</text:p>
                </table:table-cell>
@@ -453,10 +454,10 @@
                <table:table-cell office:value-type="string">
                   <text:p>Deleting a document</text:p>
                </table:table-cell>
-               <table:table-cell table:number-columns-repeated="2" office:value-type="string">
+               <table:table-cell table:number-columns-repeated="3" office:value-type="string">
                   <text:p>working</text:p>
                </table:table-cell>
-               <table:table-cell table:number-columns-repeated="1021"/>
+               <table:table-cell table:number-columns-repeated="1020"/>
             </table:table-row>
             <table:table-row table:style-name="ro1">
                <table:table-cell office:value-type="string">
