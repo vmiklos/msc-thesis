@@ -20,7 +20,7 @@ class Handler:
 		self.basic_auth = False # try to use ntlm by default
 
 		if "--alfresco" in sys.argv:
-			self.url = "http://127.0.0.1:7070/alfresco"
+			self.url = "http://192.168.152.135:7070/alfresco"
 			self.user = 'admin'
 		else:
 			self.url = "http://vmiklos-sp:80"
