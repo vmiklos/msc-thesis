@@ -2750,3 +2750,30 @@ Bigger tasks:
 
 With this, the feature table is filled, so the extension should have all the
 features what the proto has. I tested it with native sharepoint only, though.
+
+== 12th week
+
+=== 2011-04-25
+
+Not in ULX due to Easter. I was trying to fire up Eclipse, LibreOffice and
+Alfresco on the same host for testing, but it seems somehow Alfresco eats up
+the memory in the JVM and that affects Eclipse / Alfresco as well. After some
+failed attempts, I gave up and moved Alfresco to a virtual machine.
+
+Features to test:
+
+- creating space: ok
+- checkout: ok
+- checkin: ok
+- checkin as minor/overwrite: won't work
+- get document: ok
+- put document: fixed, the problem was that only space, but not ':' etc was escaped
+- list versions: ok
+- open older: fixed, base path (/alfresco) was not handled correctly
+- restore version: ok
+- save as: ok
+- delete version: won't work
+- delete doc: ok
+- delete space: won't work
+
+And of course I tested that put document / open older still works with Sharepoint.
