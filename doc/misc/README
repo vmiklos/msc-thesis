@@ -2720,7 +2720,7 @@ about SharePoint and LibreOffice, I renamed the project & menu item to 'LPSP'.
 The commands to re-deploy the extension are still similar for LibreOffice, too:
 
 ----
-unopkg remove org.openoffice.legacy.LPSP.uno.pkg
+unopkg remove hu.vmiklos.lpsp
 unopkg add -v ~/documents/bme/diploma1/unohello/LPSP.uno.pkg
 rm /tmp/.~*test*.txt* /tmp/*test*.txt*; soffice -nologo -norestore
 ----
@@ -2777,3 +2777,29 @@ Features to test:
 - delete space: won't work
 
 And of course I tested that put document / open older still works with Sharepoint.
+
+=== 2011-04-26
+
+Writing JUnit4 tests. The following use cases are tested:
+
+- login
+- save as document
+- save document
+- save document with comment
+- open document
+- delete document
+- list versions
+- restore versions
+- open older
+
+A great guide about parameterized tests Junit4 tests:
+
+http://ourcraft.wordpress.com/2008/08/27/writing-a-parameterized-junit-test/
+
+So at the end now I have 18 testcases. :)
+
+I spent some time tidying up the extension itself, now the license is included
+in the extension and ULX is mentioned as a publisher. This way finally 'unopkg
+list' does not mention the extension as a legacy one.
+
+Next, I really want to begin writing the thesis.
