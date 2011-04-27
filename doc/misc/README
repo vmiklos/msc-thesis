@@ -2803,3 +2803,12 @@ in the extension and ULX is mentioned as a publisher. This way finally 'unopkg
 list' does not mention the extension as a legacy one.
 
 Next, I really want to begin writing the thesis.
+
+=== 2011-04-27
+
+I put out a binary to
+
+lpsp-0.1-230-g05db5e2.oxt
+
+I also constructed the latex skeleton of the thesis under `/doc/tex`, it
+includes the abstract already.
