@@ -1,0 +1,60 @@
+\documentclass[12pt,a4paper,oneside]{article}
+\usepackage[magyar, english]{babel}
+\ifx\magyarOptions\relax\else 
+  \PackageError{magyar.ldf}{http://www.math.bme.hu/latex/}{} 
+  \csname @@end\endcsname \fi
+\usepackage[latin2]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{float}
+\usepackage{listings}
+\lstset{
+breaklines=true,
+basicstyle=\footnotesize
+} 
+
+\let\stdsection\section
+\renewcommand\section{\clearpage\stdsection}
+
+% make \paragraph behave like \subsubsubsection
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{0mm} % name, level, indent
+{-\baselineskip} % beforeskip
+{0.5\baselineskip} % afterskip
+{\normalfont\bfseries}}%
+\makeatother
+\setcounter{secnumdepth}{4}% to get numbered subsections
+\setcounter{tocdepth}{4}% to add \paragraph to the ToC
+
+% avoid widow / orphan lines
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+
+\begin{document}
+\singlespacing
+\include{preliminaries}
+\onehalfspacing
+\include{abstract}
+\tableofcontents
+\newpage
+
+\include{introduction}
+
+\include{research}
+
+\include{planning}
+
+\include{implementation}
+
+\include {results}
+
+\bibliography{thesis}
+\bibliographystyle{unsrt}
+\addcontentsline{toc}{section}{References}
+
+\end{document}
