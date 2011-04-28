@@ -2815,12 +2815,12 @@ includes the abstract already.
 
 === 2011-04-28
 
-In ULX. OOo 3.3 + LPSP + ULX's alfresco server in sharepoint mode behaves
-oddly, it can't even list spaces. No usable error message on the console,
-either.  I'm installing OOo 3.3 on my machine to see if I can reproduce the
-problem. That doesn't make a difference, but when I connect to the ULX
-alfresco installation, I don't receive the workspace list, either.  OTOH, it
-works from Word2007 properly.
+In ULX (full day). OOo 3.3 + LPSP + ULX's alfresco server in sharepoint mode
+behaves oddly, it can't even list spaces. No usable error message on the
+console, either.  I'm installing OOo 3.3 on my machine to see if I can
+reproduce the problem. That doesn't make a difference, but when I connect to
+the ULX alfresco installation, I don't receive the workspace list, either.
+OTOH, it works from Word2007 properly.
 
 So the exact problem is that
 http://project.ulx.hu:7070/alfresco/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*
@@ -2842,3 +2842,25 @@ againt different to the documentation.
 Once I replaced the dir listing for the root dir with 'list documents', all
 seems to be fine. Updated binary at
 lpsp-0.1-238-g8803f2a.oxt
+
+Fun fact: I developed the extension under KDE - it seems that under GNOME you
+need to unset 'GNOME_DESKTOP_SESSION_ID' or you'll get a buggy "native" swing
+look. (Username and password textboxes will have zero width, for example.)
+
+I also had an in-person meeting with Gabor and Ivan, we had a review of the
+extension. They were pleased with it in general, but we collected a few
+annoying bugs, which should be addressed in this semester:
+
+- l10n: HU, EN (menu, java part)
+- hour glass for every long operation
+- sharepointexception (put document / delete document) -> gui window
+- Document repository (Dokumentumtár)
+- Restore -> Revert (+ open/close); HU: Visszaállítás
+- version list empty for some documents (need access to a document where i can reproduce this)
+- file picker: ".." (up one directory with keyboard)
+- file picker: long filenames: update label with _full_ filename
+
+From this list, I translated the menu + externalized strings in java sources so far.
+
+Finally I wrote the very begining of the thesis, a general introduction to
+document management systems.
