@@ -2812,3 +2812,33 @@ lpsp-0.1-230-g05db5e2.oxt
 
 I also constructed the latex skeleton of the thesis under `/doc/tex`, it
 includes the abstract already.
+
+=== 2011-04-28
+
+In ULX. OOo 3.3 + LPSP + ULX's alfresco server in sharepoint mode behaves
+oddly, it can't even list spaces. No usable error message on the console,
+either.  I'm installing OOo 3.3 on my machine to see if I can reproduce the
+problem. That doesn't make a difference, but when I connect to the ULX
+alfresco installation, I don't receive the workspace list, either.  OTOH, it
+works from Word2007 properly.
+
+So the exact problem is that
+http://project.ulx.hu:7070/alfresco/_vti_bin/owssvr.dll?location=&dialogview=FileOpen&FileDialogFilterValue=*.*
+returns HTTP 410. Wireshark says (see 20110428-list-documents.dump) that Office
+executes a 'list documents' RPC call if the above fails.
+
+To list the spaces, the RPC call is like this:
+
+----
+method=list documents:6.0.2.8117&service_name=/alfresco&listHiddenDocs=false&listExplorerDocs=false&listRecurse=false&listFiles=true&listFolders=true&listLinkInfo=false&listIncludeParent=true&listDerived=false&listBorders=false&listChildWebs=true&listThickets=true&initialUrl=
+----
+
+While this gives a cleaner answer, it works for the root dir only... The documentation:
+http://msdn.microsoft.com/en-us/library/ms479476.aspx
+says that the initialUrl parameter would allow listing workspaces, but in fact
+this is not true. The "" and "/" values generates different answers, which is
+againt different to the documentation.
+
+Once I replaced the dir listing for the root dir with 'list documents', all
+seems to be fine. Updated binary at
+lpsp-0.1-238-g8803f2a.oxt
