@@ -22,6 +22,9 @@ class Handler:
 		if "--alfresco" in sys.argv:
 			self.url = "http://192.168.152.135:7070/alfresco"
 			self.user = 'admin'
+		elif "--project" in sys.argv:
+			self.url = "http://project.ulx.hu:7070/alfresco"
+			self.user = 'vmiklos'
 		else:
 			self.url = "http://vmiklos-sp:80"
 			self.user = r'vmiklos-sp\Administrator'
@@ -43,7 +46,7 @@ class Handler:
 		try:
 			response = urllib2.urlopen(url = "http://%s:%s" % (self.host, self.port))
 		except urllib2.HTTPError, he:
-			if not 'NTLM' in he.hdrs['WWW-Authenticate']:
+			if (not 'www-authenticate' in he.hdrs.keys()) or (not 'NTLM' in he.hdrs['WWW-Authenticate']):
 				self.basic_auth = True
 
 		# log in
@@ -203,19 +206,66 @@ class Handler:
 		parser.close()
 		return parser.items
 
+	def parsefileopenroot(self, page):
+		class FileopenParser(SGMLParser):
+			def reset(self):
+				SGMLParser.reset(self)
+				self.items = {}
+				self.in_li = False
+			def start_li(self, attrs):
+				self.in_li = True
+			def handle_data(self, text):
+				url = text.strip().replace('url=', '')
+				if self.in_li and text.startswith('url=') and len(url):
+					self.items[self.url + "/" + url] = 'folder'
+					self.li = False
+		parser = FileopenParser()
+		parser.url = self.url
+		parser.reset()
+		parser.feed(page)
+		parser.close()
+		return parser.items
+
 	def select_remote_path(self):
 		path = self.path
+		headers = self.headers.copy()
+		headers['Content-Type'] = 'application/x-vermeer-urlencoded'
+		headers['X-Vermeer-Content-Type'] = 'application/x-vermeer-urlencoded'
 		# list folders
 		while True:
-			items = path.split('/')
+			items = path.replace(self.path, '').split('/')
 			path_space = "/".join(items[:2])
+			print "debug, path is '%s', path_space is '%s'" % (path, path_space)
 			path_location = urllib.quote("/".join(items[2:]))
-			response = self.urlopen("%s/_vti_bin/owssvr.dll?location=%s&dialogview=FileOpen&FileDialogFilterValue=*.*" % (path_space, path_location), headers = self.headers)
+			if path == self.path:
+				# run 'list documents'
+				params = self.urlencode([
+					('method', 'list documents:6.0.2.8117'),
+					('service_name', '/alfresco'),
+					('listHiddenDocs', 'false'),
+					('listExplorerDocs', 'false'),
+					('listRecurse', 'false'),
+					('listFiles', 'true'),
+					('listFolders', 'true'),
+					('listLinkInfo', 'false'),
+					('listIncludeParent', 'true'),
+					('listDerived', 'false'),
+					('listBorders', 'false'),
+					('listChildWebs', 'true'),
+					('listThickets', 'true'),
+					('initialUrl', '')
+					])
+				response = self.urlopen("%s/_vti_bin/_vti_aut/author.dll" % self.path, params+"\n", headers)
+			else:
+				response = self.urlopen("%s%s/_vti_bin/owssvr.dll?location=%s&dialogview=FileOpen&FileDialogFilterValue=*.*" % (self.path, path_space, path_location), headers = self.headers)
 			if response.code != 200:
 				raise Exception("failed to read dir '%s/'" % path)
 			# extract the list of folders from the html response
 			html = response.read()
-			itemlist = self.parsefileopen(html)
+			if path == self.path:
+				itemlist = self.parsefileopenroot(html)
+			else:
+				itemlist = self.parsefileopen(html)
 			print "available items:"
 			names = sorted(itemlist.keys())
 			for n in names:
