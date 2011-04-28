@@ -1,3 +1,66 @@
 \section{Introduction}
 
-FIXME Introduction with sample reference\cite{sample}.
+Nobody wants to loose work. Version control is a great idea to address this
+problem: users of the system are required to mark consistent states of the
+system, and then those states are committed to some kind of storage. Whenever
+the user realises there is a need to retrieve an older version of the artifact,
+the system can provide it.
+
+There are many different types of version control software. One widely known
+class of those is the one used by software developers: they are optimized to
+track the source code of a project. One class of those works in a centralized
+manner (Subversion\cite{subversion} is probably the most popular centralized
+solution), and there are many other version control projects which operate even
+in a distributed environment (Git\cite{git} is a good such example).
+
+An other type of similar software is usually referred as document management
+system. It focuses on project management, and because of that, it targets not
+only developers, but less technical users. That means usually it manages not
+source code files, but documents created by office suites such as Microsoft
+Office or LibreOffice.
+
+Managing such documents requires different operations, for example it makes
+little sense to make a document management server distributed -- on the other
+hand one would rarely send invitation links to retrieve source code files.
+Document management servers are rarely used by small companies, it's a typical
+enterprise product: it's optimised for large user base, and hardware
+requirements are usually not a problem, it's possible to dedicate a standalone
+machine to provide document management facilities.
+
+It's important to realise how important a GUI is for these users. A natural
+need is to access the document management operations directly from the office
+software, rather than saving documents to the local disk, opening a web browser
+and uploading or downloading files manually.
+
+Every enterprise environment consists of many products, usually produced by
+different vendors. Vendors come and go, and companies try to avoid vendor
+lock-in when choosing between alternative software products. As a consequence,
+the license of the products and of the communication protocols is a major
+factor during the evaluation of these products.
+
+The open-source licenses and development model plays an important role here. As
+long as a company receives source code with the binary of the product they use,
+they can invest time or money to the development of that software, which is not
+possible with closed source products. On the other hand, if a company plans to
+replace only a single component of a system to an open-source alternative, they
+need to make sure the new component is able to communicate with the old
+proprietary components.
+
+It is not the aim of this introduction to specify a feature list for an office
+suite to become enterprise-ready, but I want to point out the need of
+enterprise support in open-source office suites, which are clearly needs
+improving in the near future.
+
+FIXME A short general introduction about document workflows.
+
+The rest of this introduction is structured into two subsections. The first
+gives a brief introduction to already existing document management systems,
+while the second will introduce document workflow engines.
+
+\subsection{Document management}
+
+FIXME A bit longer introduction to document management.
+
+\subsection{Document workflows}
+
+FIXME A bit longer introduction to document workflows.
