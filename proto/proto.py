@@ -235,7 +235,6 @@ class Handler:
 		while True:
 			items = path.replace(self.path, '').split('/')
 			path_space = "/".join(items[:2])
-			print "debug, path is '%s', path_space is '%s'" % (path, path_space)
 			path_location = urllib.quote("/".join(items[2:]))
 			if path == self.path:
 				# run 'list documents'
