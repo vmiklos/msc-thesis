@@ -2864,3 +2864,31 @@ From this list, I translated the menu + externalized strings in java sources so 
 
 Finally I wrote the very begining of the thesis, a general introduction to
 document management systems.
+
+== 13th week
+
+=== 2011-05-02
+
+In ULX. Progress with the annoying bugs:
+
+- l10n: HU, EN (menu, java part) - done
+- hour glass for every long operation - done
+
+Next is to implement a GUI popup on usual errors:
+
+- opening an unknown document type (LO won't know how to open a .dsl file, for example)
+- saving a read-only document: this was quite complicated, as a parent
+  container is needed when showing a popup, but the parent here is a C++
+  window... So I just throw an exception from Java and catch it in Basic. But
+  there localization is not solved, so I had to throw a localized string, which
+  works now.
+- deleting a read-only document
+
+The menu rename was trivial - done
+
+Then I worked on the Version dialog's Revert button - to automatically reopen
+the new HEAD. I spent a lot of time on this, finally it turned out that all I
+need is to close and open the document, and that will reuse the active LO
+window.
+
+The remaining 3 items is left for tomorrow.
