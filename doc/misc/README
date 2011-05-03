@@ -2892,3 +2892,56 @@ need is to close and open the document, and that will reuse the active LO
 window.
 
 The remaining 3 items is left for tomorrow.
+
+=== 2011-05-03
+
+Meeting with Akos, discussed a better structure for the thesis:
+
+- Introduction [ 2 pages ]
+  
+  * putting into context
+  * raising problems
+  * "in the current thesis..." -> proposing a solution / presenting our solution in short
+  * structure of the paper
+
+- Background / Prerequisite [ 5 pages ]
+
+  * General architecture of document management systems 
+  * Related standards
+  * Concrete implementations: comparison of Sharepoint, Alfresco (with table)
+  * Maybe: about version control systems
+
+- Overview of the Approach [ 2-3 pages ]
+
+  * "Mega" figure (containing everything important) worflow <-> architecture
+
+- Design [ 8-10 pages ]
+
+  * class (maybe sequence) diagram
+  * description of UNO architecture
+
+- Implementation Details [ 3-5 pages ]
+
+  * 1-2 screenshots at max
+
+- Evaluation [ 2-3 pages ]
+
+  * service covering (what is supported and what not)
+
+- Related Work [ 1-2 pages ]
+
+- Conclusion and Future Work [ 1 page ]
+
+Total: 24-30 pages.
+
+Continued working on annoying bugs:
+
+- long file/folder names: need to ask again for an explicit reproducer, I can't reproduce the abbreviated behaviour
+- empty version list: same here, I did find a test document manually
+- up from keyboard: it turns out that the standard key is
+  http://www.zeigen.com/shortcuts/2007/08/02/up-directory/[backspace] for this,
+  I implemented this now
+
+I also fixed a bug: accidentally I localized even the configuration setting key
+names, which triggered a problem when loading saved settings after the locale
+has been changed.
