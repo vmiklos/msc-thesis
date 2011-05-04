@@ -2965,3 +2965,7 @@ epstopdf general-arch-of-doc-mgmt-systems.eps
 
 Finally finished the 'General architecture of document management systems'
 subsection of the 'Background' section.
+
+To help squashing the two leftover annoying bug, published a new binary at
+
+lpsp-0.1-267-gd505011.oxt
