@@ -2913,7 +2913,7 @@ Meeting with Akos, discussed a better structure for the thesis:
 
 - 3. Overview of the Approach [ 2-3 pages ]
 
-  * "Mega" figure (containing everything important) worflow <-> architecture
+  * "Mega" figure (containing everything important) workflow <-> architecture
 
 - 4. Design [ 8-10 pages ]
 
@@ -2959,8 +2959,8 @@ time (and not TikZ) for faster drawing. Documenting to self on how to crop
 exported pdf to be used from Latex:
 
 ----
-pdftops -eps general-arch-of-doc-mgmt-systems.pdf - | ps2eps > general-arch-of-doc-mgmt-systems.eps
-epstopdf general-arch-of-doc-mgmt-systems.eps
+pdftops -eps $name.pdf - | ps2eps > $name.eps
+epstopdf $name.eps
 ----
 
 Finally finished the 'General architecture of document management systems'
@@ -2979,3 +2979,6 @@ In ULX. Working on the two leftover annoying bug:
   ('%20' -> ' ', etc) -> fixed
 
 Updated binary: lpsp-0.1-272-g946bae0.oxt
+
+Back to the paper: finished the 'Background' section, started the 'Overview'
+one.

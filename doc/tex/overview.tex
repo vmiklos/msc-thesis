@@ -1,0 +1,56 @@
+\section{Overview of the Approach}
+
+I decided to focus on the client side in this thesis. So I discuss the case
+here when an enterprise company tries to replace the client part of the
+document management system with an open-source alternative, while keeping the
+existing proprietary server-side part of the system. As a consequence, the
+center of my approach the client, the document management part of the client,
+to be more exact:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=250px,keepaspectratio]{overview-architecture.pdf}
+\caption{Architecture of the approach}
+\end{figure}
+
+Components of the above example can be replaced, for example the Alfresco (with
+its Sharepoint module) can be used in place of Sharepoint, and OpenOffice.org
+can be used in place of LibreOffice. The Sharepoint server, the office
+productivity suite is already present.
+
+By observing the network traffic between the Sharepoint server and a native
+Microsoft Office, the protocol can be also known. As mentioned earlier, the
+documentation on its own is not enough, as it's not complete\footnote{And it's
+purely a reference, there are no guide or tutorial to get started.}.
+
+Finally at this stage the only remaining component is the Sharepoint extension
+in LibreOffice what is missing, and my approach creates that.
+
+Note that Alfresco already has an OpenOffice.org extension called
+OPAL\cite{opal}. That naturally uses Alfresco's native protocol to communicate
+with the server. The following major changes are needed to make to suit our
+needs:
+
+\begin{itemize}
+\item It's intended to be used with OpenOffice.org 3.1 -- the last stable
+version of OpenOffice.org is 3.3, and it won't work with this version. The
+oldest stable release of LibreOffice is based on OpenOffice.org 3.3 as well, so
+poring the extension to 3.3 is essential to make it working at all with
+LibreOffice.
+\item It works by installing an additional module on the Alfresco server, so
+the business logic is minimal in the extension. My approach is to communicate
+without any server-side component installations required.
+\item The Sharepoint protocol supports more than Alfresco, the user interface
+has to be extended to cover the new features.
+\item Finally the used protocol has to be changed: by using the Sharepoint
+protocol, the extension can communicate with both Sharepoint and Alfresco,
+covering a lot from today's enterprise document management server
+installations.
+\end{itemize}
+
+Now that we understood what component we want to create and from where, it's
+essential to see what workflow the document management clients take part in:
+
+FIXME figure with the workflow of sharepoint operations
+
+FIXME describing each step of that workflow
