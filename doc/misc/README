@@ -2969,3 +2969,13 @@ subsection of the 'Background' section.
 To help squashing the two leftover annoying bug, published a new binary at
 
 lpsp-0.1-267-gd505011.oxt
+
+=== 2011-05-05
+
+In ULX. Working on the two leftover annoying bug:
+
+- Fedora JList abbreviates entries for some reason, I added a workaround for that
+- version get / restore / delete soap requests should send decoded filenames
+  ('%20' -> ' ', etc) -> fixed
+
+Updated binary: lpsp-0.1-272-g946bae0.oxt
