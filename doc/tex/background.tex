@@ -65,3 +65,60 @@ As a result, I paid attention in my solution to not require such additional
 server-side component installation.
 
 \subsection{Related standards}
+
+The specification called Content Management Interoperability
+Services\cite{cmis} is created to address compatibility issues between various
+document management server implementations. OASIS approved it on May 1, 2010,
+so it's relatively new. Also, at the time of writing implementation is far from
+complete among major document management servers. Alfresco 3.3 implements the
+client side only, Sharepoint 2007 does not support it yet, so at the moment
+it's a vision that all major document servers will implement this
+specification.
+
+On the other hand, there are a lot of implementations in other products, such
+as IBM Lotus Connections 3.0\cite{lotus} (server side only) or TYPO3 (client
+and server side).
+
+CMIS has two main goals:
+
+\begin{itemize}
+\item Providing a list of web service (SOAP) interfaces, it's language-independent.
+\item It allows separating the service and content, making it possible to
+implement services for legacy document repositories without modifying them.
+\end{itemize}
+
+To achieve this, it defines a domain model, describing the following data model
+elements:
+
+\begin{itemize}
+\item repository: a container
+\item object: common ancestor for document, folder, relationship and policy objects
+\item object-type: a set of properties, all instances of a type have those
+\item document object: the document entities managed by the repository
+\item folder object: container for file objects
+\item relationship object: representing links between objects
+\item policy object: policies enforced by a repository
+\item access control: consists of pre-defined permissions and allows defining new ones
+\item versioning: versions document objects (other object types are not allowed)
+\item query: type-based query to list objects matching a specified criteria
+\item change log: changes to objects since a given timestamp
+\end{itemize}
+
+Then -- using this data model -- it specifies services to operate on them:
+
+\begin{itemize}
+\item common service elements: includes paging, exception handling
+\item repository services
+\item navigation services
+\item object services: includes factory functions for different object types
+\item multi-filing services: makes it possible to add/remove objects to folders
+\item discovering services: to search query-able objects within a repository
+\item versioning services: includes check in, check out, cancel checkout, get
+	versions
+\item relationship services: provides the relationships of an object
+\item policy services: apply and remove policies, list applied ones
+\item ACL services: get and apply an ACL
+\end{itemize}
+
+Finally it explains concrete syntaxes: the Restful AtomPub Binding and the Web
+Services (SOAP) binding.
