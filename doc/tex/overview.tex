@@ -51,6 +51,33 @@ installations.
 Now that we understood what component we want to create and from where, it's
 essential to see what workflow the document management clients take part in:
 
-FIXME figure with the workflow of sharepoint operations
+\begin{figure}[H]
+\centering
+\includegraphics[width=300px,keepaspectratio]{overview-workflow.pdf}
+\caption{Workflow of the approach}
+\end{figure}
 
-FIXME describing each step of that workflow
+The workflow has the following steps:
+
+\begin{itemize}
+\item Create workspace: It creates a document workspace, which is the top-level
+container for any document stored on the document management server.
+\item Browse workspace: An existing workspace can be browsed, and a documents
+can be put to workspaces.
+\item Delete workspace: It's possible to get rid of no longer needed workspaces.
+\item Put document: After selecting a target folder (using browse), a document
+can be uploaded.
+\item Get document: Existing documents can be downloaded for viewing or editing.
+\item Remove document: Unneeded documents can be removed individually.
+\item List versions: Every upload of a document may (depending on its type)
+create a new version of the document. We can retrieve the list of this change log.
+\item View previous version: older instances of a document can be viewed
+read-only anytime.
+\item Restore version: it's possible to revert all changes after a given
+version with this step.
+\item Delete version: older versions can be deleted.
+\end{itemize}
+
+In this section, I shown what component of the document management system I
+plan to implement. The next section will describe how the implementation is
+designed to happen.
