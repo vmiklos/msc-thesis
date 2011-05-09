@@ -1,0 +1,17 @@
+*.swp
+*.png
+*.gif
+*.jpg
+*.aux
+*.make
+*.dvi
+*.fls
+*.log
+*.pdf
+*.d
+*.ps
+*.toc
+*.temp
+*.nav
+*.out
+*.snm

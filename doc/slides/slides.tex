@@ -1,0 +1,133 @@
+\documentclass{beamer}
+\author{Vajna Miklós}
+
+\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!25]
+
+\usetheme{Warsaw}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}[page number]
+\setbeamersize{text margin left=0.5cm}
+  
+\usepackage[magyar, english]{babel}
+
+\usepackage{times}
+\usepackage[latin2]{inputenc}
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+\title{Nyílt forráskódú irodai programkomponensek vállalati környezetbe való integrációjának vizsgálata és implementációja}
+\date{2011. május 12.}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Bevezetõ}
+\begin{itemize}
+\item Szoftverfejlesztéshez már bevett eszköz manapság a verziókezelõ használata.
+\item Ezek elõnyeit szélesebb körben, technikai elõképzettséggel nem rendelkezõ felhasználók is szeretnék élvezni.
+\item Erre nyújtanak megoldást a dokumentummenedzsment rendszerek.
+\item A kliensek nyílt forráskódú migrációját nehezíti, ha nem tudnak ezekkel a rendszerekkel kommunikálni.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Motiváció}
+\begin{itemize}
+\item Az egyik legelterjedtebb dokumentummenedzsment rendszer a Sharepoint.
+\item Létezik nyílt forráskódú alternatívája, pl. Alfresco.
+\item Ehhez létezik OpenOffice.org extension.
+\item Írjuk át az OpenOffice.org extensiont, hogy Sharepointtal tudjon kommunikálni!
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Feladat leírása}
+\begin{itemize}
+\item Sharepoint funkcionalitás felmérése.
+\item OpenOffice.org extension készítés elsajátítása.
+\item Létezõ extension átírása Sharepointtal való mûködésre.
+\item Alfrescohoz és Sharepointhoz lehessen egyidejûleg kapcsolódni.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Megoldott feladatok}
+\framesubtitle{Sharepoint funkcionalitás felmérése}
+%\begin{figure}[H]
+%\includegraphics[width=55mm,keepaspectratio]{testarch.eps}
+%\end{figure}
+\begin{itemize}
+\item Hitelesítés: HTTP Basic, NTLM.
+\item Használt protokollok: Vermeer RPC, SOAP.
+\item Használati esetek gyûjtése:
+\begin{itemize}
+\item Workspace létrehozás, törlés.
+\item Megnyitás, mentés.
+\item Verziók létrehozása, listázása, törlése, visszaállítása.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Megoldott feladatok}
+\framesubtitle{OpenOffice.org extension készítés elsajátítása}
+
+Komplex rendszer, kb. 8 millió kódsor a termék (fõleg C++).
+
+Környezet:
+
+\begin{itemize}
+\item Linux (de: Windows, OSX is)
+\item Eclipse 3.5
+\item OpenOffice.org 3.2.1, majd LibreOffice 3.3
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Megoldott feladatok}
+\framesubtitle{Létezõ extension átírása Sharepointtal való mûködésre}
+\begin{itemize}
+\item Protokoll visszafejtése: Wireshark, vázlatos referencia MSDN-rõl.
+\item Megfigyelt rendszer: Microsoft Office 2007, Microsoft Sharepoint 2007.
+\item OPAL (OpenOffice Plugin for Alfresco) Java kódjának átírása Sharepointhoz.
+\item Különálló Sharepoint library.
+\item Szerveroldali komponens telepítése nem szükséges.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Megoldott feladatok}
+\framesubtitle{Alfrescohoz és Sharepointhoz lehessen egyidejûleg kapcsolódni}
+%\begin{figure}[H]
+%\includegraphics[width=40mm,keepaspectratio]{7_69a4ab34.eps}
+%\end{figure}
+\begin{itemize}
+\item Ahol szerver oldalon migráltak, ott általában Alfresco-ra.
+\item Cél: ha a klienseket korábban migrálják, a szerveroldali migráció után változatlanok maradhassanak a kliensek.
+\item Megoldás: VTI modul Alfresco-hoz, Sharepoint protokoll szerveroldali implementációja.
+\item Problémák: hiányos implementáció.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Jövõbeli lehetõségek}
+\begin{itemize}
+\item Jogosultságkezelés, linkek, taskok kezelése.
+\item CMIS: Content Management Interoperability Services.
+\item GUI többszálúsítása.
+\item Natív filepickerek használata.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Összefoglalás}
+\begin{itemize}
+\item A félév során egy -- nyílt forráskódú irodai programcsomagból használható -- egyszerû Sharepoint kliens készült el.
+\item Ennek részeként elkészült egy különállú Sharepoint Java kliens könyvtár, mely korábban nem volt elérhetõ.
+\item Használatához szerveroldali komponens telepítése nem szükséges.
+\item Több platformon (OpenOffice, LibreOffice) fut, operációs rendszerek közötti hordozhatóságát a Java biztosítja.
+\end{itemize}
+\end{frame}
+\end{document}
