@@ -46,3 +46,31 @@ Once the jar package is ready, a zip archive is created, containing:
 \item metamodel of the stored settings
 \item other files: metadata, extension description, license, etc.
 \end{itemize}
+
+Now that we saw the concept of UNO components and the structure of an
+extension, the rest of this section describes the design of the UNO
+specifications and Java implementations provided by the extension.
+
+\subsection{The Sharepoint library}
+
+At the time of writing, there is no ready to use Java library to communicate
+with a Sharepoint server. Because of this, I decided to separate the Sharepoint
+protocol implementation from the LibreOffice-specific part of the extension to
+make it reusable in other projects. It provides the following features:
+
+\begin{itemize}
+\item \emph{Handler}: Handles requests from a frontend. Unless a feature has a
+specific class, it is implemented here.
+\item \emph{PacketParser}: Extracts the error message from a Vermeer
+RPC\cite{vermeer} response packet.
+\item \emph{FileOpenRootParser}: Parses the result from the \emph{list
+workspaces} request.
+\item \emph{FileOpenParser}: Parses the result from the \emph{list directory of
+a workspace} request.
+\item \emph{LastModParser}: Parses the result from the \emph{get last
+modification date} request.
+\item \emph{Version}: Handles document versions.
+\item \emph{Messages}: Provides localization for the library error messages.
+\item \emph{HandlerTest}: Automatically tests all features on a given server
+using JUnit.
+\end{itemize}
