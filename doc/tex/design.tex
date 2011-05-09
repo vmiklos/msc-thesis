@@ -1,0 +1,31 @@
+\section{Design}
+
+\subsection{UNO compontents}
+
+My solution will be a LibreOffice extension that registers an UNO\cite{uno}
+component. UNO is the interface based component model of LibreOffice. The main
+feature it provides is that interfaces are defined in a language-idependent
+IDL-like language, and they can be implemented in multiple languages:
+
+\begin{itemize}
+\item C
+\item C++
+\item Python
+\item Java
+\item BASIC
+\end{itemize}
+
+The caller is not aware which language the implementation uses, and it does not
+need to, either. In my extension, I call BASIC macros from the menu elements,
+which invoke the underlying Java code, where the business logic is implemented.
+
+All the Java code is contained by a single jar file, the workflow of creating
+it is the following:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=250px,keepaspectratio]{uno-java.pdf}
+\caption{Workflow of implementing an UNO service in Java}
+\end{figure}
+
+Foo.
