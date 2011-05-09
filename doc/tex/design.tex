@@ -84,3 +84,41 @@ An UML class diagram showing these classes is available on the next page.
 \end{figure}
 
 \subsection{The UNO interfaces}
+
+The UNO interfaces are reused from the already referenced OPAL (OpenOffice
+Plugin for Alfresco) extension. Many of them contains the \emph{Alfresco} word,
+referring to the underlying protocol. I did not change the interface name
+(since they are not visible to the user), however of course I changed the
+underlying implementation.
+
+It's an UNO convention that interfaces start with a capital X. The following
+interfaces are provided by the extension:
+
+\begin{itemize}
+\item \emph{XAlfrescoFilePicker}: an open/save as file picker.
+\item \emph{XAlfrescoVersions}: a versions dialog.
+\item \emph{XAlfrescoDocument}: a document received from the
+Sharepoint server.
+\item \emph{XAlfrescoDocumentManager}: a storage for XAlfrescoDocument instances.
+\item \emph{XAuthenticationManager}: a handler for different authentication mechanisms.
+\item \emph{XConnection}: a connection to a Sharepoint server.
+\end{itemize}
+
+The extension provides a single exception type -- \emph{AlfrescoException} --
+when it throws errors.
+
+It also provides a single enumeration type -- \emph{FileTypes} -- to declare
+the list of LibreOffice applications it handles. (It's current value is:
+Writer, Calc, Impress and Draw.)
+
+UNO services are interfaces containing static methods only.  The following
+services are provided by the extension:
+
+\begin{itemize}
+\item \emph{AlfrescoDocument}: factory for XAlfrescoDocument.
+\item \emph{Connection}: implementation for XConnection.
+\item \emph{theAlfrescoDocumentManager}: singleton for XAlfrescoDocumentManager.
+\item \emph{theAuthenticationManager}: singleton for XAuthenticationManager.
+\item \emph{AlfrescoFilePicker}: implementation for XAlfrescoFilePicker.
+\item \emph{AlfrescoVersions}: implementation for XAlfrescoVersions.
+\end{itemize}
