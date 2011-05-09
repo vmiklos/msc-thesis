@@ -56,7 +56,7 @@ specifications and Java implementations provided by the extension.
 At the time of writing, there is no ready to use Java library to communicate
 with a Sharepoint server. Because of this, I decided to separate the Sharepoint
 protocol implementation from the LibreOffice-specific part of the extension to
-make it reusable in other projects. It provides the following features:
+make it reusable in other projects. It provides the following classes:
 
 \begin{itemize}
 \item \emph{Handler}: Handles requests from a frontend. Unless a feature has a
@@ -74,3 +74,13 @@ modification date} request.
 \item \emph{HandlerTest}: Automatically tests all features on a given server
 using JUnit.
 \end{itemize}
+
+An UML class diagram showing these classes is available on the next page.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=425px,keepaspectratio]{design-splib.png}
+\caption{Classes of the Sharepoint library}
+\end{figure}
+
+\subsection{The UNO interfaces}
