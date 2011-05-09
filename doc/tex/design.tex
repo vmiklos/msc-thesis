@@ -28,4 +28,21 @@ it is the following:
 \caption{Workflow of implementing an UNO service in Java}
 \end{figure}
 
-Foo.
+\begin{itemize}
+\item \emph{idlc} compiles the .idl files to UNO Resource Descriptors,
+\item \emph{regmerge} merges all the .urd files of the component to a single Resource Database,
+\item \emph{javamaker} creates interfaces (.class files) from the Resource Database,
+\item finally the standard Java development tools (\emph{javac}, \emph{jar})
+creates the final jar, including the Java implementation.
+\end{itemize}
+
+Once the jar package is ready, a zip archive is created, containing:
+
+\begin{itemize}
+\item \emph{Addons.xcu}, containing the menu items
+\item the BASIC library (callbacks for the menu items)
+\item Java libraries used by the Java implementation
+\item the Java implementation
+\item metamodel of the stored settings
+\item other files: metadata, extension description, license, etc.
+\end{itemize}
