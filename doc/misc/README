@@ -2994,3 +2994,18 @@ Finished the 'Overview' section.
 In ULX. Worked on the 'Design' section, about the first half of it is ready.
 
 Prepared slides for 12th.
+
+=== 2011-05-11
+
+Meeting with Akos. Suggestions for the slides:
+
+- 'environment' should go to the end, before 'future work' [done]
+- workflow integration as a 'future work' item [done]
+- translate figures to Hungarian [done]
+- make the figures transparent [solved by printing to postscript file, then ps2eps and epstopdf]
+- 'what is not supported' should be on the slides to be correct [done]
+- merge the last two slides to a single one [done]
+
+Other tasks:
+- mail Akos about MIT SVN: it'll be a mirror of the ULX one.
+- thesis: uml class diagram (including all methods) is useless, we need a package diagram instead (own sp lib + uno idl)
