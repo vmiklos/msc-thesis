@@ -125,4 +125,83 @@ services are provided by the extension:
 
 \subsection{User Interface}
 
-FIXME
+The user interface lives in the \emph{ft.starxpert.opal.comp} package, based on
+the original OPAL extension. The classes of the user interface are organized in
+4 Java packages:
+
+\begin{itemize}
+\item \emph{ft.starxpert.opal.comp.model}: a model for the folder and document
+structure, used by the file pickers (\emph{open} and \emph{save as} dialog
+windows).
+\item \emph{ft.starxpert.opal.comp.ui}: contains the dialog classes.
+\item \emph{ft.starxpert.opal.comp.util}: miscellaneous utility classes for UNO and localization.
+\item \emph{ft.starxpert.opal.comp}: classes implementing the rest of UNO
+services: authentication manager, document manager, document, connection, etc.
+\end{itemize}
+
+The user interface dialogs are reachable from the \emph{Document repository}
+menu item, which is registered by the \emph{Addons.xcu} configuration file,
+which is a standard configuration file of LibreOffice extensions.
+
+The following menu items are designed:
+
+\begin{itemize}
+\item Connection: force connecting to an other document management server, even
+if the user is already connected.
+\item Open: downloads an existing document from the server.
+\item Close: discards the local copy of a downloaded document.
+\item Save: save the document model and upload the saved local copy to the server.
+\item Save as: upload the local document to the server using a new name.
+\item Versions: management of document versions.
+\end{itemize}
+
+The menu items call BASIC macros, which invoke UNO services. Those services are
+finally implemented in the Java user interface.
+
+The macros are split into two packages: the ones directly called by the menu
+items, and the other utility macros.
+
+The menu items call the following macros (\emph{OPAL.menu} package):
+
+\begin{itemize}
+\item getConnection: shows the Connection dialog.
+\item openFile: shows the File Open dialog.
+\item closeFile: closes the current document via the document manager, the
+already registered close listener will handle the cleanup of the local document
+copy.
+\item saveFile: saves the document via the document manager.
+\item saveAsFile: shows the Save As dialog.
+\item openVersion: shows the dialog listing versions of the document.
+\end{itemize}
+
+The following ones are the utility macros (\emph{OPAL.utils} package):
+
+\begin{itemize}
+\item getDocumentManager: returns the document manager singleton.
+\item getAuthenticationManager: returns the document manager singleton.
+\item getCurrentAlfrescoDocument: asks the document model of the current LibreOffice component (Writer document, Calc spreadsheet, etc.) from the document manager.
+\item getCurrentConnection: asks the current connection from the authentication manager.
+\end{itemize}
+
+The BASIC macros invoke the following UNO Services:
+
+\begin{itemize}
+\item Connection: calls \emph{theAuthenticationManager::execute()}.
+\item Open: calls \emph{AlfrescoFilePicker::execute()} with \emph{IsOpen = true}.
+\item Close: calls \emph{theAlfrescoDocumentManager::getAlfrescoDocument()}, \\ then the \emph{close} method on the returned result.
+\item Save: calls \emph{theAlfrescoDocumentManager::getAlfrescoDocument()}, \\ then the \emph{save} method on the returned result.
+\item Save as: calls \emph{AlfrescoFilePicker::execute()} with \emph{IsOpen = false}.
+\item Versions: calls \emph{AlfrescoVersions::execute()}
+\end{itemize}
+
+At this point, we know the user interface entry points in our Java
+implementation. As mentioned above, Java bytecode for the UNO services are
+automatically generated (by \emph{javamaker}). Now one may ask: how does the
+stub know where is the real implementation? This is handled by the
+\emph{RegistrationHandler} class. The list of implementation classes
+implementing a UNO service is in the \emph{RegistrationHandler.classes} file.
+Each implementation class specifies what service does it implement, then the
+registration handler collects this information and returns to UNO, when it is
+asked. Finally, the \emph{RegistrationClassName:} header in the
+\emph{META-INF/MANIFEST.MF} file of the Jar package defines the registration
+handler class name.
