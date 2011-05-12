@@ -3009,3 +3009,14 @@ Meeting with Akos. Suggestions for the slides:
 Other tasks:
 - mail Akos about MIT SVN: it'll be a mirror of the ULX one.
 - thesis: uml class diagram (including all methods) is useless, we need a package diagram instead (own sp lib + uno idl)
+
+== 2011-05-12
+
+In ULX. Finished the 'Design' section.
+
+Had a review with Gabor and Ivan, they were pleased with the results, except:
+
+- Version listing menu item should give a usable error message when no document is opened [fixed]
+- They wish an ULX logo on the connection dialog [done]
+
+Worked on the 'Implementation' section, then gave a presentation at BME.
