@@ -205,3 +205,42 @@ registration handler collects this information and returns to UNO, when it is
 asked. Finally, the \emph{RegistrationClassName:} header in the
 \emph{META-INF/MANIFEST.MF} file of the Jar package defines the registration
 handler class name.
+
+As a result, the following entry points are designed in the Java
+implementation:
+
+\begin{itemize}
+\item Connection: \emph{AuthenticationManagerImpl.execute()}
+\item Open: \emph{AlfrescoFilePickerImpl.execute()}
+\item Close: \emph{AlfrescoDocumentManagerImpl.getAlfrescoDocument()}, \\ then \emph{AlfrescoDocumentImpl.close()}
+\item Save: \emph{AlfrescoDocumentManagerImpl.getAlfrescoDocument()}, \\ then \emph{AlfrescoDocumentImpl.save()}
+\item Save as: \emph{AlfrescoFilePickerImpl.execute()}
+\item Versions: \emph{AlfrescoVersionsImpl.execute()}
+\end{itemize}
+
+These classes contain all the business logic and they call the Sharepoint
+library for communication. The dialog windows are separated from UNO
+interfaces, they are always implemented in separate classes. Given that there
+are common tasks for all of our user interface dialogs, there is a common
+ancestor for all of them, called \emph{AbstractDialog}.
+
+The following dialog classes are included in the \emph{ui} package:
+
+\begin{itemize}
+\item Connection: \emph{ConnectionDialog} (connect dialog), \\
+\emph{ConfigServerDialog} (server list), \\ \emph{ServerDialog} (settings for an
+individual target)
+\item Open, save as: \emph{FilePickerDialog}
+\item Close: None.
+\item Save: \emph{CommentVersionDialog}
+\item Versions: \emph{VersionsDialog}
+\end{itemize}
+
+An UML class diagram showing these classes is available on the next page.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=425px,keepaspectratio]{design-spui.png}
+\caption{Classes of the user interface}
+\end{figure}
+
