@@ -53,6 +53,18 @@ specifications and Java implementations provided by the extension.
 
 \subsection{The Sharepoint library}
 
+The Java implementation is split to two parts, the Sharepoint library and the
+user interface. The previous lives under the \emph{hu.vmiklos.lpsp} namespace,
+the other does so under \emph{fr.starxpert.opal}.
+
+An UML package diagram showing these packages is available on the next page.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=425px,keepaspectratio]{design-packages.png}
+\caption{Packages of the Sharepoint extension}
+\end{figure}
+
 At the time of writing, there is no ready to use Java library to communicate
 with a Sharepoint server. Because of this, I decided to separate the Sharepoint
 protocol implementation from the LibreOffice-specific part of the extension to
@@ -74,14 +86,6 @@ modification date} request.
 \item \emph{HandlerTest}: Automatically tests all features on a given server
 using JUnit.
 \end{itemize}
-
-An UML class diagram showing these classes is available on the next page.
-
-\begin{figure}[p]
-\centering
-\includegraphics[width=425px,keepaspectratio]{design-splib.png}
-\caption{Classes of the Sharepoint library}
-\end{figure}
 
 \subsection{The UNO interfaces}
 
@@ -243,4 +247,3 @@ An UML class diagram showing these classes is available on the next page.
 \includegraphics[width=425px,keepaspectratio]{design-spui.png}
 \caption{Classes of the user interface}
 \end{figure}
-
