@@ -129,4 +129,23 @@ Alfresco, due to the shortcomings of their Sharepoint implementation):
 \caption{Implementation of version restore and delete}
 \end{figure}
 
-Foo.
+The last challenge was the localization of error messages in BASIC. It does not
+support any kind of localization. What it supports is the following technique:
+
+\begin{lstlisting}
+Sub openVersion
+...
+        On Error GoTo errAlfDoc
+        oVersion.execute()
+        Exit Sub
+
+        errAlfDoc:
+                MsgBox(oVersion.ErrorReason)
+                Exit Sub
+End Sub
+\end{lstlisting}
+
+The \emph{On Error} part can hide any kind of exception thrown by Java, and as
+long as the Java side calls \emph{setErrorReason()} on the
+\emph{AlfrescoVersionsImpl} object before throwing an exception, the user gets
+a friendly error message, which is even localized.
