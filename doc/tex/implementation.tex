@@ -5,7 +5,7 @@ This section is split to three parts:
 \begin{itemize}
 \item The first explains the prototype I wrote.
 \item The second details implementation challenges when realizing the designed extension and using external libraries.
-\item The third shows the usage of the extension from a user's point of view, with screenshots.
+\item The third shows changes in the extension visible from a user's point of view, with screenshots.
 \end{itemize}
 
 \subsection{The prototype}
@@ -96,3 +96,25 @@ this response. To solve this issue, I used TagSoup\cite{tagsoup}, which is a
 SAX parser, accepting plain old HTML input.
 
 \subsection{User Interface}
+
+Once the Sharpeoint Library was ready, I updated the user interface to use the
+Sharepoint library for communication. I also had to extend the dialogs to allow
+a few more features. Namely:
+
+\begin{itemize}
+\item Create and delete document workspaces.
+\item Delete documents.
+\item Delete and restore versions.
+\item When saving a document, allow: minor change with a comment and overwrite of a previous version.
+\end{itemize}
+
+For example, creating a new document workspace is implemented as can be seen
+here:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=275px,keepaspectratio]{implementation-createdws.png}
+\caption{Implementation of creating a document workspace}
+\end{figure}
+
+Foo.
