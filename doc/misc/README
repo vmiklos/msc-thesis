@@ -3020,3 +3020,8 @@ Had a review with Gabor and Ivan, they were pleased with the results, except:
 - They wish an ULX logo on the connection dialog [done]
 
 Worked on the 'Implementation' section, then gave a presentation at BME.
+
+Akos asked to have a mirror of the SVN repo I have at ULX at
+https://svn.inf.mit.bme.hu/student/onlab/trunk/vmiklos/
+
+This is done now.
