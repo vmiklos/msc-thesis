@@ -3025,3 +3025,18 @@ Akos asked to have a mirror of the SVN repo I have at ULX at
 https://svn.inf.mit.bme.hu/student/onlab/trunk/vmiklos/
 
 This is done now.
+
+== 2011-05-13
+
+Updated the logo: now it has a transparent background.
+
+Mirroring the SVN repo to MIT is done by (`svnsync` won't work as the MIT repo
+is used by others as well):
+
+----
+git fetch ~/git/diploma1
+for i in $(git cherry master FETCH_HEAD|grep ^+|sed 's/^+ //'); do git cherry-pick $i || break; done
+git svn dcommit
+----
+
+Worked on the 'Evaluation' section.
