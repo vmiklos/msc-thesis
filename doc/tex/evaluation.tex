@@ -5,7 +5,13 @@ page~\pageref{tab:background-comparison} as a starting point and check what
 features are implemented and what are not.
 
 The testing environment was built from a client machine, a Sharepoint server
-and an Alfresco server.
+and an Alfresco server:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=300px,keepaspectratio]{test-arch.pdf}
+\caption{Architecture of the test system}
+\end{figure}
 
 The client machine had the following details:
 \begin{itemize}
@@ -50,3 +56,16 @@ Regarding localization, all user-visible strings are externalized to Java
 property files. During development I paid attention to English strings, then at
 the end as a demonstration I created the Hungarian translation as well. Adding
 new translations is easy.
+
+Finally, the extension inherited some of its limitation from the original OPAL
+codebase:
+
+\begin{itemize}
+\item I decided not to bother with renaming namespaces, so untouched code still
+lives under \emph{fr.starxpert}, which may cause a problem if one wants to use
+my extension and OPAL at the same time.
+\item The \emph{commons-httpclient} jar is still part of the project, though it is not used in fact.
+\item The GUI is not started in a separate thread in all cases, resulting the
+lack of the update of the user interface background in many cases.
+\item Classes I did not touch still have French comments inside.
+\end{itemize}
