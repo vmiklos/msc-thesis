@@ -3030,6 +3030,8 @@ This is done now.
 
 Updated the logo: now it has a transparent background.
 
+Binary: lpsp-0.1-313-g5bfe1fc.oxt
+
 Mirroring the SVN repo to MIT is done by (`svnsync` won't work as the MIT repo
 is used by others as well):
 
