@@ -1,0 +1,46 @@
+\section{Conclusion and Future Work}
+
+When I started working on this solution, I already had some knowledge about
+LibreOffice, but nothing about developing extensions for it. Also, the testing
+architecture presented in section 6 was available for evaluation. My aim was to
+look up similar solutions, learn what approach do they use for the already
+solved sub-problems, finally design a solution that meets the analysed
+requirements.
+
+When I finished the design of the solution, it was clear that creating a
+LibreOffice extension that has the required properties is certainly possible,
+and I also implemented support for the most important use-cases.
+
+As already discussed above, the most important weakness of the solution is that
+it focuses only on the core functionality:
+
+\begin{itemize}
+\item As part of error handling, it presents permission errors to the user, but
+changing permissions is not possible from the extension.
+\item Managing users, tasks and links is yet to be designed and implemented.
+\end{itemize}
+
+Not ignoring the shortcomings, I can still conclude that the created solutions
+makes migrating office productivity suites to open-source alternatives easier,
+which was my initial goal.
+
+There are some implementation and design issues that need to be addressed,
+however in the future:
+
+\begin{itemize}
+\item It was a design decision that I focused on document workspaces only,
+however there are other areas to improve in LibreOffice for enterprise
+environments, for example to design better integration with workflow management
+-- when one node of a workflow completes once a user edited a complex document.
+(Doing such an operation is usually not possible from a web browser if the
+document is complex enough.)
+\item An implementation improvement would be to review the inherited codebase
+and make sure that the user interface runs in a separate thread in all cases.
+Currently there are cases when the user interface is not repainted due to
+waiting for an input from the user.
+\item Using LibreOffice's filepickers instead of reinventing our own would
+result in a more consistent user experience.
+\item Once CMIS will be widely implemented by proprietary document management
+servers, it would make sense to use the CMIS protocol for client-server
+communication instead of the native Sharepoint one.
+\end{itemize}
