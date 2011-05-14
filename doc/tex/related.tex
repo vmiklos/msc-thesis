@@ -1,0 +1,48 @@
+\section{Related Work}
+
+We already saw that there is no solution today (except my extension) that is
+open-source, requires no additional server-side installation and communicates
+with a Microsoft Sharepoint server. However there are similar projects, which
+-- even if they solve a sightly different problem -- may provide excellent
+ideas to borrow.
+
+\subsection*{OPAL}
+I already introduced OPAL, which is open-source, but:
+
+\begin{itemize}
+\item Requires server-side modifications.
+\item Works with an Alfresco server.
+\item Not really maintained (does not work with latest stable OpenOffice.org).
+\end{itemize}
+
+However, its user interface and concepts are quite similar to my solution.
+
+\subsection*{LibreOffice CMIS}
+LibreOffice CMIS\cite{locmis} is a LibreOffice extension: a Java based
+implementation of a Universal Content Provider for making any content in a CMIS
+repository usable from LibreOffice. The main problem with it is that Sharepoint
+2007 does not implement CMIS, so this does not solve our problem at the moment.
+
+\subsection*{SharePoint Connector}
+The Oracle Connector for SharePoint Server\cite{oracle-sp-connector} is a
+commercial OpenOffice.org extension, providing Sharepoint support in
+OpenOffice.org. It has multiple problems:
+
+\begin{itemize}
+\item It is not free. Sadly it is part of Oracle Open Office Enterprise
+Edition, which is no longer available from the Oracle Store at the time of
+writing (May 2011).
+\item When I earlier checked it, It was only available on Windows 32-bit and it
+required a server-side component as well.
+\end{itemize}
+
+\subsection*{Drupal Sharepoint module}
+
+An additional Sharepoint module\cite{drupal-sp} for the Drupal content management system is also available. It solves a different problem, though:
+
+\begin{itemize}
+\item It can only read from a Sharepoint server.
+\item It is written for a CMS, not an office suite.
+\item To reach its goals, it was enough to use the SOAP interface of the
+Sharepoint server, which is not enough for my purposes.
+\end{itemize}
