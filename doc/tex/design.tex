@@ -51,9 +51,9 @@ Now that we saw the concept of UNO components and the structure of an
 extension, the rest of this section describes the design of the UNO
 specifications and Java implementations provided by the extension.
 
-\subsection{The Sharepoint library}
+\subsection{The SharePoint library}
 
-The Java implementation is split to two parts, the Sharepoint library and the
+The Java implementation is split to two parts, the SharePoint library and the
 user interface. The previous lives under the \emph{hu.vmiklos.lpsp} namespace,
 the other does so under \emph{fr.starxpert.opal}.
 
@@ -62,11 +62,11 @@ The following UML package diagram shows these packages with their dependencies:
 \begin{figure}[H]
 \centering
 \includegraphics[width=425px,keepaspectratio]{design-packages.png}
-\caption{Packages of the Sharepoint extension}
+\caption{Packages of the SharePoint extension}
 \end{figure}
 
 At the time of writing, there is no ready to use Java library to communicate
-with a Sharepoint server. Because of this, I decided to separate the Sharepoint
+with a SharePoint server. Because of this, I decided to separate the SharePoint
 protocol implementation from the LibreOffice-specific part of the extension to
 make it reusable in other projects. It provides the following classes:
 
@@ -102,10 +102,10 @@ interfaces are provided by the extension:
 \item \emph{XAlfrescoFilePicker}: an open/save as file picker.
 \item \emph{XAlfrescoVersions}: a versions dialog.
 \item \emph{XAlfrescoDocument}: a document received from the
-Sharepoint server.
+SharePoint server.
 \item \emph{XAlfrescoDocumentManager}: a storage for XAlfrescoDocument instances.
 \item \emph{XAuthenticationManager}: a handler for different authentication mechanisms.
-\item \emph{XConnection}: a connection to a Sharepoint server.
+\item \emph{XConnection}: a connection to a SharePoint server.
 \end{itemize}
 
 The extension provides a single exception type -- \emph{AlfrescoException} --
@@ -222,7 +222,7 @@ implementation:
 \item Versions: \emph{AlfrescoVersionsImpl.execute()}
 \end{itemize}
 
-These classes contain all the business logic and they call the Sharepoint
+These classes contain all the business logic and they call the SharePoint
 library for communication. The dialog windows are separated from UNO
 interfaces, they are always implemented in separate classes. Given that there
 are common tasks for all of our user interface dialogs, there is a common

@@ -31,7 +31,7 @@ problem, but of course it's uncomfortable for daily work.
 
 The other interface is a fat client, which is installed on the machine of the
 user. Vendors prefer to produce a corresponding client for their server,
-Microsoft Sharepoint and Microsoft Office is a typical setup.
+Microsoft SharePoint and Microsoft Office is a typical setup.
 
 It is important to note that of course a single server may serve multiple
 clients. Also, the same client may connect to multiple servers, however in
@@ -44,19 +44,19 @@ side. Servers can listen on different addresses, and in this case the address
 identifies not only the server, but the used protocol as well.
 
 For example Alfresco\cite{alfresco}, which is an open-source alternative to
-Sharepoint, has its native protocol, but also (more or less) can speak the
-Sharepoint protocol. As a result, it can be configured to listen on
+SharePoint, has its native protocol, but also (more or less) can speak the
+SharePoint protocol. As a result, it can be configured to listen on
 \emph{http://project:8080/} as an Alfresco server, and on
-\emph{http://localhost:7070} as a Sharepoint server.
+\emph{http://localhost:7070} as a SharePoint server.
 
 Clients can have different extensions or plug-ins to handle different
-protocols. For example Microsoft Office can accept Sharepoint URL-s in the
+protocols. For example Microsoft Office can accept SharePoint URL-s in the
 standard file opener dialog, while the Alfresco extension for OpenOffice.org
 has a dedicated menu in the application to connect to an Alfresco server.
 
 It is also common that the client extensions have minimal business logic. For
-example the proprietary Sharepoint extension to OpenOffice.org, created by
-Oracle can't talk to every Sharepoint server, but Microsoft Office does -- as
+example the proprietary SharePoint extension to OpenOffice.org, created by
+Oracle can't talk to every SharePoint server, but Microsoft Office does -- as
 long as a server-side component provided by Oracle is not installed on the
 server. While this approach may be compelling during development, actually it
 is uncomfortable for system administrators.
@@ -71,7 +71,7 @@ Services\cite{cmis} is created to address compatibility issues between various
 document management server implementations. OASIS approved it on May 1, 2010,
 so it's relatively new. Also, at the time of writing implementation is far from
 complete among major document management servers. Alfresco 3.3+ implements the
-client side only, Sharepoint 2007 does not support it yet, so at the moment
+client side only, SharePoint 2007 does not support it yet, so at the moment
 it's a vision that all major document servers will implement this
 specification.
 
@@ -125,7 +125,7 @@ Services (SOAP) binding.
 
 \subsection{Concrete implementations}
 
-In this subsection, I give a short comparision of Microsoft Sharepoint 2007 (one of
+In this subsection, I give a short comparision of Microsoft SharePoint 2007 (one of
 the most popular document management servers) and Alfresco Community Edition 3.4, which claims to be
 "The Open Source Alternative for Enterprise Content Management".
 
@@ -134,7 +134,7 @@ possible. Of course it is possible to delete documents, but it isn't possible
 to delete document versions, overwrite a previous document version or delete a
 whole workspace as a single operation.
 
-On the other hand, Sharepoint uses its leading position to avoid publishing
+On the other hand, SharePoint uses its leading position to avoid publishing
 proper documentation on how communication protocol it uses works. For example
 the \emph{put document} method has a \emph{document} parameter -- the
 documentation\cite{spdoc} does not mention the \emph{timestamp of last
@@ -149,7 +149,7 @@ The following table details individual properties:
   \begin{center}
     \begin{tabular}{| l | l | l |}
     \hline
-    \textbf{Feature} & \textbf{Sharepoint} & \textbf{Alfresco} \\ \hline
+    \textbf{Feature} & \textbf{SharePoint} & \textbf{Alfresco} \\ \hline
     License & proprietary & open-source \\ \hline
     Maturity & 14 years\cite{sphist} & 6 years \\ \hline
     Creating a document workspace & supported & supported \\ \hline
@@ -167,7 +167,7 @@ The following table details individual properties:
     Deleting a document & supported & supported \\ \hline
     \end{tabular}
   \end{center}
-  \caption{Comparison of Sharepoint and Alfresco}
+  \caption{Comparison of SharePoint and Alfresco}
   \label{tab:background-comparison}
 \end{table}
 
