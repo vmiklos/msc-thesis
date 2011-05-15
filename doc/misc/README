@@ -3010,7 +3010,7 @@ Other tasks:
 - mail Akos about MIT SVN: it'll be a mirror of the ULX one.
 - thesis: uml class diagram (including all methods) is useless, we need a package diagram instead (own sp lib + uno idl)
 
-== 2011-05-12
+=== 2011-05-12
 
 In ULX. Finished the 'Design' section.
 
@@ -3026,7 +3026,7 @@ https://svn.inf.mit.bme.hu/student/onlab/trunk/vmiklos/
 
 This is done now.
 
-== 2011-05-13
+=== 2011-05-13
 
 Updated the logo: now it has a transparent background.
 
@@ -3043,6 +3043,6 @@ git svn dcommit
 
 Worked on the 'Evaluation' section.
 
-== 2011-05-14
+=== 2011-05-14
 
 Worked on the 'Related Work' and 'Conclusion and Future Work' sections.
