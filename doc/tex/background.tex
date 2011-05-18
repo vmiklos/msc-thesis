@@ -3,40 +3,42 @@
 \subsection{General architecture of document management systems}
 
 A document management system is a typical client-server model: a document
-management server stores the documents (and possibly images, other associated
-files) in a document repository, which can be accessed via various interfaces.
-The other part of the system is a client, which has built-in support for
-opening, saving and editing documents:
+management server stores the documents in a document repository, which can be
+accessed via various interfaces.  The other part of the system is a client,
+which has built-in support for opening, saving and editing documents.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=300px,keepaspectratio]{general-arch-of-doc-mgmt-systems.pdf}
 \caption{Architecture of a document management system}
+\label{fig:general-arch-of-doc-mgmt-systems}
 \end{figure}
 
-The document management server has registered users. Properties to users (full
-name, email, password) are stored on the server.
+Figure~\ref{fig:general-arch-of-doc-mgmt-systems} shows these two entities of
+the system along with its operations:
+
+\begin{itemize}
+\item The server primarily listens to client requests. Additionally it allows
+performing operations directly on the server such as registering new users or
+sharing documents of a user to others.
+\item The client, connecting to one or more document server.
+\end{itemize}
 
 Every user has document workspaces. Workspaces can have documents, links and
 tasks. A workspace can be shared with different permissions (read-only,
 read-write), and that is typically done by sending an invitation email which
 the other user can accept.
 
-A user may access the document server using a web browser, or via fat client
+A user may access the document server using a web browser, or via rich client
 applications. The advantage of the web browser interface is that it can be
 accessed from almost everywhere, however document editing can't be performed.
 If such operation should be performed, then the user has to manually download
 the document, edit then upload it. This method occasionally does not cause a
 problem, but of course it's uncomfortable for daily work.
 
-The other interface is a fat client, which is installed on the machine of the
+The other interface is a rich client, which is installed on the machine of the
 user. Vendors prefer to produce a corresponding client for their server,
 Microsoft SharePoint and Microsoft Office is a typical setup.
-
-It is important to note that of course a single server may serve multiple
-clients. Also, the same client may connect to multiple servers, however in
-practice a central server provides a document storage for all the collaborating
-users.
 
 In case of servers or clients speaking different communication protocols,
 selection of the used protocol is selected differently on client and server
