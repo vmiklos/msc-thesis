@@ -2,7 +2,9 @@
 
 We already saw that there is no solution today that is open-source, requires no
 additional server-side installation and communicates with a Microsoft
-SharePoint server. However there are similar projects, which -- even if they
+SharePoint server (see table~\ref{tab:related-cmp}).
+
+However there are similar projects, which -- even if they
 solve a sightly different problem -- may provide excellent ideas to borrow.
 
 \subsection*{OPAL}
@@ -45,3 +47,17 @@ An additional SharePoint module\cite{drupal-sp} for the Drupal content managemen
 \item To reach its goals, it was enough to use the SOAP interface of the
 SharePoint server, which is not enough for our purposes.
 \end{itemize}
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{| l | l | l | l | l |}
+    \hline
+    \textbf{Feature} & \textbf{OPAL} & \textbf{LibreO CMIS} & \textbf{SharePoint Connector} & \textbf{Drupal} \\ \hline
+    License & open-source & open-source & proprietary & open-source \\ \hline
+    Server component & yes & no & yes & no \\ \hline
+    \makecell[l]{SharePoint 2007 \\ support} & no & no & yes & partial \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Comparison of related works}
+  \label{tab:related-cmp}
+\end{table}
