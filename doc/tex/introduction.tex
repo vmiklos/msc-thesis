@@ -1,67 +1,77 @@
 \section{Introduction}
 
 Every major software development project uses some kind of version control
-system to track the source code of project. This is useful for multiple
-reasons:
-
-\begin{itemize}
-\item It helps multiple developers to synchronize their work.
-\item It helps debugging, when retrieving older versions is necessary.
-\item It provides a way to document changes.
-\end{itemize}
+system to track the source code of project. The introduction of such a system
+helps multiple developers to synchronize their work, helps debugging, when
+retrieving older versions is necessary and provides a way to document changes.
 
 In fact, even if a version control system is not used, developers tend to
 (poorly) invent a similar system implicitly: they copy files with a date string
 appended a backup or manually copy files over to an other machine.
 
-There are many different types of version control software. One class of those
-works in a centralized manner (Subversion\cite{subversion} is probably the most
-popular centralized solution), and there are many other version control
-projects which operate even in a distributed environment (Git\cite{git} is a
-good such example). A centralized version obviously has a simpler architecture,
-but on the other hand provides less features.
+There are two main approaches for version control: centralized and distributed.
+Centralized (Subversion\cite{subversion} is probably the most
+popular centralized solution) systems have a central server, distributed
+systems operate in a distributed environment (Git\cite{git} is a good such
+example). A centralized system has a simpler architecture, but on the other
+hand provides less features. Distributed systems can operate in more extreme
+conditions, while it is harder to learn, because of the more complex
+architecture.
 
 The need for tracking versions and collaborating documents is not specific to
 software developers. An other type of similar software is usually referred as
-document management system. It focuses on project management, and because of
-that, it targets not only developers, but less technical users. That means
-usually it manages not source code files, but documents created by office
-suites such as Microsoft Office\cite{mso} or LibreOffice\cite{lo} (formerly
-OpenOffice.org\cite{ooo}).
+document management system. It focuses on project management: it is meant to be
+used  not only by software developers, but users without technical knowledge.
+That means usually it does not manage software source code files, but documents
+created by office suites such as Microsoft Office\cite{mso} or
+LibreOffice\cite{lo} (formerly OpenOffice.org\cite{ooo}).
 
 There are numerous, currently unsolved problems in this area. Such enterprise
 systems are supposed to be modular: each module communicates with the other
 using an open (documented) protocol and companies are allowed to replace one
-module with an other implementation, as long as it speaks the same
-communication protocol. In fact this is one of the major reasons for using
-open-source software components in an enterprise environment: that way
-protocols are always open (even if poorly documented), and companies can avoid
-vendor lock-in.
+module with an other implementation, as long as it communicates using the same
+protocol. In fact this is one of the major reasons for using open-source
+software components in an enterprise environment: that way protocols are always
+open, and companies can avoid vendor lock-in.
 
-One approach here is to concentrate on server products: less technical users
-don't see them anyway, so as long as the communication works unchanged, the
-migration to open-source components on the server side is relatively easy. An
-other approach is to focus on the client-side, as important data is rarely
-stored there, so starting the migration with the client components avoids the
-risk of a potential data loss, in case software quality is lower than expected.
+Enterprise companies using proprietary software, but wanting to adopt
+open-source solutions can start the migration with server products. The benefit
+of starting with servers is that only central infrastructure has to be
+modified. Given that the communication works unchanged, the clients can be left
+untouched. An other approach is to focus on the client-side, as important data
+is rarely stored there, so starting the migration with the client components
+avoids the risk of a potential data loss, in case software quality is lower
+than expected.
 
-In the current thesis, I am presenting a client-side solution for using an
+One of the most widely used document management server is Microsoft
+SharePoint\cite{sharepoint}. This is well integrated with Microsoft Office, but
+previously it was not possible to replace the office suite with an open-source
+alternative, because of the lack of SharePoint support.
+
+Finally a radically different solution is a cloud-based approach: in that case
+the client is a simple web browser and even editing software is downloaded from
+the server each time the user wants to edit the documents (Google
+Docs\cite{google-docs} is a good example). While this method is easy to use, it
+has its drawbacks as well. At the moment none of the cloud-based solutions have
+all features a rich client such as Microsoft Office or LibreOffice provides.
+Additionally, storing documents in the cloud requires stable and fast network
+connection while editing documents (which is currently isn't guaranteed in many
+cases) and requires trust from the cloud provider when editing sensitive
+documents of a company.
+
+In the current thesis, we are presenting a client-side solution for using an
 existing, proprietary document management server with an open-source office
-productivity suite. One of the currently most widely used document management
-server is Microsoft SharePoint\cite{sharepoint}. This is well integrated with
-Microsoft Office, but previously it was not possible to replace the office
-suite with an open-source alternative, because of the lack of SharePoint
-support. My solution is an extension to LibreOffice -- which is one of the
-leading open-source office productivity suites -- that adds support for
+productivity suite. My solution is an extension to LibreOffice -- which is one
+of the leading open-source office productivity suites -- that adds support for
 accessing and managing documents from a SharePoint server directly from the
 office suite.
 
-The rest of this thesis is structured as follows. First, I introduce
-necessary background knowledge, which was present before the current thesis,
-but is needed to understand the rest of this work (Section 2). Then I continue
-with giving an overview of the approach I'm proposing (Section 3). Section 4
+The rest of this thesis is structured as follows. First, we introduce necessary
+background knowledge, which was present before the current thesis, but is
+needed to understand the rest of this work (Section 2). Then we continue with
+giving an overview of the approach I'm proposing (Section 3). Section 4
 describes the design of the solution, as well as relation with the underlying
-techniques. Next, I detail the implementation I created (Section 5) and also
-evaluate it (Section 6). Finally I present work related to the current solution
-(Section 7) and give a summary, including future development directions
-(Section 8).
+techniques. Next, we detail the implementation we created (Section 5) and also
+evaluate it (Section 6). Finally we present work related to the current
+solution (Section 7) and give a summary, including future development
+directions (Section 8).
