@@ -24,10 +24,10 @@ sharing documents of a user to others.
 \item The client, connecting to one or more document server.
 \end{itemize}
 
-Every user has document workspaces. Workspaces can have documents, links and
-tasks. A workspace can be shared with different permissions (read-only,
-read-write), and that is typically done by sending an invitation email which
-the other user can accept.
+Every user has document \textbf{workspaces}. Workspaces can have documents,
+links and tasks. A workspace can be shared with different permissions
+(read-only, read-write), and that is typically done by sending an invitation
+email which the other user can accept.
 
 A user may access the document server using a web browser, or via rich client
 applications. The advantage of the web browser interface is that it can be
@@ -46,10 +46,9 @@ side. Servers can listen on different addresses, and in this case the address
 identifies not only the server, but the used protocol as well.
 
 For example Alfresco\cite{alfresco}, which is an open-source alternative to
-SharePoint, has its native protocol, but also (more or less) can speak the
-SharePoint protocol. As a result, it can be configured to listen on
-\emph{http://project:8080/} as an Alfresco server, and on
-\emph{http://localhost:7070} as a SharePoint server.
+SharePoint, has its native protocol, but also (more or less) provides support
+for the SharePoint protocol. As a result, it can be configured to listen on
+one URL as an Alfresco server, and on an other URL as a SharePoint server.
 
 Clients can have different extensions or plug-ins to handle different
 protocols. For example Microsoft Office can accept SharePoint URL-s in the
@@ -62,9 +61,6 @@ Oracle can't talk to every SharePoint server, but Microsoft Office does -- as
 long as a server-side component provided by Oracle is not installed on the
 server. While this approach may be compelling during development, actually it
 is uncomfortable for system administrators.
-
-As a result, I paid attention in my solution to not require such additional
-server-side component installation.
 
 \subsection{Related standards}
 
