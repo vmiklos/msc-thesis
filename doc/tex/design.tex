@@ -44,6 +44,13 @@ server, without any server modifications.
 
 \subsection{The UNO interfaces}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=400px,keepaspectratio]{design-technologies.pdf}
+\caption{Technologies used in the design of the extension}
+\label{fig:design-technologies}
+\end{figure}
+
 The UNO interfaces are reused from the already referenced OPAL (OpenOffice
 Plugin for Alfresco) extension. Many of them contains the \emph{Alfresco} word,
 referring to the underlying protocol. We did not change the interface name
@@ -51,7 +58,7 @@ referring to the underlying protocol. We did not change the interface name
 underlying implementation.
 
 It's an UNO convention that interfaces start with a capital X. The following
-interfaces are provided by the extension:
+interfaces are provided by the extension (see figure~\ref{fig:design-technologies}:
 
 \begin{itemize}
 \item \emph{XAlfrescoFilePicker}: an open/save as file picker.
