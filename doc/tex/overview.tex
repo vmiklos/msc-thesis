@@ -1,16 +1,18 @@
 \section{Overview of the Approach}
 
-I decided to focus on the client side in this thesis. So I discuss the case
-here when an enterprise company tries to replace the client part of the
-document management system with an open-source alternative, while keeping the
-existing proprietary server-side part of the system. As a consequence, the
-center of my approach the client, the document management part of the client,
-to be more exact:
+In the current thesis, we propose a client-based approach for the integration
+open-source productivity software to enterprise document management systems. So
+we discuss the case here when an enterprise company tries to replace the client
+part of the document management system with an open-source alternative, while
+keeping the existing proprietary server-side part of the system. As a
+consequence, the center of my approach is the client -- the document management
+part of the client, to be more exact (figure~\ref{fig:overview-architecture}).
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=250px,keepaspectratio]{overview-architecture.pdf}
 \caption{Architecture of the approach}
+\label{fig:overview-architecture}
 \end{figure}
 
 Components of the above example can be replaced, for example the Alfresco (with
@@ -19,7 +21,7 @@ can be used in place of LibreOffice. The SharePoint server, the office
 productivity suite is already present.
 
 By observing the network traffic between the SharePoint server and a native
-Microsoft Office, the protocol can be also known. As mentioned earlier, the
+Microsoft Office, the protocol can also be known. As mentioned earlier, the
 documentation on its own is not enough, as it's not complete\footnote{And it's
 purely a reference, there are no guide or tutorial to get started.}.
 
