@@ -1,6 +1,6 @@
 \section{Implementation Details}
 
-This section is split to three parts:
+The current section consists of three parts:
 
 \begin{itemize}
 \item The first explains the prototype we wrote.
@@ -13,47 +13,33 @@ This section is split to three parts:
 As mentioned already, the SharePoint protocol has a brief reference
 documentation on MSDN, but that is not enough to create an open-source
 implementation of the protocol. To solve that issue, we used two virtual
-machines: one running Microsoft SharePoint 2007, the other running Microsoft
-Office 2007, and we used Wireshark\cite{wireshark} to monitor the network
-traffic between the two virtual machines.
+machines:
+
+\begin{itemize}
+\item One running Microsoft SharePoint 2007.
+\item The other running Microsoft Office 2007.
+\end{itemize}
+
+Finally we used Wireshark\cite{wireshark} to monitor the network traffic
+between the two virtual machines.
 
 Trying to reimplement the protocol directly in the LibreOffice extension would
 make development slow, partly because that would mean solving UNO interfacing
 issues and Java design decisions at the same time, partly because we needed a
 simple script to demonstrate how the protocol works, where Java may not be the
-best language to use. As a consequence, we decided to write a commandline
+best language to use. As a consequence, we decided to write a command-line
 prototype in Python, a popular scripting language, and once that was ready and
 worked, we ported the logic of the prototype to Java.
 
-The prototype had the following commands:
+The prototype had commands (open, save, delete, etc.) to test each feature
+individually.  This covered the functionality outlined in the \emph{Background}
+section, except that folder / document listing is implicit here: the open and
+save-as operation invoked that, but it had no explicit command assigned.
 
-\begin{itemize}
-\item open
-\item save
-\item save-as
-\item delete
-\item quit
-\item list-versions
-\item open-older
-\item restore-version
-\item delete-version
-\item create-space
-\item delete-space
-\end{itemize}
-
-This covered the functionality outlined in the \emph{Background} section,
-except that folder / document listing is implicit here: the open and save-as
-operation invoked that, but it had no explicit command assigned.
-
-The prototype also had two switches:
-
-\begin{itemize}
-\item The \emph{--alfresco} switch loaded configuration defaults to connect to the SharePoint emulation interface of Alfresco.
-\item The \emph{--test} switch -- which is possible to use at the same with the first one -- executed simple testcases for the above operations.
-\end{itemize}
-
-The later switch was critical, so that when we fixed something to work with
-Alfresco, we could quickly test we did not break anything in SharePoint.
+The prototype also had two switches to test the implementation on both
+SharePoint and Alfresco automatically. This was critical, so that when we fixed
+something to work with Alfresco, we could quickly test we did not break
+anything in SharePoint.
 
 Once the used protocol -- at least the parts required by my use-cases -- was
 clear, we could begin writing the LibreOffice extension.
@@ -98,7 +84,7 @@ SAX parser, accepting plain old HTML input.
 \subsection{User interface}
 
 Once the Sharpeoint Library was ready, we updated the user interface to use the
-SharePoint library for communication. we also had to extend the dialogs to allow
+SharePoint library for communication. We also had to extend the dialogs to allow
 a few more features. Namely:
 
 \begin{itemize}
@@ -119,15 +105,16 @@ here:
 
 Earlier it was possible to only view older versions, the new \emph{Versions}
 dialog now allows a user to delete and restore versions as well (as detailed
-above in table~\ref{tab:background-comparison} on
-page~\pageref{tab:background-comparison}, deleting versions does not work with
-Alfresco, due to the shortcomings of their SharePoint implementation):
+above in table~\ref{tab:background-comparison}, deleting versions does not work
+with Alfresco, due to the shortcomings of their SharePoint implementation):
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=400px,keepaspectratio]{implementation-versiondialog.png}
 \caption{Implementation of version restore and delete}
 \end{figure}
+
+\subsection{Exception handling}
 
 The last challenge was the localization of error messages in BASIC. It does not
 support any kind of localization. What it supports is the following technique:
