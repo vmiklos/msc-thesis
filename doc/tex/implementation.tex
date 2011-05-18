@@ -3,7 +3,7 @@
 This section is split to three parts:
 
 \begin{itemize}
-\item The first explains the prototype I wrote.
+\item The first explains the prototype we wrote.
 \item The second details implementation challenges when realizing the designed extension and using external libraries.
 \item The third shows changes in the extension visible from a user's point of view, with screenshots.
 \end{itemize}
@@ -12,18 +12,18 @@ This section is split to three parts:
 
 As mentioned already, the SharePoint protocol has a brief reference
 documentation on MSDN, but that is not enough to create an open-source
-implementation of the protocol. To solve that issue, I used two virtual
+implementation of the protocol. To solve that issue, we used two virtual
 machines: one running Microsoft SharePoint 2007, the other running Microsoft
-Office 2007, and I used Wireshark\cite{wireshark} to monitor the network
+Office 2007, and we used Wireshark\cite{wireshark} to monitor the network
 traffic between the two virtual machines.
 
 Trying to reimplement the protocol directly in the LibreOffice extension would
 make development slow, partly because that would mean solving UNO interfacing
-issues and Java design decisions at the same time, partly because I needed a
+issues and Java design decisions at the same time, partly because we needed a
 simple script to demonstrate how the protocol works, where Java may not be the
-best language to use. As a consequence, I decided to write a commandline
+best language to use. As a consequence, we decided to write a commandline
 prototype in Python, a popular scripting language, and once that was ready and
-worked, I ported the logic of the prototype to Java.
+worked, we ported the logic of the prototype to Java.
 
 The prototype had the following commands:
 
@@ -52,24 +52,24 @@ The prototype also had two switches:
 \item The \emph{--test} switch -- which is possible to use at the same with the first one -- executed simple testcases for the above operations.
 \end{itemize}
 
-The later switch was critical, so that when I fixed something to work with
-Alfresco, I could quickly test I did not break anything in SharePoint.
+The later switch was critical, so that when we fixed something to work with
+Alfresco, we could quickly test we did not break anything in SharePoint.
 
 Once the used protocol -- at least the parts required by my use-cases -- was
-clear, I could begin writing the LibreOffice extension.
+clear, we could begin writing the LibreOffice extension.
 
 \subsection{External libraries}
 
 It was obvious that doing HTTP communication with NTLM authentication is an
-already solved problem, but I needed to decide which library to use. Given that
+already solved problem, but we needed to decide which library to use. Given that
 OPAL already used Apache \emph{commons-httpclient}\cite{httpclient} 3.x for
-HTTP communication. Unfortunately that version does not support NTLM, so I used
+HTTP communication. Unfortunately that version does not support NTLM, so we used
 Apache \emph{httpcomponents}\cite{httpcomponents}, which is the successor of
 the previous library (starting with version 4.x). The two version series have
 different APIs, so it's possible to use both in parallel, and migrating code
 incrementally.
 
-Once I had \emph{httpcomponents}, I still needed to write detection code that
+Once we had \emph{httpcomponents}, we still needed to write detection code that
 decided what to request from \emph{httpcomponents}: Basic or NTLM
 authentication.
 
@@ -92,13 +92,13 @@ For example, part of the response is:
 </html>\end{lstlisting}
 
 That means a simple XML parser was not enough to extract the needed values from
-this response. To solve this issue, I used TagSoup\cite{tagsoup}, which is a
+this response. To solve this issue, we used TagSoup\cite{tagsoup}, which is a
 SAX parser, accepting plain old HTML input.
 
 \subsection{User interface}
 
-Once the Sharpeoint Library was ready, I updated the user interface to use the
-SharePoint library for communication. I also had to extend the dialogs to allow
+Once the Sharpeoint Library was ready, we updated the user interface to use the
+SharePoint library for communication. we also had to extend the dialogs to allow
 a few more features. Namely:
 
 \begin{itemize}

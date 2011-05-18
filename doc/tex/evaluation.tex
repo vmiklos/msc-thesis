@@ -1,6 +1,6 @@
 \section{Evaluation}
 
-In this section, I take table~\ref{tab:background-comparison} from
+In this section, we take table~\ref{tab:background-comparison} from
 page~\pageref{tab:background-comparison} as a starting point and check what
 features are implemented and what are not.
 
@@ -50,22 +50,22 @@ structures can only be read by the extension.
 
 The extension is written in Java and BASIC, so it is meant to be portable.
 LibreOffice is available on Windows and OSX as well -- so the extension should
-work there, but this is not something I had time to test.
+work there, but this is not something we had time to test.
 
 Regarding localization, all user-visible strings are externalized to Java
-property files. During development I paid attention to English strings, then at
-the end as a demonstration I created the Hungarian translation as well. Adding
+property files. During development we paid attention to English strings, then at
+the end as a demonstration we created the Hungarian translation as well. Adding
 new translations is easy.
 
 Finally, the extension inherited some of its limitation from the original OPAL
 codebase:
 
 \begin{itemize}
-\item I decided not to bother with renaming namespaces, so untouched code still
+\item We decided not to bother with renaming namespaces, so untouched code still
 lives under \emph{fr.starxpert}, which may cause a problem if one wants to use
 my extension and OPAL at the same time.
 \item The \emph{commons-httpclient} jar is still part of the project, though it is not used in fact.
 \item The GUI is not started in a separate thread in all cases, resulting the
 lack of the update of the user interface background in many cases.
-\item Classes I did not touch still have French comments inside.
+\item Classes we did not touch still have French comments inside.
 \end{itemize}
