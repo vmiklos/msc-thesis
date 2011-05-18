@@ -129,10 +129,9 @@ Services (SOAP) binding.
 
 \subsection{Concrete implementations}
 
-In this subsection, I give a short comparision of Microsoft SharePoint 2007
-(one of the most popular document management servers) and Alfresco Community
-Edition 3.4, which claims to be "The Open Source Alternative for Enterprise
-Content Management".
+In this subsection, we give a short comparision of Microsoft SharePoint 2007 and
+Alfresco Community Edition 3.4, which claims to be "The Open Source Alternative
+for Enterprise Content Management".
 
 A general notable difference is that Alfresco does not allow deletion where
 possible. Of course it is possible to delete documents, but it isn't possible
@@ -148,7 +147,13 @@ mandatory (and there is no problem with that being mandatory, since it uses an
 optimistic concurrency approach). There is no similar problem with Alfresco,
 where in worst case it's possible to check the source code.
 
-The following table details individual properties:
+When evaluating properties, we selected the most common use-cases, required by
+enterprise companies. We intentionally did not evaluate management of document
+workspace permissions, links inside document workspaces and tasks inside
+document workspaces, as those features are outside of the scope of the current
+thesis.
+
+The following table details individual properties we collected:
 
 \begin{table}[H]
   \begin{center}
@@ -176,35 +181,25 @@ The following table details individual properties:
   \label{tab:background-comparison}
 \end{table}
 
-The above table intentionally does not discusses the following topics:
-
-\begin{itemize}
-\item Management of document workspace permissions
-\item Management of links inside document workspaces
-\item Management of tasks inside document workspaces
-\end{itemize}
-
-These areas are excluded due to size limitations of this thesis.
-
 \subsection{Differences to version control systems}
 
 Version control systems in general have richer semantics, more features to
 track software source code. In order to make document management systems easy
 to use for non-technical people, some of the features of version control
 systems are simply missing from document management systems. In this
-subsection, I describe the major removed operations.
+subsection, we describe the major removed operations.
 
-(Note that this does not mean version control systems are superior. They are
+We note that this does not mean version control systems are superior. They are
 optimized to handle source code, which is plain text. Version control systems
 are not efficient in handling binary files -- like zipped XML files, used by
 the ODF/OOXML formats -- while document management systems are designed to deal
-with such files.)
+with such files.
 
 The development of source code is typically not linear. It's regular that
 branches are created and merged during development, while a document server
 forces you to follow a single development line.
 
-Source code repositories are also usually checked out as a single operation,
+Source code repositories are also checked out as a single operation,
 containing all files of the repository. Similarly, when a client checks in
 multiple files, that makes a single commit, and later it is possible to see all
 the files modified by that commit. Document servers make the assumption that
@@ -225,9 +220,10 @@ Document management servers do not pay attention to this, since the document
 formats they usually track (think of ODF or OOXML, again) provide a \emph{track
 changes} feature already, so it makes little sense to duplicate that
 functionality on the server side.\footnote{Not to mention that these document
-formats store the model of the document, and when we speak about lines, we
-speak about the view of the model, so the same annotate operation would have a
-different meaning here.}
+formats store the \emph{model} of the document (model, as in
+Model-View-Controller), and when we speak about lines, we speak about the
+\emph{view} of the model, so the same annotate operation would have a different
+meaning here.}
 
 To sum up, we can see that document management systems feature less operations
 in general to make usage by wider user base possible -- but we should not
