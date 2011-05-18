@@ -94,24 +94,27 @@ a few more features. Namely:
 \item When saving a document, allow: minor change with a comment and overwrite of a previous version.
 \end{itemize}
 
-For example, creating a new document workspace is implemented as can be seen
-here:
+For example, creating a new document workspace is implemented as can be seen on
+figure~\ref{fig:implementation-createdws}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=275px,keepaspectratio]{implementation-createdws.png}
 \caption{Implementation of creating a document workspace}
+\label{fig:implementation-createdws}
 \end{figure}
 
 Earlier it was possible to only view older versions, the new \emph{Versions}
 dialog now allows a user to delete and restore versions as well (as detailed
 above in table~\ref{tab:background-comparison}, deleting versions does not work
-with Alfresco, due to the shortcomings of their SharePoint implementation):
+with Alfresco, due to the shortcomings of their SharePoint implementation), see
+figure~\ref{fig:implementation-versiondialog}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=400px,keepaspectratio]{implementation-versiondialog.png}
 \caption{Implementation of version restore and delete}
+\label{fig:implementation-versiondialog}
 \end{figure}
 
 \subsection{Exception handling}
