@@ -160,6 +160,7 @@ Individual properties we collected are detailed in
 table~\ref{tab:background-comparison}.
 
 \begin{table}[H]
+\begin{threeparttable}
   \begin{center}
     \begin{tabular}{| l | l | l |}
     \hline
@@ -167,7 +168,7 @@ table~\ref{tab:background-comparison}.
     License & proprietary & open-source \\ \hline
     Maturity & 14 years\cite{sphist} & 6 years \\ \hline
     Creating a document workspace & supported & supported \\ \hline
-    Deleting a document workspace & supported & not supported \\ \hline
+    Deleting a document workspace & supported & not supported\tnote{1}\\ \hline
     Checking out a document & supported & supported \\ \hline
     Checking in a document & supported & supported \\ \hline
     Cancelling the checkout of a document & supported & supported \\ \hline
@@ -180,9 +181,13 @@ table~\ref{tab:background-comparison}.
     Restoring a previous versions a document & supported & supported \\ \hline
     Deleting a document & supported & supported \\ \hline
     \end{tabular}
+    \begin{tablenotes}
+    \item [1] This feature is supported when using the native protocol of Alfresco.
+    \end{tablenotes}
   \end{center}
   \caption{Comparison of SharePoint and Alfresco}
   \label{tab:background-comparison}
+\end{threeparttable}
 \end{table}
 
 \subsection{Differences to version control systems}
