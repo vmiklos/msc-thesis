@@ -58,7 +58,7 @@ referring to the underlying protocol. We did not change the interface name
 underlying implementation.
 
 It's an UNO convention that interfaces start with a capital X. The following
-interfaces are provided by the extension (see figure~\ref{fig:design-technologies}:
+interfaces are provided by the extension (see figure~\ref{fig:design-technologies}):
 
 \begin{itemize}
 \item \emph{XAlfrescoFilePicker}: an open/save as file picker.
@@ -78,7 +78,7 @@ the list of LibreOffice applications it handles. (It's current value is:
 Writer, Calc, Impress and Draw.)
 
 UNO services are interfaces containing static methods only.  The following
-services are provided by the extension:
+services are provided by the extension (see figure~\ref{fig:design-technologies}):
 
 \begin{itemize}
 \item \emph{AlfrescoDocument}: factory for XAlfrescoDocument.
@@ -109,7 +109,7 @@ The user interface dialogs are reachable from the \emph{Document repository}
 menu item, which is registered by the \emph{Addons.xcu} configuration file,
 which is a standard configuration file of LibreOffice extensions.
 
-The following menu items are designed:
+The following menu items are designed (see figure~\ref{fig:design-technologies}):
 
 \begin{itemize}
 \item Connection: force connecting to an other document management server, even
@@ -127,7 +127,7 @@ finally implemented in the Java user interface.
 The macros are split into two packages: the ones directly called by the menu
 items, and the other utility macros.
 
-The menu items call the following macros (\emph{OPAL.menu} package):
+The menu items call the following macros (\emph{OPAL.menu} package) (see figure~\ref{fig:design-technologies}):
 
 \begin{itemize}
 \item getConnection: shows the Connection dialog.
@@ -173,7 +173,7 @@ asked. Finally, the \emph{RegistrationClassName:} header in the
 handler class name.
 
 As a result, the following entry points are designed in the Java
-implementation:
+implementation (see figure~\ref{fig:design-technologies}):
 
 \begin{itemize}
 \item Connection: \emph{AuthenticationManagerImpl.execute()}
@@ -190,7 +190,7 @@ interfaces, they are always implemented in separate classes. Given that there
 are common tasks for all of our user interface dialogs, there is a common
 ancestor for all of them, called \emph{AbstractDialog}.
 
-The following dialog classes are included in the \emph{ui} package:
+The following dialog classes are included in the \emph{ui} package (see figure~\ref{fig:design-technologies}):
 
 \begin{itemize}
 \item Connection: \emph{ConnectionDialog} (connect dialog), \\
