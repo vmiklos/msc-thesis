@@ -1,34 +1,34 @@
-Végezze el annak a témának az újdonságkutatását, hogy a dokumentumvezérelt
-munkafolyamatokra milyen megoldások léteznek, és hasonlítsa ezeket össze
-funkcionalitás és flexibilitás szempontjából.
+VÃ©gezze el annak a tÃ©mÃ¡nak az ÃºjdonsÃ¡gkutatÃ¡sÃ¡t, hogy a dokumentumvezÃ©relt
+munkafolyamatokra milyen megoldÃ¡sok lÃ©teznek, Ã©s hasonlÃ­tsa ezeket Ã¶ssze
+funkcionalitÃ¡s Ã©s flexibilitÃ¡s szempontjÃ¡bÃ³l.
 
-A levont tapasztalatok alapján készítsen nyílt forráskódú implementációt
-(Alfresco, OpenOffice/LibreOffice, jBPM5 alapokon), figyelembe véve az intenzív
-használatot és a flexibilitást.
+A levont tapasztalatok alapjÃ¡n kÃ©szÃ­tsen nyÃ­lt forrÃ¡skÃ³dÃº implementÃ¡ciÃ³t
+(Alfresco, OpenOffice/LibreOffice, jBPM5 alapokon), figyelembe vÃ©ve az intenzÃ­v
+hasznÃ¡latot Ã©s a flexibilitÃ¡st.
 
-Oldjon meg minél többet az alábbi problémák közül:
+Oldjon meg minÃ©l tÃ¶bbet az alÃ¡bbi problÃ©mÃ¡k kÃ¶zÃ¼l:
 
-    - Office környezetbe integrált dokumentumszerverelérés a fájl-metafora alapján
+    - Office kÃ¶rnyezetbe integrÃ¡lt dokumentumszerverelÃ©rÃ©s a fÃ¡jl-metafora alapjÃ¡n
 
 	-> Ez mar nagyreszt megoldott.
 
-    - csoporthoz hozzárendelt feladatok (group assignment)
+    - csoporthoz hozzÃ¡rendelt feladatok (group assignment)
 
 	-> Pelda: 3 titkarno, dokumentum helyesirasat kell ellenorizni, mindegy
 	   ki csinalja, de pontosan egyszer legyen a munka elvegezve.
 
-    - dokumentumtár- és munkafolyamatszerver decoupling
+    - dokumentumtÃ¡r- Ã©s munkafolyamatszerver decoupling
 
 	-> Ez azt jelenti, hogy a LibreOffice kell kommunikaljon a
 	   dokumentumszerverrel es a workflow engine-nel is, a ketto egymassal nem
 	   kommunikalhat. (Igy ha valamelyik cserelodik, a masikhoz nem kell
 	   hozzanyulni.)
 
-    - dokumentum masking, azaz annak elérése, hogy a workflow minden egyes lépésénél a dokumentumnak csak az adott lépésben releváns részei legyenek írhatók
+    - dokumentum masking, azaz annak elÃ©rÃ©se, hogy a workflow minden egyes lÃ©pÃ©sÃ©nÃ©l a dokumentumnak csak az adott lÃ©pÃ©sben relevÃ¡ns rÃ©szei legyenek Ã­rhatÃ³k
 
 	-> Nehez, ha jut ra ido a vegen, csak akkor erdemes vele foglalkozni.
 
-    - döntési pontok integrált kezelése (pl. készre jelentés, Jóváhagyás, Elutasítás)
+    - dÃ¶ntÃ©si pontok integrÃ¡lt kezelÃ©se (pl. kÃ©szre jelentÃ©s, JÃ³vÃ¡hagyÃ¡s, ElutasÃ­tÃ¡s)
 
 	-> Csak dokumentum-vezerelt munkafolyamatokkal foglalkozunk, tehat
 	   minimalis UI valtoztatasokkal kell ezeket kezelni, a mentes, vagy a mentes
@@ -37,19 +37,19 @@ Oldjon meg minél többet az alábbi problémák közül:
 	   valaszt kozuluk. (Illetve egyaltalan, hogy csak ment, vagy ment es lepteti-e a
 	   munkafolyamatot.)
 
-    - audit log tárolása
+    - audit log tÃ¡rolÃ¡sa
 
 	-> Harmadlagos kerdes, a munkafolyamat-szerver valoszinuleg amugy is
 	   tarol valami ilyesmit. (Utanajarni, dokumentalni a tapasztalatokat
 	   kell.)
 
-    - hosszúlefolyású munkafolyamatok támogatása (köztes mentések)
+    - hosszÃºlefolyÃ¡sÃº munkafolyamatok tÃ¡mogatÃ¡sa (kÃ¶ztes mentÃ©sek)
 
 	-> Ez azt jelenti, hogy legyen tamogatva az, hogy a user megnyit egy
 	   dokumentumot, ment, de meg nem lepteti a munkafolyamatot, mert azt csak
 	   napokkal kesobb akarja megtenni, ld. fenn.
 
-    - feladatvisszaadás lehetõsége
+    - feladatvisszaadÃ¡s lehetÅ‘sÃ©ge
 
 	-> Ez alatt nem rollbacket kell erteni (akkor kompenzalasi akcio kene,
 	   ezzel nem akarunk foglalkozni), hanem a group assignmentnel annak lehetoseget,
