@@ -14,9 +14,22 @@ No consensus, next meeting scheduled later this week.
 Replied to redmine ticket: the LPSP extension fails to open a GUI window on
 OSX. I already found a possible fix, searched the exact commit and bug id.
 
-In progress: set up a sharepoint virtual machine on localhost. (I can't get
-wireshark to monitor the traffic in both directions when sharepoint runs on a
-remote virtual machine.)
+Set up a sharepoint virtual machine on localhost. (I can't get wireshark to
+monitor the traffic in both directions when sharepoint runs on a remote virtual
+machine.)
 
-Next plan: see if the checkin/checkout problems in the redmine ticket are
-reproducible in Sharepoint (I guess not).
+=== 2011-09-08
+
+Meeting with Akos: we clarified most of the points in the initial "for this
+semester" spec, I need to write up a more detailed one.
+
+Meeting with Ivan and Gabor: more discussion, especially about what does a
+long-term workflow stand for, decision points and undoing a task assignment.
+
+Wrote up a more detailed spec in SVN.
+
+TODO:
+
+- extension: recently used documents (files), favorites (files, folders)
+- look up Alfresco source code to see if minor/major versions are still ignored
+  in Sharepoint mode

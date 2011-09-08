@@ -1,0 +1,75 @@
+Végezze el annak a témának az újdonságkutatását, hogy a dokumentumvezérelt
+munkafolyamatokra milyen megoldások léteznek, és hasonlítsa ezeket össze
+funkcionalitás és flexibilitás szempontjából.
+
+A levont tapasztalatok alapján készítsen nyílt forráskódú implementációt
+(Alfresco, OpenOffice/LibreOffice, jBPM5 alapokon), figyelembe véve az intenzív
+használatot és a flexibilitást.
+
+Oldjon meg minél többet az alábbi problémák közül:
+
+    - Office környezetbe integrált dokumentumszerverelérés a fájl-metafora alapján
+
+	-> Ez mar nagyreszt megoldott.
+
+    - csoporthoz hozzárendelt feladatok (group assignment)
+
+	-> Pelda: 3 titkarno, dokumentum helyesirasat kell ellenorizni, mindegy
+	   ki csinalja, de pontosan egyszer legyen a munka elvegezve.
+
+    - dokumentumtár- és munkafolyamatszerver decoupling
+
+	-> Ez azt jelenti, hogy a LibreOffice kell kommunikaljon a
+	   dokumentumszerverrel es a workflow engine-nel is, a ketto egymassal nem
+	   kommunikalhat. (Igy ha valamelyik cserelodik, a masikhoz nem kell
+	   hozzanyulni.)
+
+    - dokumentum masking, azaz annak elérése, hogy a workflow minden egyes lépésénél a dokumentumnak csak az adott lépésben releváns részei legyenek írhatók
+
+	-> Nehez, ha jut ra ido a vegen, csak akkor erdemes vele foglalkozni.
+
+    - döntési pontok integrált kezelése (pl. készre jelentés, Jóváhagyás, Elutasítás)
+
+	-> Csak dokumentum-vezerelt munkafolyamatokkal foglalkozunk, tehat
+	   minimalis UI valtoztatasokkal kell ezeket kezelni, a mentes, vagy a mentes
+	   elvetese soran. Ezekben az ablakokban az Office keri le a
+	   munkafolyamat-szervertol a lehetseges dontesi elemeket, majd a felhasznalo
+	   valaszt kozuluk. (Illetve egyaltalan, hogy csak ment, vagy ment es lepteti-e a
+	   munkafolyamatot.)
+
+    - audit log tárolása
+
+	-> Harmadlagos kerdes, a munkafolyamat-szerver valoszinuleg amugy is
+	   tarol valami ilyesmit. (Utanajarni, dokumentalni a tapasztalatokat
+	   kell.)
+
+    - hosszúlefolyású munkafolyamatok támogatása (köztes mentések)
+
+	-> Ez azt jelenti, hogy legyen tamogatva az, hogy a user megnyit egy
+	   dokumentumot, ment, de meg nem lepteti a munkafolyamatot, mert azt csak
+	   napokkal kesobb akarja megtenni, ld. fenn.
+
+    - feladatvisszaadás lehetõsége
+
+	-> Ez alatt nem rollbacket kell erteni (akkor kompenzalasi akcio kene,
+	   ezzel nem akarunk foglalkozni), hanem a group assignmentnel annak lehetoseget,
+	   hogy megis a csoport mas tagjai oldhassak meg a feladatot.
+
+-> Az altalanos vizio tehat az, hogy igeny van arra, hogy dokumentumok
+szerkesztesevel parhuzamosan workflow-k is lepjenek, de ezt idaig mindig a
+felhasznalonak kellett szinkronban megtennie.
+
+A mi megoldasunk abban lesz jo, hogy a mar letezo dokumentumszerver kezelo
+extensiont ugy egeszitem ki, hogy a dokumentumszerver bekonfiguralasanal
+megadok egy munkafolyamat-szerver elerhetoseget is, es innentol az Office kepes
+a workflow-t es a hozza tartozo dokumentumot megfelelo modon egyutt kezelni.
+
+Egyeb megjegyzesek:
+
+-> Technikailag tehat a felhasznalo altal latott file/folder objektumokat a
+   munkafolyamat-szervertol kapott infok alapjan fogja szimulalni az extension, a
+   workflow-ban nem lesznek benne a tenyleges dokumentumok, csak a
+   dokumentumszerverre referencia (URL).
+
+-> A workflow inditasaval elso korben nem foglalkozunk, ezt konnyen meg lehetne
+   tenni, ha nem lenne a cel a decoupling.
