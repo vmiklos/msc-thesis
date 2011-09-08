@@ -1,0 +1,4 @@
+- Ismertesse a korszeru dokumentummenedzsment szerverek es munkafolyamat kezelo rendszerek felepiteset.
+- Tervezzen es valositson meg egy megkozelitest nyilt forraskodu irodai programkomponensek kulonbozo dokumentummenedzsment szerverekhez valo hatekony integraciojara.
+- Keszitsen egy megvalositast nyilt forraskodu irodai programkomponensek munkafolyamatba torteno integraciojara.
+- Vizsgalja meg a megvalositott megkozelitesek alkalmazhatosagat tobb kulonbozo platformon.
