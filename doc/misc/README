@@ -28,6 +28,30 @@ long-term workflow stand for, decision points and undoing a task assignment.
 
 Wrote up a more detailed spec in SVN.
 
+== 2011-09-09
+
+In ULX. Ivan pointed out a drools (including jbmp5) demo they set up earlier:
+
+http://droolsdemo-process:8080/gwt-console/
+http://droolsdemo-process:8080/gwt-console-server/
+
+Based on that, I'm trying to set up my own jbmp instance. Downloaded
+jbpm-5.1.0.Final-installer-full.zip from
+http://sourceforge.net/projects/jbpm/files/jBPM%205/jbpm-5.1.0.Final/.
+
+Following the install.html from that ZIP, I get a web console at
+http://localhost:8080/jbpm-console, and the REST API at
+http://localhost:8080/gwt-console-server/.
+
+Found more documentation at: http://docs.jboss.org/jbpm/v5.1/userguide/
+
+This was also helpful: http://jkrzemie.wordpress.com/2011/03/30/jbpm-5-0-creating-simple-human-tasks-with-variables/
+
+Questions:
+- where are human task templates stored? -> looks like in separate .ftl files, have to be deployed using guvnor.
+- user management? -> should be plain ini-like text files under auth/, but does I
+- rest interface auth problems -> the example provided in the documentation is obsolete, using apache httpclient should be a solution, example here: http://anonsvn.jboss.org/repos/riftsaw/trunk/samples/quickstart/management/src/org/jboss/riftsaw/management/ManagementClient.java
+
 TODO:
 
 - extension: recently used documents (files), favorites (files, folders)
