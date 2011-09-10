@@ -49,11 +49,44 @@ This was also helpful: http://jkrzemie.wordpress.com/2011/03/30/jbpm-5-0-creatin
 
 Questions:
 - where are human task templates stored? -> looks like in separate .ftl files, have to be deployed using guvnor.
-- user management? -> should be plain ini-like text files under auth/, but does I
+- user management? -> should be plain ini-like text files under auth/, but that did not really work here for some reason.
 - rest interface auth problems -> the example provided in the documentation is obsolete, using apache httpclient should be a solution, example here: http://anonsvn.jboss.org/repos/riftsaw/trunk/samples/quickstart/management/src/org/jboss/riftsaw/management/ManagementClient.java
+
+== 2011-09-10
+
+- I have a working example on how to authenticate and get list of personal tasks as JSON.
+- Also read about gson: http://code.google.com/p/google-gson/ which is used by
+  jboss to serialize / unserialize java objects to/from json. I now have a
+  working example on how to build a List<Task> object from a JSON result (as
+  far as I see, it's necessary to write TaskRef.java and TaskRefWrapper.java
+  manually to do so).
+
+Then I looked at related work. Keywords: 'document based workflow',
+'document-driven workflow', 'document-centric workflows'.
+
+- http://php.scripts.psu.edu/faculty/a/x/axk41/BPM05-jerry-reprint.pdf
+  A framework for document-driven workflow systems (J Wang)
+  -> details why information and resource based workflows are also important, not just control based ones
+  -> idea: user changes the document, change listeners intercepts changes, check constraints, then accept or reject
+           various complex features planned: split/merge of documents, different locking types
+  -> implementation using sql triggers (ugh)
+  -> detailed comparison of control flow based vs. document based approach (pro/con)
+- https://mailserver.di.unipi.it/ricerca/proceedings/ICSE2008/sam/p21.pdf
+  Mobility in the virtual office: a document-centric workflow approach (R Carbon, G Johann, T Keuler, D Muthig)
+  -> introduces decentralized document-driven workflows, where changes to workflows travel with the documents
+     decentralization is handled with a peer-to-peer architecture
+- http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.86.6547&rep=rep1&type=pdf
+  XDoC-WFMS: A Framework for Document Centric Workflow Management System (R Krishnan, L Munaga)
+  -> great examples where document-centric approach is intuitive: newspaper editing, processing job applications
+  -> idea: documents have an embedded micro-agent, so the document itself will know where to submit, etc.
+- http://ce.sharif.edu/~yuosefsa/article/CS.pdf
+  Access control in document-centric workflow systems--an agent-based approach (RA Botha)
+  -> an approach without decoupling: here the workflow object communicates with the document object
 
 TODO:
 
+- create working example for completing a human task via REST
+- look for more related work on 'document based workflows'
 - extension: recently used documents (files), favorites (files, folders)
 - look up Alfresco source code to see if minor/major versions are still ignored
   in Sharepoint mode
