@@ -28,7 +28,7 @@ long-term workflow stand for, decision points and undoing a task assignment.
 
 Wrote up a more detailed spec in SVN.
 
-== 2011-09-09
+=== 2011-09-09
 
 In ULX. Ivan pointed out a drools (including jbmp5) demo they set up earlier:
 
@@ -52,7 +52,7 @@ Questions:
 - user management? -> should be plain ini-like text files under auth/, but that did not really work here for some reason.
 - rest interface auth problems -> the example provided in the documentation is obsolete, using apache httpclient should be a solution, example here: http://anonsvn.jboss.org/repos/riftsaw/trunk/samples/quickstart/management/src/org/jboss/riftsaw/management/ManagementClient.java
 
-== 2011-09-10
+=== 2011-09-10
 
 - I have a working example on how to authenticate and get list of personal tasks as JSON.
 - Also read about gson: http://code.google.com/p/google-gson/ which is used by
@@ -83,7 +83,7 @@ Then I looked at related work. Keywords: 'document based workflow',
   Access control in document-centric workflow systems--an agent-based approach (RA Botha)
   -> an approach without decoupling: here the workflow object communicates with the document object
 
-== 2011-09-11
+=== 2011-09-11
 
 Worked on the 'recently used documents' feature in the extension, requested by Ivan.
 
