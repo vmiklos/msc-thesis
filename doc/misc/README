@@ -83,10 +83,22 @@ Then I looked at related work. Keywords: 'document based workflow',
   Access control in document-centric workflow systems--an agent-based approach (RA Botha)
   -> an approach without decoupling: here the workflow object communicates with the document object
 
+== 2011-09-11
+
+Worked on the 'recently used documents' feature in the extension, requested by Ivan.
+
+Version to test: lpsp-0.1-387-g273a329.oxt
+
+Implemented functions:
+- modified the extension configuration schema, so it can store a list of recently used URL's for each configured server.
+- when opening a document, that list is loaded from $HOME/.openoffice.org/3/user/registrymodifications.xcu, the opened document is inserted to the start of the list, then saved.
+- there is a new button in the file picker, making it possible to view this list
+- the 'up' button can be used to return to the root directory from the recently used documents
+
 TODO:
 
 - create working example for completing a human task via REST
 - look for more related work on 'document based workflows'
-- extension: recently used documents (files), favorites (files, folders)
+- extension: favorites (files, folders)
 - look up Alfresco source code to see if minor/major versions are still ignored
   in Sharepoint mode
