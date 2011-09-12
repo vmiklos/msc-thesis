@@ -97,7 +97,7 @@ Implemented functions:
 
 TODO:
 
-- create working example for completing a human task via REST
+- create working example for completing a human task via REST: moving a workflow to a next step, making a binary decision
 - look for more related work on 'document based workflows'
 - extension: favorites (files, folders)
 - look up Alfresco source code to see if minor/major versions are still ignored
