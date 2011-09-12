@@ -95,10 +95,23 @@ Implemented functions:
 - there is a new button in the file picker, making it possible to view this list
 - the 'up' button can be used to return to the root directory from the recently used documents
 
+== 2nd week
+
+=== 2011-09-12
+
+Worked on the favorites feature in the extension.
+
+Version to test: lpsp-0.1-396-g4ecd817.oxt
+
+Implemented functions:
+- new button to add a folder or file to favorites
+- add/delete is first confirmed using a popup dialog
+- new button to list favorites
+- as with recently used documents, the 'up' button can be used to return to the root directory
+
 TODO:
 
 - create working example for completing a human task via REST: moving a workflow to a next step, making a binary decision
 - look for more related work on 'document based workflows'
-- extension: favorites (files, folders)
 - look up Alfresco source code to see if minor/major versions are still ignored
   in Sharepoint mode
