@@ -115,6 +115,13 @@ Created my first BPMN with two human tasks (and committed to SVN). That sounds
 easy, but there were two pitfalls:
 
 - starting the h2 database and then starting jboss is not enough, there is a need to start a separate 'human task server' as well
+
+So the proper way to restart jbpm after changing the BPMN and/or templates is:
+
+----
+ant stop.jboss && ant stop.h2 && ant start.h2 && ant start.jboss && ant start.human.task
+----
+
 - creating a new BPMN does not work with 'File -> New -> File', and just using
   the `.bpmn` extension, as that results in an XML reader exception, what works
   is: 'File -> New -> Other', then 'Drools -> Flow file'
