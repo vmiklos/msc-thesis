@@ -109,6 +109,16 @@ Implemented functions:
 - new button to list favorites
 - as with recently used documents, the 'up' button can be used to return to the root directory
 
+== 2011-09-13
+
+Created my first BPMN with two human tasks (and committed to SVN). That sounds
+easy, but there were two pitfalls:
+
+- starting the h2 database and then starting jboss is not enough, there is a need to start a separate 'human task server' as well
+- creating a new BPMN does not work with 'File -> New -> File', and just using
+  the `.bpmn` extension, as that results in an XML reader exception, what works
+  is: 'File -> New -> Other', then 'Drools -> Flow file'
+
 TODO:
 
 - create working example for completing a human task via REST: moving a workflow to a next step, making a binary decision
