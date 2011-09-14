@@ -126,9 +126,94 @@ ant stop.jboss && ant stop.h2 && ant start.h2 && ant start.jboss && ant start.hu
   the `.bpmn` extension, as that results in an XML reader exception, what works
   is: 'File -> New -> Other', then 'Drools -> Flow file'
 
+== 2011-09-14
+
+In ULX. Worked on completing a task via REST API, created an example
+successfully. First I thought it will be easy as the login form already used
+UrlEncodedFormEntity successfully, but on task completion a MultipartEntity
+should be used to send the (empty) form.
+
+Ported the sample codes to http-core 4.x (that is needed, as 3.x has a
+different api, not supporting NTLM auth). Created a WFHandler (similar to the
+Handler of the sharepoint jar):
+
+- it can check username/password - login
+- can list assigned tasks
+- can complete a task
+- can get the document url of a task
+- can list documents: it simulates a root directory with documents, extracted from assigned tasks.
+
+Figured out how to add new users to jbpm and/or change password: there is an
+auth/users.properties file, but that's used by the installer only. The real
+configuration file is under jboss-*/server/default/conf/users.properties. Once
+updated and jbpm is restarted, logging in with the new user works fine.
+
+Then - for some unknown reason - the eclipse of jbpm stopped recognizing bpmn
+files as a graphically editable object, finally I had to re-deploy the eclipse
+configuration.
+
+Finally a problem: assigning a task to the user `krisv` works, but when I try to assign a task to the user `admin`, I get:
+
+----
+     [java] javax.persistence.RollbackException: Error while commiting the transaction
+     [java]     at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:71)
+     [java]     at org.jbpm.task.service.TaskServiceSession.doOperationInTransaction(TaskServiceSession.java:820)
+     [java]     at org.jbpm.task.service.TaskServiceSession.addTask(TaskServiceSession.java:134)
+     [java]     at org.jbpm.task.service.TaskServerHandler.messageReceived(TaskServerHandler.java:109)
+     [java]     at org.jbpm.task.service.mina.MinaTaskServerHandler.messageReceived(MinaTaskServerHandler.java:41)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain$TailFilter.messageReceived(DefaultIoFilterChain.java:713)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:434)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.access$1200(DefaultIoFilterChain.java:46)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain$EntryImpl$1.messageReceived(DefaultIoFilterChain.java:793)
+     [java]     at org.apache.mina.filter.codec.ProtocolCodecFilter$ProtocolDecoderOutputImpl.flush(ProtocolCodecFilter.java:375)
+     [java]     at org.apache.mina.filter.codec.ProtocolCodecFilter.messageReceived(ProtocolCodecFilter.java:229)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:434)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.access$1200(DefaultIoFilterChain.java:46)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain$EntryImpl$1.messageReceived(DefaultIoFilterChain.java:793)
+     [java]     at org.apache.mina.filter.logging.LoggingFilter.messageReceived(LoggingFilter.java:176)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:434)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.access$1200(DefaultIoFilterChain.java:46)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain$EntryImpl$1.messageReceived(DefaultIoFilterChain.java:793)
+     [java]     at org.apache.mina.core.filterchain.IoFilterAdapter.messageReceived(IoFilterAdapter.java:119)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.callNextMessageReceived(DefaultIoFilterChain.java:434)
+     [java]     at org.apache.mina.core.filterchain.DefaultIoFilterChain.fireMessageReceived(DefaultIoFilterChain.java:426)
+     [java]     at org.apache.mina.core.polling.AbstractPollingIoProcessor.read(AbstractPollingIoProcessor.java:638)
+     [java]     at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:598)
+     [java]     at org.apache.mina.core.polling.AbstractPollingIoProcessor.process(AbstractPollingIoProcessor.java:587)
+     [java]     at org.apache.mina.core.polling.AbstractPollingIoProcessor.access$400(AbstractPollingIoProcessor.java:61)
+     [java]     at org.apache.mina.core.polling.AbstractPollingIoProcessor$Processor.run(AbstractPollingIoProcessor.java:969)
+     [java]     at org.apache.mina.util.NamePreservingRunnable.run(NamePreservingRunnable.java:64)
+     [java]     at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+     [java]     at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+     [java]     at java.lang.Thread.run(Thread.java:679)
+     [java] Caused by: org.hibernate.exception.ConstraintViolationException: Could not execute JDBC batch update
+     [java]     at org.hibernate.exception.SQLStateConverter.convert(SQLStateConverter.java:94)
+     [java]     at org.hibernate.exception.JDBCExceptionHelper.convert(JDBCExceptionHelper.java:66)
+     [java]     at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:275)
+     [java]     at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:266)
+     [java]     at org.hibernate.engine.ActionQueue.executeActions(ActionQueue.java:168)
+     [java]     at org.hibernate.event.def.AbstractFlushingEventListener.performExecutions(AbstractFlushingEventListener.java:321)
+     [java]     at org.hibernate.event.def.DefaultFlushEventListener.onFlush(DefaultFlushEventListener.java:50)
+     [java]     at org.hibernate.impl.SessionImpl.flush(SessionImpl.java:1027)
+     [java]     at org.hibernate.impl.SessionImpl.managedFlush(SessionImpl.java:365)
+     [java]     at org.hibernate.transaction.JDBCTransaction.commit(JDBCTransaction.java:137)
+     [java]     at org.hibernate.ejb.TransactionImpl.commit(TransactionImpl.java:54)
+     [java]     ... 29 more
+     [java] Caused by: org.h2.jdbc.JdbcBatchUpdateException: Referential integrity constraint violation: "FK27A9A59E619A0: PUBLIC.TASK FOREIGN KEY(CREATEDBY_ID) REFERENCES PUBLIC.ORGANIZATIONALENTITY(ID)"; SQL statement:
+     [java] update Task set allowedToDelegate=?, taskInitiator_id=?, priority=?, activationTime=?, actualOwner_id=?, createdBy_id=?, createdOn=?, documentAccessType=?, documentContentId=?, documentType=?, expirationTime=?, faultAccessType=?, faultContentId=?, faultName=?, faultType=?, outputAccessType=?, outputContentId=?, outputType=?, parentId=?, previousStatus=?, processInstanceId=?, skipable=?, status=?, workItemId=? where id=? [23002-124]
+     [java]     at org.h2.jdbc.JdbcPreparedStatement.executeBatch(JdbcPreparedStatement.java:1082)
+     [java]     at org.hibernate.jdbc.BatchingBatcher.doExecuteBatch(BatchingBatcher.java:70)
+     [java]     at org.hibernate.jdbc.AbstractBatcher.executeBatch(AbstractBatcher.java:268)
+     [java]     ... 37 more
+----
+
+I'll try to see what are the differences between the two accounts.
+
 TODO:
 
-- create working example for completing a human task via REST: moving a workflow to a next step, making a binary decision
+- Requested by Gabor: I develop on OOo 3.3 and Linux, test the extension on
+  Windows and Linux, OOo 3.3 and LO 3.4 (and send mail when done)
+- create working example for completing a human task via REST: making a binary decision
 - look for more related work on 'document based workflows'
 - look up Alfresco source code to see if minor/major versions are still ignored
   in Sharepoint mode
