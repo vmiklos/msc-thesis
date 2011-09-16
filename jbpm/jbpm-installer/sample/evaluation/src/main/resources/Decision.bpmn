@@ -161,8 +161,8 @@ kcontext.setVariable("map", map);</script>
     <sequenceFlow id="_4-_5" sourceRef="_4" targetRef="_5" tns:priority="1" >
       <conditionExpression xsi:type="tFormalExpression" >return decision == "accept";</conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="_4-_6" sourceRef="_4" targetRef="_6" tns:priority="1" >
-      <conditionExpression xsi:type="tFormalExpression" >return decision == "accept";</conditionExpression>
+    <sequenceFlow id="_4-_6" sourceRef="_4" targetRef="_6" tns:priority="2" >
+      <conditionExpression xsi:type="tFormalExpression" >return true;</conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="_5-_7" sourceRef="_5" targetRef="_7" />
     <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
