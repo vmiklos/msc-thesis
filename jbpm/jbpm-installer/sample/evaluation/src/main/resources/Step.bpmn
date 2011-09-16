@@ -70,7 +70,7 @@ kcontext.setVariable("map", map);</script>
       </dataOutputAssociation>
       <potentialOwner>
         <resourceAssignmentExpression>
-          <formalExpression>krisv</formalExpression>
+          <formalExpression>john</formalExpression>
         </resourceAssignmentExpression>
       </potentialOwner>
     </userTask>
@@ -110,7 +110,7 @@ kcontext.setVariable("map", map);</script>
       </dataInputAssociation>
       <potentialOwner>
         <resourceAssignmentExpression>
-          <formalExpression>john</formalExpression>
+          <formalExpression>mary</formalExpression>
         </resourceAssignmentExpression>
       </potentialOwner>
     </userTask>

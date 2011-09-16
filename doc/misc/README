@@ -209,6 +209,17 @@ Finally a problem: assigning a task to the user `krisv` works, but when I try to
 
 I'll try to see what are the differences between the two accounts.
 
+== 2011-09-15
+
+So the problem is that the underlying h2 database does not contain an entry for
+the `admin` user. Asked on IRC (#jbpm, irc.codehaus.org), the conclusion was
+that some magic is needed to alter the h2 database to reflect a changed
+users.properties, but noone really knows the details. Given that I wasted half
+a day on this, I now give it up and will just use the test users pre-created.
+
+(This thread is about this problem as well:
+http://community.jboss.org/message/612944 -- no solution there, either.)
+
 TODO:
 
 - Requested by Gabor: I develop on OOo 3.3 and Linux, test the extension on
