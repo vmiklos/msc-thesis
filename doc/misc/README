@@ -213,14 +213,17 @@ I'll try to see what are the differences between the two accounts.
 
 So the problem is that the underlying h2 database does not contain an entry for
 the `admin` user. Asked on IRC (#jbpm, irc.codehaus.org), the conclusion was
-that some magic is needed to alter the h2 database to reflect a changed
-users.properties, but noone really knows the details. Given that I wasted half
-a day on this, I now give it up and will just use the test users pre-created.
+that this is a bug, created JIRA ticket:
+https://issues.jboss.org/browse/JBPM-3356
 
-(This thread is about this problem as well:
-http://community.jboss.org/message/612944 -- no solution there, either.
+In the meantime, I created a user `john` on the Alfresco server so I can
+progress further.
 
-As asked on IRC, created JIRA ticket: https://issues.jboss.org/browse/JBPM-3356)
+I added code to be able to specify a workflow server url in the extension, with
+that it's now possible to get a list of documents from the assigned task list.
+
+The next step can be an extra checkbox on the save dialog to complete such a
+task.
 
 TODO:
 
