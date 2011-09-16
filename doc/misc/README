@@ -218,7 +218,9 @@ users.properties, but noone really knows the details. Given that I wasted half
 a day on this, I now give it up and will just use the test users pre-created.
 
 (This thread is about this problem as well:
-http://community.jboss.org/message/612944 -- no solution there, either.)
+http://community.jboss.org/message/612944 -- no solution there, either.
+
+As asked on IRC, created JIRA ticket: https://issues.jboss.org/browse/JBPM-3356)
 
 TODO:
 
