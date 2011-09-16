@@ -225,11 +225,39 @@ that it's now possible to get a list of documents from the assigned task list.
 The next step can be an extra checkbox on the save dialog to complete such a
 task.
 
+== 2011-09-16
+
+In ULX. Trying to add a checkbox to the save dialog that is unchecked and
+disabled when not connected to a workflow server. I got a strange exception
+during getting the workflow handler, so I looked up documentation on how can I
+debug an extension from eclipse.
+
+The extension part is described here:
+http://wiki.services.openoffice.org/wiki/Java_and_OpenOffice.org#How_do_I_debug_Java_components_in_OpenOffice.org.3F
+
+The Eclipse part is here: http://cedric.bosdonnat.free.fr/wordpress/?p=57
+
+With that, I now have a workflow view in the file picker (when a workflow
+server is configured), and I can also select if I want to complete the workflow
+task when I save. -- It's unchecked and disabled when there is no workflow.
+
+We discussed with Ivan, and decided that a process instance will "lock" a
+document, so multiple processes can't own the same document.
+
+The next step is to deal with decisions. Created a `Decision.bpmn` that
+contains a human task, then a gateway that branches based on that human task.
+That first task in the BPMN contains a form with two buttons and that sets the
+`decision` string to `accept` or `reject`.
+
+Once I had such a BPMN, I could see how to make a decision via the GWT console,
+then I added support for this in the extension as well.
+
 TODO:
 
+- Requested by Ivan: a single server with and without workflow view (convert it
+  to a view like favorites and recently used)
 - Requested by Gabor: I develop on OOo 3.3 and Linux, test the extension on
   Windows and Linux, OOo 3.3 and LO 3.4 (and send mail when done)
-- create working example for completing a human task via REST: making a binary decision
 - look for more related work on 'document based workflows'
 - look up Alfresco source code to see if minor/major versions are still ignored
   in Sharepoint mode
