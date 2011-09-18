@@ -271,6 +271,8 @@ workflow server, this view is the default -- when there is no workflow, then
 the workflow button is disabled. I also added tooltips to the buttons, since
 now there are 6 of them and just the 16x16px buttons are not that intuitive.
 
+Version to test: lpsp-0.1-443-gc44534e.oxt
+
 TODO:
 
 - look for more related work on 'document based workflows'
