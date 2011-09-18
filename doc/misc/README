@@ -254,12 +254,14 @@ then I added support for this in the extension as well.
 
 === 2011-09-17
 
-Did the tests requested by Gabor:
+Did the tests requested by Gabor: on Linux x86_64 (Frugalware 1.5) and Windows XP 32bit (in kvm).
 
 - OOo 3.3 on Linux is fine (that's what I develop for nowadays, as later relases are at the moment backwards-compatible)
 - LO 3.4 on Linux: based on quick testing -- fine
 - OOo 3.3 on Windows: does not work, I hit the issue described here: http://wiki.services.openoffice.org/wiki/Extensions_trouble_shooting
 - LO 3.4 on Windows: based on quick testing -- fine
+
+In all cases I used the official upstream binaries, either from Oracle or from TDF.
 
 There was an issue with LO on Windows: adding a new server was not possible
 till I increased the height of the window, but that's now fixed in SVN.
@@ -272,6 +274,26 @@ the workflow button is disabled. I also added tooltips to the buttons, since
 now there are 6 of them and just the 16x16px buttons are not that intuitive.
 
 Version to test: lpsp-0.1-443-gc44534e.oxt
+
+== 2011-09-18
+
+Looked at more related work. This time I did not search papers, but products.
+First I had a look what Sharepoint supports. Introduction article:
+
+http://office.microsoft.com/en-us/sharepoint-designer-help/create-a-workflow-HA010100591.aspx
+
+First, I wasted time with installing Visual Studio Express on the client
+machine (as it was mentioned as a dependency of 'Windows Workflow Foundation'),
+already having Office, but later turned out that what I need is 'SharePoint
+Designer 2007'. It's freely available here:
+
+http://www.microsoft.com/download/en/details.aspx?id=21581
+
+Here is a simple example, sending notifications to users when an item assigned to them is created or changed:
+http://office.microsoft.com/en-us/sharepoint-designer-help/workflow-example-send-a-notification-message-HA010182908.aspx
+
+There is still a lot of features to explore, so I don't declare 'checking
+sharepoint' as done yet.
 
 TODO:
 
