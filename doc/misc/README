@@ -109,7 +109,7 @@ Implemented functions:
 - new button to list favorites
 - as with recently used documents, the 'up' button can be used to return to the root directory
 
-== 2011-09-13
+=== 2011-09-13
 
 Created my first BPMN with two human tasks (and committed to SVN). That sounds
 easy, but there were two pitfalls:
@@ -126,7 +126,7 @@ ant stop.jboss && ant stop.h2 && ant start.h2 && ant start.jboss && ant start.hu
   the `.bpmn` extension, as that results in an XML reader exception, what works
   is: 'File -> New -> Other', then 'Drools -> Flow file'
 
-== 2011-09-14
+=== 2011-09-14
 
 In ULX. Worked on completing a task via REST API, created an example
 successfully. First I thought it will be easy as the login form already used
@@ -209,7 +209,7 @@ Finally a problem: assigning a task to the user `krisv` works, but when I try to
 
 I'll try to see what are the differences between the two accounts.
 
-== 2011-09-15
+=== 2011-09-15
 
 So the problem is that the underlying h2 database does not contain an entry for
 the `admin` user. Asked on IRC (#jbpm, irc.codehaus.org), the conclusion was
@@ -225,7 +225,7 @@ that it's now possible to get a list of documents from the assigned task list.
 The next step can be an extra checkbox on the save dialog to complete such a
 task.
 
-== 2011-09-16
+=== 2011-09-16
 
 In ULX. Trying to add a checkbox to the save dialog that is unchecked and
 disabled when not connected to a workflow server. I got a strange exception
@@ -252,12 +252,27 @@ That first task in the BPMN contains a form with two buttons and that sets the
 Once I had such a BPMN, I could see how to make a decision via the GWT console,
 then I added support for this in the extension as well.
 
+=== 2011-09-17
+
+Did the tests requested by Gabor:
+
+- OOo 3.3 on Linux is fine (that's what I develop for nowadays, as later relases are at the moment backwards-compatible)
+- LO 3.4 on Linux: based on quick testing -- fine
+- OOo 3.3 on Windows: does not work, I hit the issue described here: http://wiki.services.openoffice.org/wiki/Extensions_trouble_shooting
+- LO 3.4 on Windows: based on quick testing -- fine
+
+There was an issue with LO on Windows: adding a new server was not possible
+till I increased the height of the window, but that's now fixed in SVN.
+
+Did a change requested by Ivan: now files from the document server are
+accessible, even if there is a workflow server connected. This is solved by a
+new 'workflow' button which can list assigned documents. When there is a
+workflow server, this view is the default -- when there is no workflow, then
+the workflow button is disabled. I also added tooltips to the buttons, since
+now there are 6 of them and just the 16x16px buttons are not that intuitive.
+
 TODO:
 
-- Requested by Ivan: a single server with and without workflow view (convert it
-  to a view like favorites and recently used)
-- Requested by Gabor: I develop on OOo 3.3 and Linux, test the extension on
-  Windows and Linux, OOo 3.3 and LO 3.4 (and send mail when done)
 - look for more related work on 'document based workflows'
 - look up Alfresco source code to see if minor/major versions are still ignored
   in Sharepoint mode
