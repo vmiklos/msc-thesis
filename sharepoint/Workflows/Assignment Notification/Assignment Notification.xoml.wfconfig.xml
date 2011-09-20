@@ -1,0 +1,24 @@
+<WorkflowConfig>
+    <Template
+        BaseID="{B7C946B6-2CD9-46D4-93D6-2090E3B1D929}"
+        DocLibID="{34133032-D9BE-42CA-9625-4A12E538A68F}"
+        XomlHref="Workflows/Assignment Notification/Assignment Notification.xoml"
+        XomlVersion="V3.0"
+        RulesHref="Workflows/Assignment Notification/Assignment Notification.xoml.rules"
+        RulesVersion="V3.0"
+    >
+    </Template>
+    <Association
+        ListID="{322A98D6-E62E-4A4C-BA05-7FF7DA87AF0F}"
+        TaskListID="{99605953-913D-4BCC-ACC1-A7675ACD6A12}"
+        StartOnCreate="true"
+        StartOnChange="true"
+    >
+    </Association>
+    <ContentTypes>
+    </ContentTypes>
+    <Initiation URL="Workflows/Assignment Notification/Assignment Notification.aspx">
+        <Fields/>
+        <Parameters></Parameters>
+    </Initiation>
+</WorkflowConfig>
