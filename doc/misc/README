@@ -295,6 +295,72 @@ http://office.microsoft.com/en-us/sharepoint-designer-help/workflow-example-send
 There is still a lot of features to explore, so I don't declare 'checking
 sharepoint' as done yet.
 
+== 3th week
+
+=== 2011-09-19
+
+Continuing Sharepoint evaluation. One problem I hit is that first I installed a
+Hungarian Sharepoint Designer and that's a problem, as the translations are not
+so trivial and the howtos are in English. Reinstalling English now.. :)
+
+Once it's installed, it requires an updated .NET 3 framework (part of it is
+Windows Workflow Foundation), it can be installed easily using the URL the
+software provides.
+
+Then I created my very first workflow, following this tutorial:
+
+http://office.microsoft.com/en-us/sharepoint-designer-help/workflow-example-send-a-notification-message-HA010182908.aspx?CTT=3
+
+Before I could test it, I had to configure outgoing email, as described here:
+
+http://technet.microsoft.com/en-us/library/cc263462%28office.12%29.aspx
+
+( What is not described there: the SharePoint Central Administration Web site
+is at http://vmiklos-sp:31120/default.aspx )
+
+Now everything looks fine, except that I don't get the email. I'll figure out
+what's the problem tomorrow.
+
+=== 2011-09-20
+
+Continuing of the evaluation of Sharepoint/Word.
+
+OK, after a few debugging, it turns out there were two problems:
+
+- there is an internal sharepoint user called 'admin', while the one I'm
+  logging in is 'Administrator', and they are not the same. When changing the
+  workflow to 'Administrator', the server tries to send an email
+- I had to configure the firewall of the host machine to accept SMTP
+  connections from the virtual machines
+
+With that, I have a working sharepoint workflow example! :)
+
+(The workflow model consists of 3 files, they are in SVN.)
+
+Now that I have a clue how a workflow looks like in Sharepoint, I looked up
+what usecases does it support:
+
+- http://office.microsoft.com/en-us/word-help/manage-the-document-approval-process-using-a-workflow-HA010220203.aspx
+  document approval process; supported features: approve, reject, reassign, request a change (for a group of decision makers)
+- the Workflow feature of Word supports three use cases: approval, review, collecting signatures
+- each use case supports a set of actors, messsage to the actors and a deadline
+- the input of reassign a request change is an other actor and a deadline
+- the whole history of the workflow is saved and can be viewed later
+
+(The whole workflow process can only be started when the sharepoint server is a
+trusted site, but that doesn't require https, if the site is a trusted one in
+Internet Explorer.)
+
+And that's it, as far as I see the user interface in Word doesn't really
+support anything else (workflow-related).
+
+It seems it does not support the followings:
+
+- group assignment (one actor from a set of actors should perform an action)
+- decoupling of the document and workflow server
+- document masking
+- standard workflow format (such as BPMN)
+
 TODO:
 
 - look for more related work on 'document based workflows'
