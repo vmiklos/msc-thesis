@@ -344,7 +344,7 @@ what usecases does it support:
   document approval process; supported features: approve, reject, reassign, request a change (for a group of decision makers)
 - the Workflow feature of Word supports three use cases: approval, review, collecting signatures
 - each use case supports a set of actors, messsage to the actors and a deadline
-- the input of reassign a request change is an other actor and a deadline
+- the input of reassign or request change is an other actor and a deadline
 - the whole history of the workflow is saved and can be viewed later
 
 (The whole workflow process can only be started when the sharepoint server is a
@@ -361,8 +361,53 @@ It seems it does not support the followings:
 - document masking
 - standard workflow format (such as BPMN)
 
+=== 2011-09-21
+
+In ULX. Eclipse (the one that I use for extension development) once again
+crashed, leaving a workspace behind that can't be loaded. (At least I gave up
+recovering it after an hour.) The plugins are not installed in the workspace,
+so no reinstall is needed, but configuring paths is necessary. Here are the
+ones I use (it always take time to figure out):
+
+- Path to SDK: /home/vmiklos/documents/bme/diploma1/ooo33-64/opt/openoffice.org/basis3.3/sdk
+- Path to OOo installation: /home/vmiklos/documents/bme/diploma1/ooo33-64/opt/openoffice.org3
+
+An other breakage: JBoss startup seems, to hang, in the log there are messages like:
+
+----
+Caused by: java.lang.NoClassDefFoundError: org/jboss/threads/ArrayQueue
+Caused by: java.lang.ClassNotFoundException: org.jboss.threads.ArrayQueue
+----
+
+Once I re-created the jbpm workspace, that got fixed as well. Checklist after
+re-creating jbpm workspace:
+
+- update eclipse.ini (by default the memory limit is too low for it)
+- copy in workflow configs to sample/evaluation/src/main/resources/
+- copy in jar files for each workflow to jboss-5.1.0.GA/server/default/lib/
+
+With this, I have a working jbpm working environment again.
+
+Poking group assignment. Here is a summary:
+
+http://www.jboss.com/products/jbpm/docs/faq/#groupassignment
+
+The workflow is that group tasks are claimed (converted to personal tasks), and
+then completed or released.
+
+First I implemented helper methods in the workflow handler (they access the
+REST API of jbpm), then added user interface supports for the following
+features:
+
+- list group documents
+- claim a document (take)
+- release a document ("assign back")
+
 TODO:
 
-- look for more related work on 'document based workflows'
+- requested by Gabor: send Sharepoint evaluation summary in email (having it in SVN is not enough)
+- look for more related work on 'document based workflows':
+  http://wiki.alfresco.com/wiki/Workflow
+  http://www.liferay.com/community/wiki/-/wiki/Main/New+Features+in+Liferay+Portal+v6.0#section-New+Features+in+Liferay+Portal+v6.0-Integrated+Workflow
 - look up Alfresco source code to see if minor/major versions are still ignored
   in Sharepoint mode
