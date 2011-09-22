@@ -356,7 +356,6 @@ support anything else (workflow-related).
 
 It seems it does not support the followings:
 
-- group assignment (one actor from a set of actors should perform an action)
 - decoupling of the document and workflow server
 - document masking
 - standard workflow format (such as BPMN)
@@ -403,11 +402,25 @@ features:
 - claim a document (take)
 - release a document ("assign back")
 
+=== 2011-09-22
+
+Wrote up a more detailed sharepoint workflow analysis, sent it as an email.
+
+Improved the 'Save As' dialog a bit: if you type `test` as filename and select
+the doc filter, then it autocompletes the filename to `test.doc`.
+
+Looked at Alfresco sharepoint module source code:
+
+http://svn.alfresco.com/repos/alfresco-open-mirror/alfresco/HEAD/root/modules/sharepoint/amp/source/java/org/alfresco/module/vti/web/ws/CheckInFileEndpoint.java
+
+Here the execute() method parses the pageUrl and comment fields from the soap
+request, but ignores the CheckinType, that's why sharepoint checkins always
+have the same type (the default is apparently 'major').
+
+Version to test: lpsp-0.1-466-gc79bb46.oxt
+
 TODO:
 
-- requested by Gabor: send Sharepoint evaluation summary in email (having it in SVN is not enough)
 - look for more related work on 'document based workflows':
   http://wiki.alfresco.com/wiki/Workflow
   http://www.liferay.com/community/wiki/-/wiki/Main/New+Features+in+Liferay+Portal+v6.0#section-New+Features+in+Liferay+Portal+v6.0-Integrated+Workflow
-- look up Alfresco source code to see if minor/major versions are still ignored
-  in Sharepoint mode
