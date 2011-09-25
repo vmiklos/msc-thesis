@@ -476,6 +476,8 @@ the necessary war file is not mirrored, and the only source (
 http://liferay.cignex.com/palm_tree/book/0387/chapter09/kaleo-web-6.0.2.1.war )
 is not reachable at the moment -- connection times out.
 
+== 2011-09-25
+
 Then it turned out that the Kaleo engine is part of the default installation.
 
 ( Documentation for jBPM3:
