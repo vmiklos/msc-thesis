@@ -419,8 +419,36 @@ have the same type (the default is apparently 'major').
 
 Version to test: lpsp-0.1-466-gc79bb46.oxt
 
+=== 2011-09-23
+
+I spent tonight with evaluation Alfresco's workflow support.
+
+A good starting point is here: http://wiki.alfresco.com/wiki/Workflow
+
+- it supports jbpm-jpdl (not the newer jbpm-bpmn2), also a newer 3.4.e introduces an own "activiti" engine for BPMN 2.0 support
+- manual start of a set of predefinied workflows (as in Word) is possible using the web interface:
+
+  * adhoc: Enables you to assign a task to a single user
+  * group review & approve: Enables you to set up review and approval of content, assigning the workflow task to a single group
+  * parallel review & approve: Enables you to set up review and approval of content, assigning the workflow task to multiple users.
+  * pooled review & approve: Enables you to set up review and approval of content, assigning the workflow task to multiple users. One user can take ownership of the task at a time, completing it or returning it to the pool to be claimed by another user associated with the task.
+  * review & approve: Enables you to set up review and approval of content, assigning the workflow task to a single user
+
+( More here: http://www.alfresco.com/help/34/community/sharehelp/tasks/library-item-assign-workflow.html )
+
+I've tried out the "review & approve" one, works as expected. During edit you
+see the id of the workflow and using that id it's possible to see the history
+of a workflow. Haven't figured out how to list all completed workflow, though.
+
+Using jPDL3 (from jBPM3) it's also possible to define custom workflows, given
+that I already spent time on jBPM5 already, I did not check this feature in
+detail.
+
+What I also wanted to check: does Alfresco support workflows in its Sharepoint
+interface? It seems when opening a document from an Alfresco server in Word,
+the Workflow menu item disappears, so that's not supported.
+
 TODO:
 
 - look for more related work on 'document based workflows':
-  http://wiki.alfresco.com/wiki/Workflow
   http://www.liferay.com/community/wiki/-/wiki/Main/New+Features+in+Liferay+Portal+v6.0#section-New+Features+in+Liferay+Portal+v6.0-Integrated+Workflow
