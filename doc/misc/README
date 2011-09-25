@@ -448,7 +448,60 @@ What I also wanted to check: does Alfresco support workflows in its Sharepoint
 interface? It seems when opening a document from an Alfresco server in Word,
 the Workflow menu item disappears, so that's not supported.
 
+=== 2011-09-24
+
+Installed liferay:
+http://www.liferay.com/community/wiki/-/wiki/Main/Quick+Installation+Instructions
+The version I've tried: liferay-portal-tomcat-6.0.6-20110225
+
+Once the download and unzip is ready, the internal tomcat can be started. It
+has a 'Document Library' feature, which is similar to the one Sharepoint and
+Alfresco provides.
+
+The Document Library publishes the contents via WebDAV, so basic file
+operations (open, save) are simple from an external application as well. It
+also supports versioning, document metadata. It seems advanced Sharepoint-like
+actions like commit message during checkin is not supported.
+
+Regarding workflow engine, it supports jBPM3 and Kaleo workflow engines:
+
+http://www.liferay.com/web/jonas.yuan/blog/-/blogs/applying-workflow-on-any-assets-in-liferay-6
+
+And a newer post:
+
+http://www.liferay.com/web/juan.fernandez/blog/-/blogs/liferay-workflow-in-action
+
+Given that Kaleo is the default, I wanted to try out that one. Unfortunately,
+the necessary war file is not mirrored, and the only source (
+http://liferay.cignex.com/palm_tree/book/0387/chapter09/kaleo-web-6.0.2.1.war )
+is not reachable at the moment -- connection times out.
+
+Then it turned out that the Kaleo engine is part of the default installation.
+
+( Documentation for jBPM3:
+http://www.liferay.com/community/wiki/-/wiki/Main/How+to+Set+Up+JBPM+with+Liferay
+http://sourceforge.net/projects/jbpm/files/jBPM%203/jbpm-3.1.2/ )
+
+There is a builtin sample for a simple review of document changes, I tried
+that. It can be configured at 'Control Panel' -> 'Workflow Configuration'.
+There I set 'Document Library Document': choosed 'Single Approver' instead of
+'Default'.
+
+With this, when a new version of the document is uploaded, it's possible to
+'Submit as Draft' or 'Submit for Publication'. If the later is selected, the
+status of the new version will be pending, also a new item in 'My Workflow
+Tasks' appears in the 'Assigned to My Roles' section. (By default any
+administrator has the role to review documents.) Once I choose 'Assign to Me',
+it's moved to 'Assgigned to Me' and then choosing 'Approve' moves it to the
+list of completed tasks.
+
+The workflows here also have a 'Due Date' property, it's also possible -- as an
+administrator -- to assign tasks to other users.
+
+Needless to say, there are no Office integration in Liferay, except the WebDAV
+interface.
+
 TODO:
 
-- look for more related work on 'document based workflows':
-  http://www.liferay.com/community/wiki/-/wiki/Main/New+Features+in+Liferay+Portal+v6.0#section-New+Features+in+Liferay+Portal+v6.0-Integrated+Workflow
+- text sections uno api:
+  http://wiki.services.openoffice.org/wiki/Documentation/DevGuide/Text/Text_Sections
