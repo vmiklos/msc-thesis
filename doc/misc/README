@@ -295,7 +295,7 @@ http://office.microsoft.com/en-us/sharepoint-designer-help/workflow-example-send
 There is still a lot of features to explore, so I don't declare 'checking
 sharepoint' as done yet.
 
-== 3th week
+== 3rd week
 
 === 2011-09-19
 
@@ -476,7 +476,7 @@ the necessary war file is not mirrored, and the only source (
 http://liferay.cignex.com/palm_tree/book/0387/chapter09/kaleo-web-6.0.2.1.war )
 is not reachable at the moment -- connection times out.
 
-== 2011-09-25
+=== 2011-09-25
 
 Then it turned out that the Kaleo engine is part of the default installation.
 
