@@ -534,8 +534,14 @@ First I read up on the sections UNO API:
 Detailed documentation about these interfaces can be found in the
 http://api.libreoffice.org/[LibreOffice API Documentation].
 
-TODO:
+=== 2011-09-27
 
-- check how a Calc open works with the section disable code
-- if there are no section named after the current workflow node, don't disable anything
-- check redmine ticket, saving the first version of the file to Alfresco results in a basic exception?
+Worked on bugfixes:
+
+- the document was assumed to be part of a task when there were a workflow server available
+- all sections was disabled when there was no matching section name (compared to active node name)
+- fixed 'save as' when creating a new file and workflow server is configured
+- fixed default directory when using 'save as' and workflow server was configured
+- fixed 'save' to call 'save as' when the handled document is not yet saved to the document server
+
+Version to test: lpsp-0.1-484-ge35aa3a.oxt
