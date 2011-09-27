@@ -503,7 +503,37 @@ administrator -- to assign tasks to other users.
 Needless to say, there are no Office integration in Liferay, except the WebDAV
 interface.
 
+== 4th week
+
+=== 2011-09-26
+
+Worked on document masking. My idea is that a document can contain named
+sections, and these names can be mapped to the workflow node names.
+
+So given that:
+
+- the document contains named sections (this is true in case of ODF documents,
+  Word does not support them, so the document is imported with generated
+  section names like 'Convert 1')
+- the section names are the same as the document workflow node names
+
+The task of the extension is to:
+
+- make sure only the current section is editable (set everything else to protected)
+- undo these changes before save
+- hide the protect/unprotect actions from the user
+
+First I read up on the sections UNO API:
+
+- Introduction:
+  http://wiki.services.openoffice.org/wiki/Documentation/DevGuide/Text/Text_Sections
+- Relevant interfaces: XTextSectionsSupplier, XPropertySet, TextSection
+- To iterate over sections: XIndexAccess, XNamed
+- To let the document be unmodified after touching the protected sections: XModifiable
+
+Detailed documentation about these interfaces can be found in the
+http://api.libreoffice.org/[LibreOffice API Documentation].
+
 TODO:
 
-- text sections uno api:
-  http://wiki.services.openoffice.org/wiki/Documentation/DevGuide/Text/Text_Sections
+- check redmine ticket, saving the first version of the file to Alfresco results in a basic exception?
