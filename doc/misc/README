@@ -536,4 +536,6 @@ http://api.libreoffice.org/[LibreOffice API Documentation].
 
 TODO:
 
+- check how a Calc open works with the section disable code
+- if there are no section named after the current workflow node, don't disable anything
 - check redmine ticket, saving the first version of the file to Alfresco results in a basic exception?
