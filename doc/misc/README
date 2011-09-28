@@ -545,3 +545,74 @@ Worked on bugfixes:
 - fixed 'save' to call 'save as' when the handled document is not yet saved to the document server
 
 Version to test: lpsp-0.1-484-ge35aa3a.oxt
+
+=== 2011-09-28
+
+In ULX. Started working on the 'audit log' feature. The idea is:
+
+- search what jbpm api can be used to check if the user is an admin (only they can look at audit logs)
+- search what jbpm api can be used to retrieve already completed workflows
+- once a completed workflow is selected, a dialog similar to the document version history could describe the workflow history (columns: when, who, where did what)
+
+It seems the process history is problematic on jBPM 5.1 at the moment:
+http://community.jboss.org/thread/152989
+
+Relevant JIRA tickets:
+- https://issues.jboss.org/browse/BPMC-68
+- https://issues.jboss.org/browse/JBPM-3069
+
+And indeed no HistoryService is mentioned during boot:
+
+----
+$ grep DiscoverServices jboss-5.1.0.GA/server/default/log/server.log
+2011-09-28 09:39:03,607 INFO  [STDOUT] (main) 09:39:03,607 INFO  [DiscoverServices] beging searching for services ...
+2011-09-28 09:39:03,932 INFO  [STDOUT] (main) 09:39:03,932 INFO  [DiscoverServices] checking ErraiApp.properties for configured types ...
+----
+
+Digging deeper, it prints where does it search for services:
+
+----
+2011-09-28 15:02:25,026 INFO  [STDOUT] (main) 15:02:25,026 INFO  [ConfigUtil]  -> /home/vmiklos/documents/bme/diploma1/jbpm/jbpm-installer/jboss-5.1.0.GA/server/default/deploy/jbpm-gwt-console.war/WEB-INF/classes
+----
+
+in that WEB-INF folder, there is a lib folder as well, If I copy
+jbpm-console-integration-4.4.jar there (which is for jBPM4, and provides
+HistoryService), then I get:
+
+----
+2011-09-28 15:29:46,184 INFO  [STDOUT] (HDScanner) 15:29:46,184 INFO  [DiscoverServices] discovered service: org.jbpm.integration.console.services.HistoryService
+2011-09-28 15:29:46,189 ERROR [STDERR] (HDScanner) com.google.inject.internal.ComputationException: com.google.inject.internal.ComputationException: java.lang.NoClassDefFoundError: Lorg/jbpm/api/ProcessEngine;
+----
+
+so it finds the service, but can't load it - the NoClassDefFoundError is due to
+the depend on jBPM4.
+
+Read the history chapter of the jBPM5 doc: http://docs.jboss.org/jbpm/v5.1/userguide/ch07.html#d0e2836
+
+Then I had the chance to talk to krisv on IRC (main developer of jBPM), he confirmed:
+
+----
+17:00 < krisv> vmiklos: the history view is not (yet) supported in jBPM5
+17:01 < krisv> vmiklos: there is a history log (as just by the process instance management and reporting parts), but the generation of a history view is not implemented
+17:02 < vmiklos> krisv: uhm, so the best if i log it to some sql, then access sql directly, instead of using the rest api?
+17:02 < krisv> vmiklos: the logging is already done if you configure a history logger, the REST api for history just doesn't work
+17:03 < vmiklos> ok, thanks
+17:04 < krisv> vmiklos: if you want to contribute the HistoryService? ;)
+----
+
+He also gave a few source code pointers:
+
+- the old jBPM4 code that isn't ported to jBPM5: http://anonsvn.jboss.org/repos/jbpm/jbpm4/trunk/integration/console/src/main/java/org/jbpm/integration/console/services/
+- jBPM5 code that logs history data: https://github.com/droolsjbpm/jbpm/blob/master/jbpm-bam/src/main/java/org/jbpm/process/audit/ProcessInstanceDbLog.java
+
+Discussed with Ivan: I'll first work on starting new workflows, as the rest api
+supports that already, then once I'm ready with that, I'll look into the above,
+ideally should not take more than a week to implement.
+
+TODO:
+
+- feature from spec: storing audit log + ui for it in the extension
+- new feature: make it possible to start a workflow: once the document is
+  opened, a menu item to start a workflow, a dialog appears to choose a
+  workflow from a combo box
+- bug: document url is not accessible after completing the first human task
