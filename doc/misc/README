@@ -713,6 +713,62 @@ At the end of the day, after spending half a day trying to set up jBPM4, Ivan
 told me that jBPM4 was never supported, so in case something goes wrong, it
 does not really worth wasting time on it.
 
+=== 2011-10-01
+
+So given that I had no luck with jBPM4, I'm now giving jBPM3 a short try, to
+see if it had a working HistoryService (+ rest api to it), and if yes, how did
+that work.
+
+Downloaded jbpm-jpdl-suite-3.2.GA.zip from SourceForge, then unpackaged.
+Started with:
+
+----
+cd jbpm-jpdl-3.2.GA/server/bin; ./run.sh -c jbpm
+----
+
+Documentation:
+
+- http://community.jboss.org/wiki/JBPM3GettingStarted
+- http://www.java.net/node/664522
+
+I did not find anything REST-related, will try to search more tomorrow.
+
+=== 2011-10-02
+
+So searched a bit more and it turns out that's a new feature in 3.3:
+
+http://www.mastertheboss.com/jbpm/170-restful-web-services-with-jbpm-gwt-console.html
+
+It's available here:
+
+http://en.sourceforge.jp/projects/sfnet_jbpm/downloads/jBPM%203/jbpm-jpdl-3.3.1.GA/jbpm-installer-3.3.1.GA.jar/
+
+The installer seems to be a bit crazy: it forces me to point to a JBoss dir,
+but later it downloads its own. Anyway, I already had a JBoss 5.1 from jBPM5,
+so I made a copy of it and pointed at that one.
+
+The mastertheboss.com then tells how to initialize the db, the trick from
+Friday is necessary here as well (the .sql script should be updated:
+s/type=InnoDB/engine=InnoDB/g).
+
+So the installer downloaded jboss 5.0.0, but deployed to the one I set, making
+the jboss download a bit pointless. As a consequence, once I started:
+
+----
+cd jbpm3-jboss/bin; sh run.sh
+----
+
+It started a jBPM3, serving a rest api at http://localhost:8080/gwt-console-server/ !
+
+Sadly I see nothing history-related there yet -- and no HistoryService in the log, either.
+
+So, my conclusion so far is to stop digging earlier versions, and:
+
+- configure jbpm5 with mysql
+- see what data gets stored
+- if that's not enough, add more loggers
+- provide rest api for that, and don't yet care if that api will be fine for jbpm-console or not
+
 TODO:
 
 - feature from spec: storing audit log + ui for it in the extension
