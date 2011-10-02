@@ -649,10 +649,71 @@ After creating the entity classes for a process and a set of processes, I could
 implement a `WFHandler::getProcessDefinitions()` method, that can be called by
 the UI.
 
+=== 2011-09-30
+
+In ULX. Worked on the UI of workflow start. Steps:
+
+- created an UNO interface idl for the workflow dialog
+- created an UNO service idl, implementing the interface
+- created a BASIC function calling the UNO service
+- created a WorkflowImpl, implementing the UNO interface
+
+Also added a few checks before starting a workflow:
+
+- a connection must be available
+- a document must be opened
+- the document must not be associated to a workflow already
+
+I used the "usual" error handling here: just throwing an exception, then from
+BASIC the ErrorReason property of the Workflow service can be queried for the
+localized error message.
+
+Then created a Swing dialog for choosing the workflow to start:
+
+- created a StartWorkflowDialog class
+- let WorkflowImpl use StartWorkflowDialog
+
+The other big task for today: set up jBPM4, so I can see how HistoryService
+worked. Got the release archive at: http://sourceforge.net/projects/jbpm/files/jBPM%204/jbpm-4.4/
+
+According to readme.html, a demo setup can be created using:
+
+----
+cd install; ant demo.setup.jboss
+----
+
+Given that jBPM5 is already running on my laptop, I put jBPM4 to a virtual machine, but it listens on localhost only by default. To change that, the
+
+----
+<property name="bind.address" value="localhost" />
+----
+
+line should be changed in `build.xml` to "0.0.0.0".
+
+With that, the jBPM4 console is available at
+
+http://192.168.122.219:8080/jbpm-console/
+
+According to the doc, a possible user/pass is `alex` / `password`.
+
+Next, I searched a BPMN process definition with Human Tasks. One is under
+`examples/src/org/jbpm/examples/bpmn/task/usertask/taskform`. I opened that
+BPMN in Eclipse, but all it could import is the start node... So I read the
+process definition manually. It seems it contains two group tasks, the first
+can be claimed by mary, the second by peter. When I log in with mary, I can
+claim the task, but when I would complete it, it asks for a user / password and
+there it does not accept mary / password...
+
+Finally I gave up and reinstalled jBPM4 with mysql:
+http://www.mastertheboss.com/jbpm/184-jbpm4-tutorial.html
+
+(The mysql script wanted to use `type=InnoDB`, today's mysql wants `engine=InnoDB`.)
+
+At the end of the day, after spending half a day trying to set up jBPM4, Ivan
+told me that jBPM4 was never supported, so in case something goes wrong, it
+does not really worth wasting time on it.
+
 TODO:
 
 - feature from spec: storing audit log + ui for it in the extension
-- new feature: make it possible to start a workflow: once the document is
-  opened, a menu item to start a workflow, a dialog appears to choose a
-  workflow from a combo box
 - bug: document url is not accessible after completing the first human task
