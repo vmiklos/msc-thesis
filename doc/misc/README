@@ -609,6 +609,46 @@ Discussed with Ivan: I'll first work on starting new workflows, as the rest api
 supports that already, then once I'm ready with that, I'll look into the above,
 ideally should not take more than a week to implement.
 
+=== 2011-09-29
+
+Started work on creating new workflow instances from the user interface. First,
+this needs changes to the workflow definitions, so the URL of the document is a
+parameter of the workflow. Steps to achieve this:
+
+- read documentation, figured out that in case a hu.ulx.foo.ftl is in the class
+  path (where hu.ulx.foo is the ID of the workflow), then that makes it
+  possible to fill a form when the workflow starts, so the workflow can have
+  parameters.
+- next, I modified the bpmn to use the URL input parameter instead of
+  hardwiring one in the BPMN definition.
+
+Examples for such an URLs:
+
+http://192.168.122.187:7070/alfresco/SPP/documentLibrary/hello.txt
+http://192.168.122.187:7070/alfresco/SPP/documentLibrary/documentmask.odt
+
+Next question is how to start such a workflow from API. The
+`/rs/form/process/$id/complete` REST API can be used for this, the input
+parameters of the workflow has to be sent to that address as a POST request.
+(`$id` has to be replaced by the id of the process definition, part of the BPMN
+file, typically hu.ulx.foo)
+
+Based on this, I could implement a `WFHandler.startProcess()` method in the
+workflow library, that can be used from the UI.
+
+Related: how to pretty-print json output? Here is a sample:
+
+-----
+cat test.json | python -mjson.tool > out.json
+----
+
+Finally, how to get a list of process definitions? `/rs/process/definitions`
+can do that, it returns the result in json.
+
+After creating the entity classes for a process and a set of processes, I could
+implement a `WFHandler::getProcessDefinitions()` method, that can be called by
+the UI.
+
 TODO:
 
 - feature from spec: storing audit log + ui for it in the extension
