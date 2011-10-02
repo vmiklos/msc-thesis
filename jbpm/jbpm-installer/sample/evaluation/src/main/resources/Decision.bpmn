@@ -26,8 +26,7 @@
     <!-- nodes -->
     <startEvent id="_1" name="Start" />
     <scriptTask id="_2" name="Script" scriptFormat="http://www.java.com/java" >
-      <script>url = "http://192.168.122.187:7070/alfresco/SPP/documentLibrary/hello.txt";
-kcontext.setVariable("url",url);
+      <script>kcontext.setVariable("url",url);
 
 decision = "reject";
 kcontext.setVariable("decision", decision);
