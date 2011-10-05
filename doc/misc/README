@@ -800,6 +800,70 @@ talk about how to create a mysql schema.
 
 And yes, finally I have 30 tables in mysql! :)
 
+=== 2011-10-05
+
+Trying to figure out how the history of a workflow is stored in SQL. The
+example is the Decision workflow, where it's started, a decision is made,
+finally someone else does the actual accept / reject (and the workflow ends).
+
+- start / end time is available in the `ProcessInstanceLog` table:
+
+  * `processInstanceId` is the id of the current instance (key)
+  * `START_DATE` is the start of the process
+  * `END_DATE` is the end of the process (if finished)
+  * `processId` is the name of the process definition (hu.foo.bar)
+
+- the `Task` table contains the human task parts of the workflow:
+
+  * `id` is the key
+  * `createdOn` contains the date
+  * `processInstanceId` contains which process the task belongs to
+  * `actualOwner_id` contains the user completing the task
+  * variables: `outputContentId` -> `Content` table, `content` column
+
+- the `NodeInstanceLog` table contains the nodes visited during the process:
+
+  * `processInstanceId` - the current node instance is part of which process instance
+  * `nodeId` - the node definition id
+  * `LOG_DATE` - when the entry is created
+
+So it seems (let's say) enough information is logged, the problem is the lack
+of REST API.
+
+As a first step, I want to add support for listing completed process instances.
+Not completed ones can be get using, for example:
+
+http://localhost:8080/gwt-console-server/rs/process/definition/hu.ulx.decision/instances
+
+A similar
+
+http://localhost:8080/gwt-console-server/rs/process/definition/history/hu.ulx.decision/instances
+
+could export info about the completed ones.
+
+For that, I got the console sources from:
+
+----
+git clone git://github.com/bpmc/bpm-console.git
+cd bpm-console
+mvn install
+----
+
+This went fine (tests passed). The next question is how to get jbpm to use my
+bpm-console, since it's jbpm that builds the
+jbpm-gwt-console-server-$version.war.
+
+I edited the .pom file to use the SNAPSHOT version of the console I built, but
+without success, now JBoss does not start.
+
+So I checked which is the good console that works, at it turned out to be the
+an older version, which is in svn:
+
+http://anonsvn.jboss.org/repos/soag/bpm-console/tags/bpm-console-2.1/
+
+Which is a maven project, which tries to download build-depends from
+http://repository.jboss.org/maven2, which is already removed...
+
 TODO:
 
 - feature from spec: storing audit log + ui for it in the extension
