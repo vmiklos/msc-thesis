@@ -864,6 +864,13 @@ http://anonsvn.jboss.org/repos/soag/bpm-console/tags/bpm-console-2.1/
 Which is a maven project, which tries to download build-depends from
 http://repository.jboss.org/maven2, which is already removed...
 
+And yes, when I check carefully how bpm-console is integrated to the jbpm war
+files, there is this line in the build log:
+
+http://repository.jboss.org/nexus/content/groups/public/org/jboss/bpm/gwt-console/2.1/gwt-console-2.1-jbpm.war
+
+So it just downloads the binary, does not compile it. (Even for a new jBPM release.)
+
 TODO:
 
 - feature from spec: storing audit log + ui for it in the extension
