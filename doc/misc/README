@@ -769,6 +769,37 @@ So, my conclusion so far is to stop digging earlier versions, and:
 - if that's not enough, add more loggers
 - provide rest api for that, and don't yet care if that api will be fine for jbpm-console or not
 
+== 5th week
+
+=== 2011-10-03
+
+Building jBPM5 from source to be able to hack it. A howto:
+http://www.plugtree.com/building-jbpm5-from-source/
+
+First I got a build failure, asked on IRC if this is a known issue, it turned
+out that it is. So instead of building the 'master' branch, I tried 5.1.x (I
+used the 5.1.0 binary so far):
+
+----
+git checkout --track origin/5.1.x
+----
+
+Given that tests failed on that branch as well, I finally built using:
+
+----
+mvn install -DskipTests
+----
+
+(Still need to test if this is enough for the "I modify the source code and can
+test the binary" scenario, but hopefully yes.)
+
+The other goal I wanted to reach today is to set up jbpm5 with mysql.
+
+A helpful thread: http://community.jboss.org/thread/164547 - but it does not
+talk about how to create a mysql schema.
+
+And yes, finally I have 30 tables in mysql! :)
+
 TODO:
 
 - feature from spec: storing audit log + ui for it in the extension
