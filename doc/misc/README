@@ -800,7 +800,7 @@ talk about how to create a mysql schema.
 
 And yes, finally I have 30 tables in mysql! :)
 
-=== 2011-10-05
+=== 2011-10-04
 
 Trying to figure out how the history of a workflow is stored in SQL. The
 example is the Decision workflow, where it's started, a decision is made,
@@ -871,7 +871,51 @@ http://repository.jboss.org/nexus/content/groups/public/org/jboss/bpm/gwt-consol
 
 So it just downloads the binary, does not compile it. (Even for a new jBPM release.)
 
+=== 2011-10-05
+
+In ULX. Also checked that bpm-console from svn (and not git-svn) fails.
+
+Restored my installation to the state before two days ago, when it
+were properly logging to mysql and had working diagrams with official
+jBPM-5.1.0 binaries (I overwrote jars here and there while experimenting).
+
+Discussed with Gabor: several small (or not so small) usability requests,
+appended to TODO.
+
+Discussed with Ivan: accessing SQL directly is acceptable, though in case we
+can get gwt-console-2.1 to build, that would be even better.
+
+Worked on GNOME integration, reference on how to detect GNOME presence:
+
+http://opengrok.libreoffice.org/xref/core/vcl/unx/generic/desktopdetect/desktopdetector.cxx#58
+
+Spent time with setting up GNOME test environment to verify.
+
+Version to test: lpsp-0.1-512-g89ce9dd.oxt
+
+Back to bpm-console, found the developer forum:
+
+http://community.jboss.org/en/gwtconsoles
+
+And there a helpful thread: http://community.jboss.org/thread/152160
+
+With that, bpm-console-2.1 builds! :)
+
 TODO:
 
-- feature from spec: storing audit log + ui for it in the extension
-- bug: document url is not accessible after completing the first human task
+- feature from spec: audit log
+
+From Gabor:
+
+- checkbox: skip documentLibrary level (SP & alfresco as well) - default default: skip
+- to evaluate: search
+- view selection: short / detailed (name, last modified, version)
+- explicit checkout feature
+  + ha masik zarolta, akkor warning + checkout nelkul
+  + ha mentesnel lockolas nem sikerul, akkor warning + 1) save as felajanlas vagy 2) var es probalja kesobb
+  + default default "nem lockolas" legyen + hozza default configolhato legyen (server config + file pickerbe checkbox)
+- non-workspace folder creation
+
+From Ivan:
+
+- to evaluate: how deadline works with Sharepoint / Word
