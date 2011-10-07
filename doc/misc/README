@@ -901,6 +901,33 @@ And there a helpful thread: http://community.jboss.org/thread/152160
 
 With that, bpm-console-2.1 builds! :)
 
+=== 2011-10-06
+
+Worked on creating the jbpm installer from source, so I can test my modified
+bpm-console-2.1.
+
+The document containing the basics:
+
+https://github.com/droolsjbpm/droolsjbpm-build-bootstrap/blob/master/README.md
+
+So I cloned all the repos to $HOME/git/droolsjbpm, built, then ran `ant
+install.demo` in $HOME/git/droolsjbpm/jbpm/jbpm-installer. It tried to download
+snapshots files from sourceforge, which all failed, so I copied each necessary
+file from $HOME/.m2 (maven output) to jbpm-installer/lib.
+
+The only workaround I needed was that I have no idea how to produce
+jbpm-5.1.2-SNAPSHOT-eclipse-all.zip, copied jbpm-5.1.0.Final-eclipse-all.zip
+instead. (But that's not really interesting, I don't want to hack the Eclipse
+integration.)
+
+Once this was done, I ran `ant start.h2 && ant start.jboss` and the previously
+mentioned new `/rs/process/definition/history/hu.ulx.decision/instances` path
+returned a hello world! :)
+
+So slowly, but I completed the source code -> testable binary path. The next
+step is to figure out what actions are necessary for an incremental build (when
+I just change a few files in bpm-console).
+
 TODO:
 
 - feature from spec: audit log
