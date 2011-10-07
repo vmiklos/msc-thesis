@@ -903,6 +903,8 @@ With that, bpm-console-2.1 builds! :)
 
 === 2011-10-06
 
+*Building droolsjbpm-build-bootstrap*
+
 Worked on creating the jbpm installer from source, so I can test my modified
 bpm-console-2.1.
 
@@ -924,9 +926,34 @@ Once this was done, I ran `ant start.h2 && ant start.jboss` and the previously
 mentioned new `/rs/process/definition/history/hu.ulx.decision/instances` path
 returned a hello world! :)
 
-So slowly, but I completed the source code -> testable binary path. The next
-step is to figure out what actions are necessary for an incremental build (when
-I just change a few files in bpm-console).
+So slowly, but I completed the source code -> testable binary path, using:
+
+- bpm-console from svn tag "2.1"
+- droolsjbpm from git (using the recommended `droolsjbpm-build-bootstrap/script/git-checkout-all.sh 5.2.x 5.1.x` command)
+
+*Incremental build*
+
+The next step is to figure out what actions are necessary for an incremental
+build (when I just change a few files in bpm-console). Here they are:
+
+- 1) cd $HOME/git/bpmc/bpm-console-gitsvn
+- 2) hack hack hack
+- 3) mvn install -DskipTests # produces $HOME/.m2/repository/org/jboss/bpm/gwt-console-server/2.1/gwt-console-server-2.1-jbpm.war
+- 4) cd $HOME/git/droolsjbpm/jbpm/jbpm-gwt; mvn -DskipTests install # produces $HOME/.m2/repository/org/jbpm/jbpm-gwt-console/5.1.2-SNAPSHOT/jbpm-gwt-console-5.1.2-SNAPSHOT.war
+- 5) cd $HOME/git/droolsjbpm/jbpm/jbpm-distribution; mvn -DskipTests install # produces target/jbpm-5.1.2-SNAPSHOT-gwt-console.zip
+- 6) cp target/jbpm-5.1.2-SNAPSHOT-gwt-console.zip $HOME/git/droolsjbpm/jbpm/jbpm-installer/lib
+- 7) cd $HOME/git/droolsjbpm/jbpm/jbpm-installer; ant install.demo
+- 8) ant stop.jboss; ant start.jboss
+
+The `bpm-console-to-jboss.sh` does steps 3)..7) in one go. (Takes about 3 mins here.)
+
+*Eclipse*
+
+http://eclipse.org/m2e/ provides Eclipse integration for maven projects, so now
+I can hack bpm-console in Eclipse.
+
+At the end of the day, I implemented a new rest method that lists all process
+instances, not just the active (not finished) ones. More to come! :)
 
 TODO:
 
