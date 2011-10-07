@@ -955,11 +955,63 @@ I can hack bpm-console in Eclipse.
 At the end of the day, I implemented a new rest method that lists all process
 instances, not just the active (not finished) ones. More to come! :)
 
+=== 2011-10-07
+
+In ULX. Still working on /rs/process/definition/history/$id/instances - trying
+to figure out how can I hack the org.jbpm.process.audit package, which contains
+the actual SQL(-like) commands t access the db tables. In this particular case
+I want to add a method that returns completed process instances *only*.
+
+Adding a new ProcessInstanceDbLog.findInactiveProcessInstances() method is
+trivial, but somehow I still get a
+
+----
+org.jboss.resteasy.spi.UnhandledException: java.lang.NoSuchMethodError: org.jbpm.process.audit.ProcessInstanceDbLog.findInactiveProcessInstances(Ljava/lang/String;)Ljava/util/List;
+----
+
+The solution was that jbpm-gwt depends on jbpm-bam, so the later should be built first.
+
+With this, /rs/process/definition/history/$processId/instances exports exactly the
+already finished processes!
+
+Next, I want to add rest api to get the node instances of a process instance. The control flow could be:
+
+- ProcessMgmtFacade.getCompletedNodes() is called via REST, calls
+- ProcessManagement.getNodeInstances() [ interface in gwt-console-server-integration ], calls
+- ProcessManagement.getNodeInstances() [ implementation in jbpm-gwt-core ], calls
+- CommandDelegate.getNodeInstanceLogsByProcessInstanceId(), calls
+- ProcessInstanceDbLog.findNodeInstances(), which interacts with hibernate [ already available ]
+
+For that, the following DTO classes are used:
+- NodeInstanceLog (used by hibernate) [ already available ]
+- NodeInstanceRef (used by the json serializer)
+- NodeInstanceRefWrapper (collection of NodeInstanceRef, used by json)
+
+Once I designed NodeInstanceRef and NodeInstanceRefWrapper, I could extend the
+ProcessManagement interface and add the missing 3 methods from the above list.
+
+With this, /rs/process/history/$processInstanceId/nodes exports the visited
+nodes of a process instance.
+
+Currently exported attributes:
+
+- date
+- id (read: nodeInstanceId)
+- nodeId
+
+The SQL ideally also stores type (according to NodeInstanceLog.java, it's
+TYPE_ENTER/TYPE_EXIT), but need to check their actual values, so I spent time
+with configuring the compiled-from-source jBPM instance to use mysql as well.
+
+Finally I wanted to include the node names in the json output, but for some
+reason they don't show up, need to debug later.
+
 TODO:
 
+- for the other BME guy: root@172.16.10.8 (install jbpm + alfresco; jboss custom port keywords: service binding manager)
 - feature from spec: audit log
 
-From Gabor:
+From Gabor (I said I'll try to complete these till 2011-10-21):
 
 - checkbox: skip documentLibrary level (SP & alfresco as well) - default default: skip
 - to evaluate: search
