@@ -1006,6 +1006,65 @@ with configuring the compiled-from-source jBPM instance to use mysql as well.
 Finally I wanted to include the node names in the json output, but for some
 reason they don't show up, need to debug later.
 
+=== 2011-10-08
+
+The "can't convert node ID's to node names" problem is now solved, it was described here:
+
+https://issues.jboss.org/browse/JBPM-3273
+
+After asking on IRC, krisv fixed it:
+
+https://github.com/droolsjbpm/jbpm/commit/0c65ca029b8ac7d5110bce8be45ab167510f6642
+
+And once I cherry-picked that commit to my repo, node names started to show up
+in the json output as well.
+
+The next target is to have a /rs/process/history/$processInstanceId/tasks,
+which lists tasks of a processinstanceid.
+
+First I planned this control flow:
+
+- ProcessMgmtFacade.getTasks() is called via REST, calls
+- ProcessManagement.getTasks() [ interface in gwt-console-server-integration ], calls
+- ProcessManagement.getTasks() [ implementation in jbpm-gwt-core ], calls
+- CommandDelegate.getTasksByProcessInstanceId(), calls
+- ProcessInstanceDbLog.findTasks(), which interacts with hibernate
+
+For that, the following DTO classes would be used:
+- Task (in org.jbpm.process.audit, used by hibernate)
+- TaskRef (used by the json serializer) [ already available ]
+- TaskRefWrapper (collection of TaskRef, used by json) [ already available ]
+
+But this turned out to be problematic, since then jbpm-bam's ORM would conflict
+with jbpm-human-task's ORM.
+
+While I was at it, a reference about hibernate vs Java types:
+
+http://www.java2s.com/Code/Java/Hibernate/JavaTypeVSHibernateType.htm
+
+Second try involved the following steps:
+
+- TaskListFacade: new method getTasksForProcessInstance(), calling
+- TaskManagement (interface): new method getProcessInstanceTasks(), implemented by
+- TaskManagement (implementation): new method getProcessInstanceTasks(), calling
+
+  * instantiates a new BlockingGetTasksResponseHandler class, implementing
+  * a new GetTasksResponseHandler interface
+
+- TaskClient: new method getTasksByProcessInstanceId(), calling
+
+  * using two new constants (QueryTasksByProcessInstanceId and QueryTasksByProcessInstanceIdResponse), provided by CommandName
+
+- TaskServerHandler: handles the new QueryTasksByProcessInstanceId token, calling
+- TaskServiceSession: new getTasksByProcessInstanceId() method, calling
+
+  * invoking a new stored procedure TasksByProcessInstanceId (defined in src/main/resources/META-INF/orm.xml of the jbpm-human-task project), doing a
+  * `select * from Task where processInstanceId = ?` SQL query
+
+- TaskClientHandler: handles the new QueryTasksByProcessInstanceIdResponse token (which then invokes the response handler, and the rest is trivial)
+
+and that works - as an extra success, I even get the task name for a task id, which was not in SQL. :)
+
 TODO:
 
 - for the other BME guy: root@172.16.10.8 (install jbpm + alfresco; jboss custom port keywords: service binding manager)
