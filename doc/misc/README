@@ -1065,10 +1065,22 @@ Second try involved the following steps:
 
 and that works - as an extra success, I even get the task name for a task id, which was not in SQL. :)
 
+=== 2011-10-09
+
+Set up Alfresco and jBPM5 on the bam-devel (root@172.16.10.8) virtual machine, as requested by Ivan.
+
+Implemented support for audit log in the workflow library, by adding the following methods:
+
+- getHistoricProcessInstances()
+- getHistoricNodeInstances()
+- getHistoricTasks()
+
+The user interface (uno interface idl, uno service idl, menu entry, java impl,
+java dialog) part is not yet ready.
+
 TODO:
 
-- for the other BME guy: root@172.16.10.8 (install jbpm + alfresco; jboss custom port keywords: service binding manager)
-- feature from spec: audit log
+- feature from spec: audit log extension part
 
 From Gabor (I said I'll try to complete these till 2011-10-21):
 
