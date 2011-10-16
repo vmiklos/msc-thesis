@@ -1078,6 +1078,18 @@ Implemented support for audit log in the workflow library, by adding the followi
 The user interface (uno interface idl, uno service idl, menu entry, java impl,
 java dialog) part is not yet ready.
 
+== 6th week
+
+=== 2011-10-10
+
+Worked on the UI of getHistoricProcessInstances():
+
+- menu entry
+- uno idl interface
+- uno idl service
+- java uno implementation
+- java swing dialog
+
 TODO:
 
 - feature from spec: audit log extension part
