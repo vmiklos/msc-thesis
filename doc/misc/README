@@ -1119,7 +1119,7 @@ http://msdn.microsoft.com/en-us/library/ms772957%28v=office.12%29.aspx
 
 So I want to add support for this tomorrow.
 
-<<<
+=== 2011-10-13
 
 Implemented deleteFolder() in the sharepoint lib and on the user interface. The
 toplevel folders are a special case:
