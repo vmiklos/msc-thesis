@@ -74,7 +74,7 @@ class Handler:
 	
 	def handle(self):
 		while True:
-			print "possible actions: create-space|cs, delete-space|ds, open|o, open-older|oo, save|s, save-as|sa, delete|d, list-versions|lv, restore-version|rv, delete-version|dv, quit|q"
+			print "possible actions: create-space|cs, create-folder|cf, delete-space|ds, open|o, open-older|oo, save|s, save-as|sa, delete|d, list-versions|lv, restore-version|rv, delete-version|dv, quit|q"
 			self.action = self.ask('action', self.action)
 
 			if self.action in ("open", "o"):
@@ -100,6 +100,8 @@ class Handler:
 				self.handle_delete_version()
 			elif self.action in ("create-space", "cs"):
 				self.handle_create_space()
+			elif self.action in ("create-folder", "cf"):
+				self.handle_create_folder()
 			elif self.action in ("delete-space", "ds"):
 				self.handle_delete_space()
 
@@ -442,6 +444,43 @@ class Handler:
 			xml = minidom.parseString(inner)
 			url = xml.getElementsByTagName('Url')[0].firstChild.toxml()
 			print 'created space at %s' % url
+		except Exception:
+			print "response is invalid xml: '%s'" % ret
+
+	def handle_create_folder(self):
+		def unescape(s):
+			s = s.replace("&lt;", "<")
+			s = s.replace("&gt;", ">")
+			# this has to be last:
+			s = s.replace("&amp;", "&")
+			return s
+
+		headers = self.soapheaders('http://schemas.microsoft.com/sharepoint/soap/dws/CreateFolder')
+
+		# example: 'SPP'
+		space = self.ask('space name', '')
+		# example: 'Shared Documents/test'
+		folder = self.ask('folder name', '')
+		soapbody = """<?xml version="1.0"?>
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+<s:Body>
+<CreateFolder xmlns="http://schemas.microsoft.com/sharepoint/soap/dws/">
+<url>%s</url>
+</CreateFolder>
+</s:Body>
+</s:Envelope>""" % folder
+		response = self.urlopen("%s/%s/_vti_bin/dws.asmx" % (self.path, space), soapbody, headers)
+		if response.code != 200:
+			raise Exception("failed to create space, http error %s" % response.code)
+		ret = response.read()
+		try:
+			xml = minidom.parseString(ret)
+			inner = unescape(xml.getElementsByTagName('CreateFolderResult')[0].firstChild.toxml())
+			xml = minidom.parseString(inner)
+			if xml.firstChild.hasChildNodes() == False:
+				print "created folder '%s'" % folder
+			else:
+				print "response is an error: '%s'" % ret
 		except Exception:
 			print "response is invalid xml: '%s'" % ret
 
