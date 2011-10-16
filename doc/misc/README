@@ -1090,6 +1090,13 @@ Worked on the UI of getHistoricProcessInstances():
 - java uno implementation
 - java swing dialog
 
+=== 2011-10-11
+
+Finished the UI of the audit log:
+
+- listing tasks of a process instance is now possible
+- listing node instances of a process instance is now possible
+
 TODO:
 
 - feature from spec: audit log extension part
