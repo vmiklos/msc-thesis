@@ -1097,9 +1097,33 @@ Finished the UI of the audit log:
 - listing tasks of a process instance is now possible
 - listing node instances of a process instance is now possible
 
-TODO:
+<<<
 
-- feature from spec: audit log extension part
+Looked at the "non-workspace folder creation" feature, requested by Gabor. It
+seems MSO can't create subfolders on an Alfresco server, then tested the same
+scenario with MSO + Sharepoint, but the result is the same: no way to create
+subfolders from Office. OTOH, an API is mentioned here:
+
+http://msdn.microsoft.com/en-us/library/ms774480%28v=office.12%29.aspx
+
+Using that, I could implement support for this in the proto. Then I tested this
+with Alfresco, and it turns out even they implement this API!
+
+So I implemented the call of this api in the proto, sharepoint lib and finally
+the user interface as well. As a result, the extension wanted to use the
+deleteSpace() method even on folders. For now I just added detection for this
+(so when delete is pressed on folders, nothing happens), but a DeleteFolder is
+available:
+
+http://msdn.microsoft.com/en-us/library/ms772957%28v=office.12%29.aspx
+
+So I want to add support for this tomorrow.
+
+<<<
+
+Implemented deleteFolder() in the sharepoint lib and on the user interface.
+
+TODO:
 
 From Gabor (I said I'll try to complete these till 2011-10-21):
 
@@ -1110,7 +1134,7 @@ From Gabor (I said I'll try to complete these till 2011-10-21):
   + ha masik zarolta, akkor warning + checkout nelkul
   + ha mentesnel lockolas nem sikerul, akkor warning + 1) save as felajanlas vagy 2) var es probalja kesobb
   + default default "nem lockolas" legyen + hozza default configolhato legyen (server config + file pickerbe checkbox)
-- non-workspace folder creation
+- make deletion of /SPP/documentLibrary a noop (/SPP and /SPP/documentLibrary/foo is OK)
 
 From Ivan:
 
