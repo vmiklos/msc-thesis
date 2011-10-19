@@ -1154,18 +1154,36 @@ by default):
 - read and write the setting in ServerDialog
 - map the setting to an UNO attribute in ConnectionImpl
 
+=== 2011-10-19
+
+In ULX. Added the 'skip toplevel directories' checkbox to the file picker, so
+the saved setting is just a default now.
+
+Had a look at the search feature. There is no such feature in Microsoft Word
+out of the box, but can be configured to search on a sharepoint server:
+
+http://workerthread.wordpress.com/2008/11/28/sharepoint-search-from-office-applications/
+
+Given that Alfresco does not support search.asmx and this is not related to the
+thesis, we discussed with Gabor that I should not implement this yet.
+
+Then worked on better checkout/in feature:
+
+- now the document is checked out during file open, not right before save
+- there is a new checkbox during file open to determine if the document should be checked out
+- the save dialog disables the checkin type + checkin comment controls when the document was not checked out
+
 TODO:
 
 From Gabor (I said I'll try to complete these till 2011-10-21):
 
-- checkbox: make skip documentLibrary level configurable (so the current setting will becomes just a default)
-- to evaluate: search
 - view selection: short / detailed (name, last modified, version)
 - explicit checkout feature
   + ha masik zarolta, akkor warning + checkout nelkul
   + ha mentesnel lockolas nem sikerul, akkor warning + 1) save as felajanlas vagy 2) var es probalja kesobb
-  + default default "nem lockolas" legyen + hozza default configolhato legyen (server config + file pickerbe checkbox)
+  + default default "nem lockolas" legyen + hozza default configolhato legyen (server config)
 
 From Ivan:
 
 - to evaluate: how deadline works with Sharepoint / Word
+- stack traces -- to log file
