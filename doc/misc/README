@@ -1144,11 +1144,21 @@ Though this feature is not yet configurable. I plan to add support for:
 - having a per-server default (skip by default)
 - having a checkbox in the file open dialog
 
+=== 2011-10-18
+
+Hacked on the plane, added per-server config option to skip toplevel dirs (skip
+by default):
+
+- added new type to the config XML
+- read the setting in ConfigServerDialog
+- read and write the setting in ServerDialog
+- map the setting to an UNO attribute in ConnectionImpl
+
 TODO:
 
 From Gabor (I said I'll try to complete these till 2011-10-21):
 
-- checkbox: may skip documentLibrary level (+its default) configurable - default default: skip
+- checkbox: make skip documentLibrary level configurable (so the current setting will becomes just a default)
 - to evaluate: search
 - view selection: short / detailed (name, last modified, version)
 - explicit checkout feature
