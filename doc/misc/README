@@ -1130,11 +1130,25 @@ toplevel folders are a special case:
 I now added the same check for deletion as well, so that the UI does not allow
 deleting toplevel folders (if that's wished, the whole DWS should be deleted.)
 
+== 7th week
+
+=== 2011-10-17
+
+Worked on the 'skip documentLibrary level' feature:
+
+- the 'getParent' operation now skips it
+- the 'selectRemotePath' operation now skips it
+
+Though this feature is not yet configurable. I plan to add support for:
+
+- having a per-server default (skip by default)
+- having a checkbox in the file open dialog
+
 TODO:
 
 From Gabor (I said I'll try to complete these till 2011-10-21):
 
-- checkbox: skip documentLibrary level (SP & alfresco as well) - default default: skip
+- checkbox: may skip documentLibrary level (+its default) configurable - default default: skip
 - to evaluate: search
 - view selection: short / detailed (name, last modified, version)
 - explicit checkout feature
