@@ -1173,15 +1173,31 @@ Then worked on better checkout/in feature:
 - there is a new checkbox during file open to determine if the document should be checked out
 - the save dialog disables the checkin type + checkin comment controls when the document was not checked out
 
+=== 2011-10-20
+
+Worked on adding the 'check out document' default configurator to the server
+config dialogs.
+
+Also made the "is checked out" attribute specific to each document, as it was
+specific to each server so far.
+
+Finally fixed the following the problem: when the document was saved, it was
+checked in, and next time the save tried to check it in again, but it wasn't
+checked out. OTOH, just checking it out after a checkin isn't working, either:
+then a save-then-close scenario would leave the document checked out.
+
+The solution I implemented is that there is a new checkbox in the save dialog,
+that is deselected by default: the user should select it if she wishes to
+continue editing the document (with a lock) after checkin.
+
 TODO:
 
 From Gabor (I said I'll try to complete these till 2011-10-21):
 
 - view selection: short / detailed (name, last modified, version)
 - explicit checkout feature
-  + ha masik zarolta, akkor warning + checkout nelkul
-  + ha mentesnel lockolas nem sikerul, akkor warning + 1) save as felajanlas vagy 2) var es probalja kesobb
-  + default default "nem lockolas" legyen + hozza default configolhato legyen (server config)
+  + ha masik zarolta es mi probaljuk zarolni megnyitaskor, akkor kerdes: 1) checkout nelkul vagy 2) ignore
+  + ha nem-lockolt mentes nem sikerul lockolas miatt akkor kerdes: 1) save as felajanlas vagy 2) var es probalja kesobb
 
 From Ivan:
 
