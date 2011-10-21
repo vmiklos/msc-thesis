@@ -1190,14 +1190,32 @@ The solution I implemented is that there is a new checkbox in the save dialog,
 that is deselected by default: the user should select it if she wishes to
 continue editing the document (with a lock) after checkin.
 
+=== 2011-10-21
+
+In ULX. Worked on better handling of opening already checked out documents:
+
+- First, if we try to checkout (lock) and fail, now there is a question to open
+  without checkout or ignore.
+
+- Second, I want to detect already locked documents during non-locked opens.
+  For that, selectRemotePath() should also return the lock info. Once that was
+  implemented, I could add a warning on open.
+
+Then worked on improving saving locked-by-others documents, so now a dialog
+appears, asking if the user wants to try again or it offers save-as. (This part
+took some time to implement, as I screwed up the frame parents across dialogs
+and that resulted a hard-to-debug UI freeze.)
+
+I also noticed a bug: when toplevel directories are skipped, then save as saves
+to the wrong directory.
+
 TODO:
 
 From Gabor (I said I'll try to complete these till 2011-10-21):
 
+- HU translation update
+- server config: 10px padding gomboknak
 - view selection: short / detailed (name, last modified, version)
-- explicit checkout feature
-  + ha masik zarolta es mi probaljuk zarolni megnyitaskor, akkor kerdes: 1) checkout nelkul vagy 2) ignore
-  + ha nem-lockolt mentes nem sikerul lockolas miatt akkor kerdes: 1) save as felajanlas vagy 2) var es probalja kesobb
 
 From Ivan:
 
