@@ -1209,13 +1209,51 @@ and that resulted a hard-to-debug UI freeze.)
 I also noticed a bug: when toplevel directories are skipped, then save as saves
 to the wrong directory.
 
+=== 2011-10-22
+
+Worked on the detailed view in the file picker. The first target is to display
+the following columns:
+
+- Type
+- Name
+- Modified by
+- Modified
+
+This is what Sharepoint provides by default and I verified Alfresco provides
+these as well.
+
+So the detailed view can be solved with a custom renderer that implements
+multiple columns. Once that's there, I had the following tasks:
+
+- add missing header [done]
+- implement icons for folders/files [done]
+- change scrolling (avoid horizontal scrolling in detailed view) [done]
+- add buttons to switch between the two renderer [done]
+- change the sharepoint lib to parse the new columns from the server [not yet done]
+
+=== 2011-10-23
+
+Worked on improving the sharepoint lib to dynamically pick up any column
+provided by the server for the detailed view. This was especially important
+because it turned out even the basic 4 columns were not the same on Alfresco
+and Sharepoint ('Modified By' vs 'Modified by').
+
+The hard part here is that the number of columns change runtime (for example
+root folders can't be checked out) but the list renderer class can't change the
+layout after the constructor ended.
+
+Needless to say, once I reinitialized the renderer before each directory
+listing, the issues went away.
+
 TODO:
 
-From Gabor (I said I'll try to complete these till 2011-10-21):
+- bug: toplevel dir skip => saveas to wrong dir
+- bug: can't create directory under toplevel dir
+
+From Gabor:
 
 - HU translation update
 - server config: 10px padding gomboknak
-- view selection: short / detailed (name, last modified, version)
 
 From Ivan:
 
