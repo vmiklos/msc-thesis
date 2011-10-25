@@ -1270,6 +1270,8 @@ msgmerge -o hu.new.po hu.po messages.pot && mv -f hu.new.po hu.po # pot + outdat
 po2prop -t messages.properties hu.po messages_hu.properties # po -> prop
 ----
 
+Version to test: lpsp-0.1-621-g29a8894.oxt
+
 TODO:
 
 From Gabor:
