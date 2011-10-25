@@ -1261,6 +1261,15 @@ the absolute path, which fixes the issue.
 Finally worked on updating the Hungarian translation, introduced lots of
 String.format() to make translatable strings reasonable.
 
+Useful commands to convert between properties and po files:
+
+----
+prop2po messages.properties messages.pot # prop -> pot
+msgmerge -o hu.new.po hu.po messages.pot && mv -f hu.new.po hu.po # pot + outdated po -> up to date po
+<translate>
+po2prop -t messages.properties hu.po messages_hu.properties # po -> prop
+----
+
 TODO:
 
 From Gabor:
