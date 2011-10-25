@@ -1245,14 +1245,26 @@ layout after the constructor ended.
 Needless to say, once I reinitialized the renderer before each directory
 listing, the issues went away.
 
-TODO:
+== 8th week
 
-- bug: toplevel dir skip => saveas to wrong dir
-- bug: can't create directory under toplevel dir
+=== 2011-10-24
+
+Fixed save-as when the skip toplevel dirs feature was enabled. The problem was
+that the directory skip feature worked under the scenes, and because of that,
+save as saved to wrong dir. Now there is a string pointer (erm, Java calls it
+StringHolder) to return the absolute path from the lib.
+
+Also fixed bug when creating dirs right under skipped toplevel folders was not
+possible. It was a similar problem, the folder create/delete checks now read
+the absolute path, which fixes the issue.
+
+Finally worked on updating the Hungarian translation, introduced lots of
+String.format() to make translatable strings reasonable.
+
+TODO:
 
 From Gabor:
 
-- HU translation update
 - server config: 10px padding gomboknak
 
 From Ivan:
