@@ -1272,6 +1272,25 @@ po2prop -t messages.properties hu.po messages_hu.properties # po -> prop
 
 Version to test: lpsp-0.1-621-g29a8894.oxt
 
+=== 2011-10-25
+
+Spent time with reading UNO API docs on how to get the user config dir, it
+turns out I need the `com.sun.star.util.PathSubstitution` service. (So I can
+place the log file there.)
+
+Example on Linux:
+
+----
+~/.config/.openoffice.org/3/user/console.log
+----
+
+Then poked how can I log exceptions to both a log file and console. The
+standard java.util.logging package supports this, the logger is initialized
+when the 'authentication manager' singleton service starts (which is right
+after the jvm starts). Modified ConnectionImpl and SPHandler to use the logger,
+tomorrow I'll change the rest of the classes to avoid using e.printStackTrace
+directly.
+
 TODO:
 
 From Gabor:
