@@ -1291,13 +1291,33 @@ after the jvm starts). Modified ConnectionImpl and SPHandler to use the logger,
 tomorrow I'll change the rest of the classes to avoid using e.printStackTrace
 directly.
 
+=== 2011-10-26
+
+In ULX. Finished the logger, now all exceptions go though the logger which
+outputs them to the logfile and to the console.
+
+Looked up how to add padding to a button in GridBagLayout, for better UX.
+
+Researched what is the situation with files without an extension. The
+owssvr.dll interface has a FileDialogFilterValue parameter, which is currently
+hardwired to `*.*` in the extension, so such files are not retrieved.
+
+Looks like SharePoint does not handle such files correctly, if the filter is
+just `*`, I get the list of directories, if the parameter is omitted, then I
+get a HTTP 500.
+
+Fixed a bug when save without checkin failed, but the UI reported that checkin
+failed.
+
+Gave a demo about the feature list I had at the start of the semester to Gabor,
+Ivan & various other folks.
+
 TODO:
 
-From Gabor:
+From Tamas:
 
-- server config: 10px padding gomboknak
+- is it possible to disable save/save as when the doc is opened from the doc server?
 
 From Ivan:
 
 - to evaluate: how deadline works with Sharepoint / Word
-- stack traces -- to log file
