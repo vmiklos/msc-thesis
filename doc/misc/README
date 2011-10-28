@@ -1339,6 +1339,10 @@ Finally implemented the even listener itself, it waits for the event named
 macro of the menu - so ctrl-s and Document Repository -> Save is now basically
 the same for a user.
 
+=== 2011-10-28
+
+Added support for having LPSP and OPAL installed at the same time.
+
 TODO:
 
 From Ivan:
