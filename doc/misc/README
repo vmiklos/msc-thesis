@@ -1341,10 +1341,25 @@ the same for a user.
 
 === 2011-10-28
 
-Added support for having LPSP and OPAL installed at the same time.
+In ULX. Added support for having LPSP and OPAL installed at the same time. The
+problem was that the extension still contained references to the old
+fr.starxpert prefix, I've now updated those.
 
-TODO:
+Fixed a bug with login to Alfresco in some cases:
 
-From Ivan:
+https://forums.alfresco.com/en/viewtopic.php?f=48&t=26829
 
-- to evaluate: how deadline works with Sharepoint / Word
+Evaluated how the deadline feature works in Sharepoint:
+
+- when there is a deadline and the task is not finished, the assignee gets mailed
+- the deadline is visible in Office button -> Server -> Tasks
+
+Searched what does jbpm provide that results in the Deadline sql table:
+
+- the semantics are the same as the WS-HT spec, available here:
+  http://download.boulder.ibm.com/ibmdl/pub/software/dw/specs/ws-bpel4people/WS-HumanTask_v1.pdf
+- section 4.6 talks about deadlines, the idea is that once a deadline expires
+  and the wished state is not reached, then an escalation action is executed
+
+That means WS-HT supports a more generic solution IMHO, but it has little to do
+with the office integration.
