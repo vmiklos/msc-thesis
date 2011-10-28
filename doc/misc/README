@@ -1314,11 +1314,32 @@ Ivan & various other folks.
 
 Version to test: lpsp-0.1-635-gd1939ce.oxt
 
+=== 2011-10-27
+
+Worked on catching the save event to offer a save to the document server.
+
+First I did:
+
+----
+Object object = mContext.getServiceManager().createInstanceWithContext("com.sun.star.frame.GlobalEventBroadcaster", mContext);
+XDocumentEventBroadcaster xDocumentEventBroadcaster = (XDocumentEventBroadcaster) UnoRuntime.queryInterface(XDocumentEventBroadcaster.class, object);
+xDocumentEventBroadcaster.addDocumentEventListener(xListener);
+----
+
+But the problem is that way I get events for all the documents in the
+xListener. A better approach is the XEventBroadcaster interface, which can be
+specific to a document.
+
+The idea is that the event listener is enabled by default, but it's disabled
+just during the local save, when it's invoked from the extension menu. This way
+I can catch local saves of the user, but still avoid an infinite loop.
+
+Finally implemented the even listener itself, it waits for the event named
+'OnSaveDone', then invokes the same uno method that is invoked by the basic
+macro of the menu - so ctrl-s and Document Repository -> Save is now basically
+the same for a user.
+
 TODO:
-
-From Tamas:
-
-- is it possible to disable save/save as when the doc is opened from the doc server?
 
 From Ivan:
 
