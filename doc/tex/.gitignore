@@ -1,0 +1,9 @@
+*.aux
+*.make
+*.toc
+*.fls
+*.bbl
+*.blg
+*.d
+*.eps
+*.pdf
