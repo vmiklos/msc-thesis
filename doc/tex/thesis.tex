@@ -22,16 +22,6 @@ basicstyle=\footnotesize
 \let\stdsection\section
 \renewcommand\section{\clearpage\stdsection}
 
-% make \paragraph behave as \subsubsubsection
-\makeatletter
-\renewcommand\paragraph{\@startsection{paragraph}{4}{0mm} % name, level, indent
-{-\baselineskip} % beforeskip
-{0.5\baselineskip} % afterskip
-{\normalfont\bfseries}}%
-\makeatother
-\setcounter{secnumdepth}{4}% to get numbered subsections
-\setcounter{tocdepth}{4}% to add \paragraph to the ToC
-
 % avoid widow / orphan lines
 \widowpenalty=10000
 \clubpenalty=10000
