@@ -1363,3 +1363,106 @@ Searched what does jbpm provide that results in the Deadline sql table:
 
 That means WS-HT supports a more generic solution IMHO, but it has little to do
 with the office integration.
+
+== 9th week
+
+=== 2011-11-02
+
+Consultation with Akos, discussed the outline of the thesis.
+
+To ULX, need to ask Ivan if they have a case study about a company using
+document based workflows where they need to keep the doc server and the wf
+server in sync manually.
+
+Here is a plan for the thesis with estimated length:
+
+1. Introduction - 5 pages
+1.1 Document management
+- introducing a document server, based on the VCS example
+- client-server vs cloud-based office
+1.2 Workflows
+- what workflows are
+- case study (explaining how live looks like without integrated document server + workflow support)
+- motivation (list of needed features: making a decision, group assignment, etc)
+
+2. Background - 30 pages
+2.1 Document management
+2.1.1 General architecture of document management systems
+- client-server model, operations on the client, on the server
+- concept of workspaces
+- office extensions / document server extensions
+2.1.2 Related standards
+- CMIS goals
+- CMIS domain model
+- CMIS services
+2.1.3 Concrete implementations
+- sharepoint vs alfresco comparison
+- list of document server use cases
+- openness of the sharepoint protocol
+2.1.4 Differences to version control systems
+- semantic differences
+- difference in features
+- difference in target audience
+2.1.5 UNO compontents
+- what is UNO, supported languages
+- workflow of .idl -> .jar
+- contents of an UNO component archive
+2.2 Workflows
+2.2.1 Application servers
+- what is an application server / web application server
+- java application servers
+- jboss
+2.2.2 Workflow engines
+- what is a workflow engines
+- using a workflow engine (embedded, external server)
+- jbpm
+2.2.3 Business Process Model and Notation
+- what is business process modelling
+- bpmn concepts, object types
+- bpmn support in jbpm
+2.2.4 Object-Relational Mapping
+- what is an orm
+- hibernate as the de facto standard java orm
+- hibernate usage in jbpm-human-task
+2.2.5 The BPM Console
+- technical overview, relation to jbpm
+- workspace framework, GWT
+- management capabilities: processes, tasks, reports 
+
+3. Overview of the Approach - 15 pages
+3.1 Document management
+3.2 Workflows
+
+4. Design - 20 pages
+4.1 Document management
+4.1.1 The SharePoint library
+4.1.2 The UNO interfaces
+4.1.3 User interface
+4.2 Workflows
+4.2.1 The workflow library
+4.2.2 User interface
+4.2.3 BPM server and BPM console
+
+5. Implementation Details - 15 pages
+5.1 Document management
+5.1.1 The prototype
+5.1.2 External libraries
+5.1.3 User interface
+5.1.4 Exception handling
+5.2 Workflows
+5.2.1 Authentication
+5.2.2 JSON handling
+5.2.3 User interface
+5.2.4 Error handling
+
+6. Evaluation - 5 pages
+6.1 Document management
+6.2 Workflows
+
+7. Related Work - 5 pages
+7.1 Document management
+7.2 Workflows
+
+8. Conclusion and Future Work - 5 pages
+8.1 Document management
+8.2 Workflows
