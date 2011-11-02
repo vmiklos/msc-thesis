@@ -1,4 +1,4 @@
-\section{Implementation Details}
+\chapter{Implementation Details}
 
 The current section consists of three parts:
 
@@ -8,7 +8,7 @@ The current section consists of three parts:
 \item The third shows changes in the extension visible from a user's point of view, with screenshots.
 \end{itemize}
 
-\subsection{The prototype}
+\section{The prototype}
 
 As mentioned already, the SharePoint protocol has a brief reference
 documentation on MSDN, but that is not enough to create an open-source
@@ -45,7 +45,7 @@ anything in SharePoint.
 Once the used protocol -- at least the parts required by our use-cases -- was
 clear, we could begin writing the LibreOffice extension.
 
-\subsection{External libraries}
+\section{External libraries}
 
 It was obvious that doing HTTP communication with NTLM authentication is an
 already solved problem, but we needed to decide which library to use. Given that
@@ -82,7 +82,7 @@ That means a simple XML parser was not enough to extract the needed values from
 this response. To solve this issue, we used TagSoup\cite{tagsoup}, which is a
 SAX parser, accepting plain old HTML input.
 
-\subsection{User interface}
+\section{User interface}
 
 Once the Sharpeoint Library was ready, we updated the user interface to use the
 SharePoint library for communication. We also had to extend the dialogs to allow
@@ -118,7 +118,7 @@ figure~\ref{fig:implementation-versiondialog}.
 \label{fig:implementation-versiondialog}
 \end{figure}
 
-\subsection{Exception handling}
+\section{Exception handling}
 
 The last challenge was the localization of error messages in BASIC. It does not
 support any kind of localization. What it supports is the following technique:

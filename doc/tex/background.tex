@@ -1,6 +1,6 @@
-\section{Background}
+\chapter{Background}
 
-\subsection{General architecture of document management systems}
+\section{General architecture of document management systems}
 
 A document management system is a typical client-server model: a document
 management server stores the documents in a document repository, which can be
@@ -64,7 +64,7 @@ long as a server-side component provided by Oracle is not installed on the
 server. While this approach may be compelling during development, actually it
 is uncomfortable for system administrators.
 
-\subsection{Related standards}
+\section{Related standards}
 
 \begin{figure}[H]
 \centering
@@ -129,7 +129,7 @@ Then -- using this data model -- it specifies services to operate on them:
 Finally it explains concrete syntaxes: the Restful AtomPub Binding and the Web
 Services (SOAP) binding.
 
-\subsection{Concrete implementations}
+\section{Concrete implementations}
 
 In this subsection, we give a short comparision of Microsoft SharePoint 2007 and
 Alfresco Community Edition 3.4, which claims to be "The Open Source Alternative
@@ -190,7 +190,7 @@ table~\ref{tab:background-comparison}.
 \end{threeparttable}
 \end{table}
 
-\subsection{Differences to version control systems}
+\section{Differences to version control systems}
 
 Version control systems in general have richer semantics, more features to
 track software source code. In order to make document management systems easy
@@ -239,7 +239,7 @@ in general to make usage by wider user base possible -- but we should not
 forget that version control systems solve a related, but still different
 problem, so either of them is an ultimate tool, making the other one useless.
 
-\subsection{UNO compontents}
+\section{UNO compontents}
 
 My solution will be a LibreOffice extension that registers an UNO\cite{uno}
 component. UNO is the interface based component model of LibreOffice. The main
