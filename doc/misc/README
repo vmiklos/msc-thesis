@@ -1383,7 +1383,7 @@ Here is a plan for the thesis with estimated length:
 1.2 Workflows
 - what workflows are
 - case study (explaining how live looks like without integrated document server + workflow support)
-- motivation (list of needed features: making a decision, group assignment, etc)
+- motivation (brief list of needed features: making a decision, group assignment, etc)
 
 2. Background - 30 pages
 2.1 Document management
@@ -1431,38 +1431,99 @@ Here is a plan for the thesis with estimated length:
 
 3. Overview of the Approach - 15 pages
 3.1 Document management
+- architecture: how libreoffice, sharepoint relates to each other
+- how the extension fits in this picture
+- overview of the differences between our approach and OPAL
+- state machine of a document
 3.2 Workflows
+- staring workflows
+- group assignment
+- document server and workflow server decoupling
+- document masking
+- decisions in workflows
+- audit log
+- incremental snapshots
+- release task
 
 4. Design - 20 pages
 4.1 Document management
 4.1.1 The SharePoint library
+- design decisions (no server-side component, etc.)
+- packages of the library
+- brief description of each class
 4.1.2 The UNO interfaces
+- where do uno interfaces stand between the library and the UI (figure)
+- description of uno interfaces
+- description of provided uno services
 4.1.3 User interface
+- packages of the UI
+- menu items, basic macros
+- control flow of each basic macro -> uno interace -> java method
 4.2 Workflows
 4.2.1 The workflow library
-4.2.2 User interface
-4.2.3 BPM server and BPM console
+- controller classes
+- entity classes
+- parser classes (and their constraints!)
+4.2.2 BPM server and BPM console
+- extending the BPM server
+- extending the BPM console
+- integration with the workflow library
+4.2.3 User interface
+- how the dialogs needed for document management are extended
+- new dialogs (workflow start, audit log, etc)
+- new uno interfaces + services
 
 5. Implementation Details - 15 pages
 5.1 Document management
 5.1.1 The prototype
+- why a prototype
+- what does it implement (the protocol) and what not
 5.1.2 External libraries
+- httpcomponents
+- tagsoup
 5.1.3 User interface
+- how the existing file picker got extended
+- how the existing version dialog got extended
 5.1.4 Exception handling
+- exceptions in a multi-language environment (UNO)
+- localization of error messages (why it's done in Java, and not later in basic)
 5.2 Workflows
 5.2.1 Authentication
+- what authentication does jbpm use
+- jbpm requests are stateless vs. logging in only once
 5.2.2 JSON handling
+- used library
+- relation with existing entity classes
 5.2.3 User interface
+- how document properties are retrieved from the server ("is the document checked out?", etc.)
+- how audit log is integrated
 5.2.4 Error handling
+- handling errors from existing services
+- handling errors when the service is missing (jbpm server does not expose audit log, etc.)
 
 6. Evaluation - 5 pages
 6.1 Document management
+- test architecture
+- missing features
 6.2 Workflows
+- test architecture
+- used test methods (commandline testing, integration test)
+- limitations (refer to parser classes above)
 
 7. Related Work - 5 pages
 7.1 Document management
+- comparision table
+- products: opal, libreoffice cmis, sharepoint connector, drupal sharepoint module (new: add libcmis!)
 7.2 Workflows
+- related papers (see 2011-09-10)
+- sharepoint bpm engine (see 2011-09-18)
+- liferay (see 2011-09-24)
 
 8. Conclusion and Future Work - 5 pages
+- brief conclusion on the whole solution
 8.1 Document management
+- summary on what features are missing
+- summary on what could be improved in existing features
 8.2 Workflows
+- not implemented ideas
+- what could be improved wrt. already implemented functionality
