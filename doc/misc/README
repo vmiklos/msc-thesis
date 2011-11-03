@@ -1421,8 +1421,6 @@ Here is a plan for the thesis with estimated length:
 - bpmn concepts, object types
 - bpmn support in jbpm
 2.2.4 Object-Relational Mapping
-- what is an orm
-- hibernate as the de facto standard java orm
 - hibernate usage in jbpm-human-task
 2.2.5 The BPM Console
 - technical overview, relation to jbpm
@@ -1519,11 +1517,9 @@ Here is a plan for the thesis with estimated length:
 - sharepoint bpm engine (see 2011-09-18)
 - liferay (see 2011-09-24)
 
-8. Conclusion and Future Work - 5 pages
+8. Conclusion and Future Work - 2 pages
 - brief conclusion on the whole solution
 8.1 Document management
-- summary on what features are missing
-- summary on what could be improved in existing features
+- summary on what features are missing / what could be improved in existing features
 8.2 Workflows
-- not implemented ideas
-- what could be improved wrt. already implemented functionality
+- not implemented ideas / what could be improved wrt. already implemented functionality
