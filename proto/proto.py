@@ -20,7 +20,7 @@ class Handler:
 		self.basic_auth = False # try to use ntlm by default
 
 		if "--alfresco" in sys.argv:
-			self.url = "http://192.168.122.187:7070/alfresco"
+			self.url = "http://192.168.122.188:7070/alfresco"
 			self.user = 'admin'
 		elif "--project" in sys.argv:
 			self.url = "http://project.ulx.hu:7070/alfresco"
@@ -600,6 +600,8 @@ class Handler:
 				('listHiddenDocs','false'),
 				('listLinkInfo','false')
 				])
+			headers['X-Vermeer-Content-Type'] = 'application/x-www-form-urlencoded'
+			headers['Content-Type'] = 'application/x-www-form-urlencoded'
 			response = self.urlopen("%s/%s/_vti_bin/_vti_aut/author.dll" % (self.path, space), params+"\n", headers)
 			html = response.read()
 			if "failedUrls" in html:
