@@ -1535,16 +1535,16 @@ Here is a plan for figures:
 2. Background
 2.1 Document management
 2.1.1 General architecture of document management systems
-- architecture of a document management system
+- [done] architecture of a document management system
 2.1.2 Related standards
-- architecture of the CMIS standard
+- [done] architecture of the CMIS standard
 2.1.5 UNO compontents
-- workflow of implementing an uno services in java
+- [done] workflow of implementing an uno services in java
 2.2 Workflows
 2.2.2 Workflow engines
-- architecture of a workflow engine (two figures for embedded / client-server setup)
+- [done, done] architecture of a workflow engine (two figures for embedded / client-server setup)
 2.2.3 Business Process Model and Notation
-- bpmn concepts, object types, their relation
+- [done] bpmn concepts, object types, their relation -> multiple small figures needed, a sample bpmn is added for now
 2.2.5 The BPM Console
 - architecture of the bpm console, relation to jbpm engine
 
@@ -1595,3 +1595,22 @@ Few ideas for better figures
   * green: c0e2c5
   * blue: e6e6ff
   * grey (container): eff1ef
+
+=== 2011-11-04
+
+In ULX. Got bugreport about saving a document does not work - it turns out the
+issue is specific to accented filenames (opening works fine).
+
+Given that it works fine in MSO, I'm firing up Wireshark again. It turns out
+the fix is to use two different Content-Type for sharepoint requests: when
+querying document metadata, the standard application/x-www-form-urlencoded
+should be used, while in other requests the old
+application/x-vermeer-urlencoded should be used.
+
+Version to test: lpsp-0.1-678-gfa26e72.oxt
+
+Worked on thesis figures, the ones for the 'Background' chapter are almost
+ready.
+
+TODO:
+- long filenames in detailed view: horizontal scroller, but header does not move?
