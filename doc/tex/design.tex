@@ -1,6 +1,8 @@
 \chapter{Design}
 
-\section{The SharePoint library}
+\section{Document management}
+
+\subsection{The SharePoint library}
 
 The Java implementation is split to two parts, the SharePoint library and the
 user interface. The previous lives under the \emph{hu.ulx.lpsp} namespace,
@@ -42,7 +44,7 @@ We paid attention in our solution to not require additional server-side componen
 installation, the SharePoint library can communicate with a standard SharePoint
 server, without any server modifications.
 
-\section{The UNO interfaces}
+\subsection{The UNO interfaces}
 
 \begin{figure}[H]
 \centering
@@ -89,7 +91,7 @@ services are provided by the extension (see figure~\ref{fig:design-technologies}
 \item \emph{AlfrescoVersions}: implementation for XAlfrescoVersions.
 \end{itemize}
 
-\section{User interface}
+\subsection{User interface}
 
 The user interface lives in the \emph{ft.starxpert.opal.comp} package, based on
 the original OPAL extension. The classes of the user interface are organized in
@@ -210,3 +212,11 @@ For an UML class diagram showing these classes, see figure~\ref{fig:design-spui}
 \caption{Classes of the user interface}
 \label{fig:design-spui}
 \end{figure}
+
+\section{Workflows}
+
+\subsection{The workflow library}
+
+\subsection{BPM server and BPM console}
+
+\subsection{User interface}

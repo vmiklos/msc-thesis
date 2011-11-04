@@ -1,5 +1,7 @@
 \chapter{Related Work}
 
+\section{Document management}
+
 We already saw that there is no solution today that is open-source, requires no
 additional server-side installation and communicates with a Microsoft
 SharePoint server (see table~\ref{tab:related-cmp}).
@@ -7,7 +9,7 @@ SharePoint server (see table~\ref{tab:related-cmp}).
 However, there are similar projects, which -- even if they
 solve a sightly different problem -- may provide excellent ideas to borrow.
 
-\section*{OPAL}
+\subsection*{OPAL}
 We already introduced OPAL, which is open-source, but:
 
 \begin{itemize}
@@ -18,13 +20,13 @@ We already introduced OPAL, which is open-source, but:
 
 However, its user interface and concepts are quite similar to our solution.
 
-\section*{LibreOffice CMIS}
+\subsection*{LibreOffice CMIS}
 LibreOffice CMIS\cite{locmis} is a LibreOffice extension: a Java based
 implementation of a Universal Content Provider for making any content in a CMIS
 repository usable from LibreOffice. The main problem with it is that SharePoint
 2007 does not implement CMIS, so this does not solve our problem at the moment.
 
-\section*{SharePoint Connector}
+\subsection*{SharePoint Connector}
 The Oracle Connector for SharePoint Server\cite{oracle-sp-connector} is a
 commercial OpenOffice.org extension, providing SharePoint support in
 OpenOffice.org. It has multiple problems:
@@ -37,7 +39,7 @@ writing (May 2011).
 required a server-side component as well.
 \end{itemize}
 
-\section*{Drupal SharePoint module}
+\subsection*{Drupal SharePoint module}
 
 An additional SharePoint module\cite{drupal-sp} for the Drupal content management system is also available. It solves a different problem, though:
 
@@ -61,3 +63,5 @@ SharePoint server, which is not enough for our purposes.
   \caption{Comparison of related works}
   \label{tab:related-cmp}
 \end{table}
+
+\section{Workflows}

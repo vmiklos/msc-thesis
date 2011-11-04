@@ -1,5 +1,7 @@
 \chapter{Implementation Details}
 
+\section{Document management}
+
 The current section consists of three parts:
 
 \begin{itemize}
@@ -8,7 +10,7 @@ The current section consists of three parts:
 \item The third shows changes in the extension visible from a user's point of view, with screenshots.
 \end{itemize}
 
-\section{The prototype}
+\subsection{The prototype}
 
 As mentioned already, the SharePoint protocol has a brief reference
 documentation on MSDN, but that is not enough to create an open-source
@@ -34,7 +36,7 @@ worked, we ported the logic of the prototype to Java.
 
 The prototype had commands (open, save, delete, etc.) to test each feature
 individually.  This covered the functionality outlined in the \emph{Background}
-section, except that folder / document listing is implicit here: the open and
+chapter, except that folder / document listing is implicit here: the open and
 save-as operation invoked that, but it had no explicit command assigned.
 
 The prototype also had two switches to test the implementation on both
@@ -45,7 +47,7 @@ anything in SharePoint.
 Once the used protocol -- at least the parts required by our use-cases -- was
 clear, we could begin writing the LibreOffice extension.
 
-\section{External libraries}
+\subsection{External libraries}
 
 It was obvious that doing HTTP communication with NTLM authentication is an
 already solved problem, but we needed to decide which library to use. Given that
@@ -82,7 +84,7 @@ That means a simple XML parser was not enough to extract the needed values from
 this response. To solve this issue, we used TagSoup\cite{tagsoup}, which is a
 SAX parser, accepting plain old HTML input.
 
-\section{User interface}
+\subsection{User interface}
 
 Once the Sharpeoint Library was ready, we updated the user interface to use the
 SharePoint library for communication. We also had to extend the dialogs to allow
@@ -118,7 +120,7 @@ figure~\ref{fig:implementation-versiondialog}.
 \label{fig:implementation-versiondialog}
 \end{figure}
 
-\section{Exception handling}
+\subsection{Exception handling}
 
 The last challenge was the localization of error messages in BASIC. It does not
 support any kind of localization. What it supports is the following technique:
@@ -140,3 +142,13 @@ The \emph{On Error} part can hide any kind of exception thrown by Java, and as
 long as the Java side calls \emph{setErrorReason()} on the
 \emph{AlfrescoVersionsImpl} object before throwing an exception, the user gets
 a friendly error message, which is even localized.
+
+\section{Workflows}
+
+\subsection{Authentication}
+
+\subsection{JSON handling}
+
+\subsection{User interface}
+
+\subsection{Error handling}
