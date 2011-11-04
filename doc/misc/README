@@ -1364,6 +1364,8 @@ Searched what does jbpm provide that results in the Deadline sql table:
 That means WS-HT supports a more generic solution IMHO, but it has little to do
 with the office integration.
 
+Version to test: lpsp-0.1-674-gbbf5e8a.oxt
+
 == 9th week
 
 === 2011-11-02
