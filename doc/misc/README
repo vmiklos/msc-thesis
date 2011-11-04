@@ -1583,3 +1583,13 @@ Here is a plan for figures:
 - architecture of the document management test system
 6.2 Workflows
 - architecture of the extension client + workflow server + document server test system
+
+Few ideas for better figures
+- use rounded boxes for processes, normal boxes for artifacts
+- pastel fill colors:
+
+  * yellow: f9feca
+  * red: f4d5d6
+  * green: c0e2c5
+  * blue: e6e6ff
+  * grey (container): eff1ef
