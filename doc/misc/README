@@ -1546,29 +1546,29 @@ Here is a plan for figures:
 2.2.3 Business Process Model and Notation
 - [done] bpmn concepts, object types, their relation -> multiple small figures needed, a sample bpmn is added for now
 2.2.5 The BPM Console
-- architecture of the bpm console, relation to jbpm engine
+- [done] architecture of the bpm console, relation to jbpm engine
 
 3. Overview of the Approach
 3.1 Document management
-- architecture of the approach
-- workflow / control flow of the approach
+- [done] architecture of the approach
+- [done] workflow / control flow of the approach
 3.2 Workflows
-- architecture of the decoupled document/workflow server and office client
-- control flow of of the decoupled approach (what does what, when, where)
+- [done] architecture of the decoupled document/workflow server and office client
+- [done] control flow of of the decoupled approach (what does what, when, where)
 
 4. Design
 4.1 Document management
 4.1.1 The SharePoint library
-- package diagram
+- [done] package diagram
 4.1.2 The UNO interfaces
-- technologies used in the design of the extension (and their relation)
+- [done] technologies used in the design of the extension (and their relation)
 4.1.3 User interface
-- class diagram of the user interface
+- [done] class diagram of the user interface
 4.2 Workflows
 4.2.1 The workflow library
-- package diagram
+- [done] package diagram
 4.2.2 BPM server and BPM console
-- class diagram, connection to existing classes
+- [done] jbpm class diagram about modified classes
 4.2.3 User interface
 - class diagram of the workflow UI package
 
@@ -1611,6 +1611,11 @@ Version to test: lpsp-0.1-678-gfa26e72.oxt
 
 Worked on thesis figures, the ones for the 'Background' chapter are almost
 ready.
+
+=== 2011-11-05
+
+Finished the figures of the 'Background' chapter, drawn figures of the
+'Overview of the Approach' and the 'Design' chapters.
 
 TODO:
 - long filenames in detailed view: horizontal scroller, but header does not move?
