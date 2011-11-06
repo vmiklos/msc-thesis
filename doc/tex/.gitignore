@@ -6,4 +6,6 @@
 *.blg
 *.d
 *.eps
-*.pdf
+.*.swp
+*.temp
+thesis*.pdf
