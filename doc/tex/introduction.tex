@@ -70,6 +70,100 @@ of the leading open-source office productivity suites -- that adds support for
 accessing and managing documents from a SharePoint server directly from the
 office suite.
 
+\section{Workflows}
+
+Document management systems are often used as part of document-based workflows.
+Workflows represent a collection of connected steps to achieve a certain goal.
+A workflow engine can manage process definitions storing these sequences. A
+process definition describes each step, and the connection between steps. The
+steps are represented by nodes inside a process definition. Once the definition
+is ready, it can instantiate a process definition, creating a process instance.
+Such an object then always has a precise state:
+
+\begin{itemize}
+\item One or more of its nodes are active, and
+\item It can have multiple associated variables.
+\end{itemize}
+
+This model then can help to extract some of the business logic of applications
+to more abstract process definitions, described in a more separated,
+declarative way\footnote{Even if script tasks can contain imperative code, the
+main structure of a process definition is always declarative.}.
+
+It is a common pattern to use workflows to represent processes which describe a
+set of changes of a given document. In short, they are referred as
+document-based workflows. Most such solutions are implemented with a strong
+dependency between the document management server and the workflow engine,
+which introduces the problem of vendor lock-in once again.
+
+On the other hand, in case a decoupled document server / workflow engine
+architecture is wished, the necessary integration logic has to be implemented
+in the client. Given that there is already a planned document management client
+in the office suite running on the client, it's a natural extension to
+introduce workflow integration in the office client to manage document-based
+workflows.
+
+We looked at what tasks a user has to perform to keep a document management
+server and a workflow engine in sync, in case the integration is not available.
+In this use-case, the most painful operations where the integration would help
+are:
+
+\begin{itemize}
+\item If there is a document opened, it's useful if operations connected to
+that document can be done from the office suite, which already has a reference
+to the document. Think about starting a chosen process definition to start a
+new instance, associated with the current document.
+\item The workflow server talks about tasks and group of tasks, and each task
+is connected to a certain document. This is a different concept than the model
+of folders and files, which is already familiar to a user.
+\item A common pattern is to assign a task to a group of users, and then
+requiring exactly one member of the group to perform the task.
+\item As outlined above, the ability to change the document server while not
+touching the workflow engine -- and also the other way around -- may be a
+requirement when planning a document-based workflow system.
+\item It can be necessary to limit the write access to the associated document
+when working on it to a certain part of the document. This helps the user
+performing the task focusing on the task itself, even if the document is a
+large one.
+\item It is uncomfortable if storing the document on the server and making a
+decision as part of the current workflow task is not a single atomic operation.
+\item In general, but especially when group tasks are involved, audit logs of
+process and node instances are important. Reaching them from the office client
+makes viewing them much easier.
+\item It is important to realise that while finishing the work on a document
+and marking a given workflow task is usually done together, sometimes only the
+previous is wished. Support for such incremental snapshots is vital.
+\item Finally, even if rolling back the workflow state is not
+trivial\footnote{Given that the workflow interacts with external services,
+rolling back the workflow itself is not enough, external components should be
+notified using compensation actions.}, support
+for releasing claimed group tasks is required.
+\end{itemize}
+
+Based on that, we can build a list of functionality that can serve as a
+motivation -- to help interacting with document-based workflows, in no
+particular order:
+
+\begin{itemize}
+\item Workspaces, documents, task types and tasks should be represented to the
+user following the well-known file-metaphor.
+\item The document server should be decoupled from the workflow server, to
+allow a modular architecture, having independent layers.
+\item Support for both personal and indirectly assigned group tasks is required.
+\item Even if group task is claimed by a user, the system should support
+releasing the task back to the group, in the user realises she is not able to
+perform it in time.
+\item Starting a process instance which automatically picks up the current
+document should be possible.
+\item If the current task involve making decisions, the list of possible
+choices should be retrieved from the workflow engine.
+\item Accessing the audit log from the office client is required.
+\item Supporting incremental snapshots till the task is marked as completed is
+mandatory.
+\item As a helper feature, masking the document so that only the relevant parts
+are editable by the user is useful.
+\end{itemize}
+
 The rest of this thesis is structured as follows. First, we introduce necessary
 background knowledge, which was present before the current thesis, but is
 needed to understand the rest of this work (Section 2). Then we continue with
@@ -79,5 +173,3 @@ techniques. Next, we detail the implementation we created (Section 5) and also
 evaluate it (Section 6). Finally we present work related to the current
 solution (Section 7) and give a summary, including future development
 directions (Section 8).
-
-\section{Workflows}
