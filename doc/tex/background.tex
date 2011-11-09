@@ -292,7 +292,49 @@ Once the jar package is ready, a zip archive is created, containing:
 
 \subsection{Application servers}
 
+The term application server is used to describe the software framework on which
+the business logic of an application runs. The application server typically
+interacts with SQL database servers, file server or web servers.
+
 \subsubsection*{Web application servers}
+
+A common usage of application servers is a web application server, where the
+framework handles common web-related tasks, so that application developers can
+focus on the development of the software project itself. Such common tasks
+include, but not limited to:
+
+\begin{itemize}
+\item handling connections towards the database layer
+\item handling incoming requests from the HTTP server
+\item management of a cluster
+\item load-balancing features
+\item fail-over capabilities
+\end{itemize}
+
+Given that the integration between a contained application and server framework
+is strong, it's a common practice to use the same programming language to
+implement both. As a consequence, e.g. Java applications usually run on
+application servers implemented in Java, and so on.
+
+There are two approaches to match this requirement. One approach is to use a
+generic web server, like Apache HTTP Server\cite{apache-httpd}. Given that
+almost all programming languages has a C API to interact with managed code,
+plugins for the web server can be implemented in C to execute managed code when
+a HTTP requests arrives, addressing the application in question.
+
+The other approach is to have a dedicated HTTP server, which can only execute
+applications written in a given programming language, but it so more
+effectively. Supported programming languages include:
+
+\begin{itemize}
+\item .NET: both Microsoft and 3rd-party application servers are available.
+Microsoft provides this functionality in their Windows Server product and their
+.NET Framework.
+\item Java: we will discuss this in detail below.
+\item PHP: Zend Technologies produces Zend Server to host PHP applications.
+\item Ruby: the Ruby on Rails framework includes the WEBrick HTTP server.
+\end{itemize}
+
 \subsubsection*{Java application servers}
 \subsubsection*{JBoss}
 
