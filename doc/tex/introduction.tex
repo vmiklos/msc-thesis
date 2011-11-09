@@ -9,7 +9,7 @@ retrieving older versions is necessary and provides a way to document changes.
 
 In fact, even if a version control system is not used, developers tend to
 (poorly) invent a similar system implicitly: they copy files with a date string
-appended a backup or manually copy files over to an other machine.
+appended or manually copy files over to an other machine.
 
 There are two main approaches for version control: centralized and distributed.
 Centralized (Subversion\cite{subversion} is probably the most
@@ -39,7 +39,7 @@ open, and companies can avoid vendor lock-in.
 Enterprise companies using proprietary software, but wanting to adopt
 open-source solutions can start the migration with server products. The benefit
 of starting with servers is that only central infrastructure has to be
-modified. Given that the communication works unchanged, the clients can be left
+modified. Given that the communication is unchanged, the clients can be left
 untouched. An other approach is to focus on the client-side, as important data
 is rarely stored there, so starting the migration with the client components
 avoids the risk of a potential data loss, in case software quality is lower
@@ -59,7 +59,7 @@ Docs\cite{google-docs} is a good example). While this method is easy to use, it
 has its drawbacks as well. At the moment none of the cloud-based solutions have
 all features a rich client such as Microsoft Office or LibreOffice provides.
 Additionally, storing documents in the cloud requires stable and fast network
-connection while editing documents (which is currently isn't guaranteed in many
+connection during the editing process (which is currently isn't guaranteed in many
 cases) and requires trust from the cloud provider when editing sensitive
 documents of a company.
 
@@ -114,10 +114,10 @@ that document can be done from the office suite, which already has a reference
 to the document. Think about starting a chosen process definition to start a
 new instance, associated with the current document.
 \item The workflow server talks about tasks and group of tasks, and each task
-is connected to a certain document. This is a different concept than the model
-of folders and files, which is already familiar to a user.
+is connected to a certain document. This is a concept different to the model of
+folders and files, which is already familiar to a user.
 \item A common pattern is to assign a task to a group of users, and then
-requiring exactly one member of the group to perform the task.
+require exactly one member of the group to perform the task.
 \item As outlined above, the ability to change the document server while not
 touching the workflow engine -- and also the other way around -- may be a
 requirement when planning a document-based workflow system.
@@ -127,7 +127,7 @@ performing the task focusing on the task itself, even if the document is a
 large one.
 \item It is uncomfortable if storing the document on the server and making a
 decision as part of the current workflow task is not a single atomic operation.
-\item In general, but especially when group tasks are involved, audit logs of
+\item In general, but especially when group tasks or decisions are involved, audit logs of
 process and node instances are important. Reaching them from the office client
 makes viewing them much easier.
 \item It is important to realise that while finishing the work on a document
@@ -168,7 +168,7 @@ The rest of this thesis is structured as follows. First, we introduce necessary
 background knowledge, which was present before the current thesis, but is
 needed to understand the rest of this work (Section 2). Then we continue with
 giving an overview of the approach I'm proposing (Section 3). Section 4
-describes the design of the solution, as well as relation with the underlying
+describes the design of the solution, as well as relation to the underlying
 techniques. Next, we detail the implementation we created (Section 5) and also
 evaluate it (Section 6). Finally we present work related to the current
 solution (Section 7) and give a summary, including future development
