@@ -16,9 +16,8 @@ which has built-in support for opening, saving and editing documents.
 \label{fig:general-arch-of-doc-mgmt-systems}
 \end{figure}
 
-These two entities of the system (see
-figure~\ref{fig:general-arch-of-doc-mgmt-systems}) have the following
-operations:
+Figure~\ref{fig:general-arch-of-doc-mgmt-systems} shows the two entities of the
+system. They have the following operations:
 
 \begin{itemize}
 \item The server primarily listens to client requests. Additionally it allows
@@ -30,7 +29,7 @@ sharing documents of a user to others.
 Every user can have access to document \textbf{workspaces}.\footnote{Users and workspaces are in an N:N relation: a user can have access to multiple workspaces and multiple users can use the same workspace.} Workspaces can have documents,
 links and tasks. A workspace can be shared with different permissions
 (read-only, read-write), and that is typically done by sending an invitation
-email which the other user can accept.
+email which can be accepted by the other user.
 
 A user may access the document server using a web browser, or via rich client
 applications. The advantage of the web browser interface is that it can be
@@ -292,6 +291,10 @@ Once the jar package is ready, a zip archive is created, containing:
 \section{Workflows}
 
 \subsection{Application servers}
+
+\subsubsection*{Web application servers}
+\subsubsection*{Java application servers}
+\subsubsection*{JBoss}
 
 \subsection{Workflow engines}
 
