@@ -458,6 +458,10 @@ next subsection in detail.
 
 \subsubsection*{Operation modes}
 
+A workflow engine can have two different operation modes. The first follows a
+client-server model. Figure~\ref{fig:workflow-server} shows this situation,
+where the workflow engine is behind a server interface.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=300px,keepaspectratio]{workflow-server.pdf}
@@ -465,12 +469,24 @@ next subsection in detail.
 \label{fig:workflow-server}
 \end{figure}
 
+For example, in case of jBPM there is a REST API available for clients to
+interact with the engine. The benefit is that the workflow server can run on a
+separate machine, also no need to start or stop it when clients start or stop.
+Additionally, multiple clients can connect to the workflow server at the same
+time.
+
+Figure~\ref{fig:workflow-embedded} describes the second, embedded mode.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=200px,keepaspectratio]{workflow-embedded.pdf}
 \caption{A workflow engine in embedded mode}
 \label{fig:workflow-embedded}
 \end{figure}
+
+In this case the application and the workflow server can run in the same
+process, the workflow engine is used as a simple library, which produces
+increased performance.
 
 \subsubsection*{jBPM}
 
