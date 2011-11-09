@@ -413,6 +413,51 @@ JBoss itself is open-source, though commercial support is available from Red Hat
 
 \subsection{Workflow engines}
 
+\subsubsection*{What is a workflow engine}
+
+As already mentioned in the \emph{Introduction} chapter, a workflow engine
+manages process definitions and instances. The primary functionality the engine
+itself provides is the ability to execute these instances, storing the state of
+the process instance in a permanent database.
+
+A process definition consists of nodes, which can be executed:
+
+\begin{itemize}
+\item manually: human tasks are for this purpose
+\item automatically: script tasks, diverging or converging gateways are in this category
+\end{itemize}
+
+Additionally, each node can have several properties, like imperative code
+attached to a script task or due date for a human task.
+
+The architecture of a workflow engine is event-based, changes to process
+instances are triggered by events:
+
+\begin{itemize}
+\item internal events: when a deadline is reached
+\item external events: when a task is completed, a trigger in an other
+application starts a new process instance, etc.
+\end{itemize}
+
+When executing actions for external events, the following steps are implemented:
+
+\begin{itemize}
+\item Check if the requested action is valid in the active state (i.e. there is a transition from the current state to the requested state in the process definition).
+\item Authorize the caller to determine if executing the action is permitted by the user.
+\item Executing the action itself: once the operation finished, act based on its exit code (initiate error handling if necessary).
+\end{itemize}
+
+There are two popular standards to describe a process definition:
+
+\begin{itemize}
+\item Business Process Execution Language (BPEL): is standard describing an
+executable language where the business process interacts with web services.
+\item Business Process Model and Notation (BPMN): we will discuss it in the
+next subsection in detail.
+\end{itemize}
+
+\subsubsection*{Operation modes}
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=300px,keepaspectratio]{workflow-server.pdf}
@@ -426,6 +471,8 @@ JBoss itself is open-source, though commercial support is available from Red Hat
 \caption{A workflow engine in embedded mode}
 \label{fig:workflow-embedded}
 \end{figure}
+
+\subsubsection*{jBPM}
 
 \subsection{Business Process Model and Notation}
 
