@@ -454,6 +454,8 @@ There are two popular standards to describe a process definition:
 executable language where the business process interacts with web services.
 \item Business Process Model and Notation (BPMN): we will discuss it in the
 next subsection in detail.
+\item jBPM Process Definition Language (JPDL): a proprietary language developed
+by JBoss, focusing on readability.
 \end{itemize}
 
 \subsubsection*{Operation modes}
@@ -489,6 +491,40 @@ process, the workflow engine is used as a simple library, which produces
 increased performance.
 
 \subsubsection*{jBPM}
+
+jBPM\cite{jbpm} is an open-source business process manager, implemented in
+Java. One property that makes it different from other workflow engines is that
+it tries to give better support for developers as well. Usually workflow
+engines target non-technical people, making the life of users already used to
+imperative programming hard.
+
+The biggest jBPM contributor is Red Hat, as a consequence it's not surprising
+that -- when using it as a server -- the project runs best on the JBoss
+application server.
+
+The core supports executing processes defined according to the BPMN 2.0
+specification\footnote{Previously it only supported the jPDL language.}. On top of that, it offers more:
+
+\begin{itemize}
+\item a web-based and an Eclipse plugin to design process definitions using an easy drag and drop method
+\item its storage back-end can be any database which is supported by JPA
+\item handling of human tasks is a separate component -- a sample implementation is included in the release
+\item a BPM console (detailed later in the last section of this chapter), built
+on top of the core provides web-based management and monitoring interface for
+process instances and tasks
+\item a repository, named Guvnor, can be optionally used to deploy processes to
+\item the storage backend can log all detailed needed for audit functionality
+\end{itemize}
+
+Script tasks can be implemented in multiple imperative languages:
+
+\begin{itemize}
+\item MVFLEX Expression Language (MVEL): a hybrid dynamically/statically typed scripting language
+\item Java
+\end{itemize}
+
+Given the above features, jBPM is an excellent candidate to serve as a workflow
+server for our LibreOffice extension.
 
 \subsection{Business Process Model and Notation}
 
