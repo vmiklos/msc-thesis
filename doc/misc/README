@@ -1378,6 +1378,7 @@ server in sync manually.
 
 Here is a plan for the thesis with estimated length:
 
+----
 1. Introduction - 5 pages
 1.1 Document management
 - introducing a document server, based on the VCS example
@@ -1525,6 +1526,7 @@ Here is a plan for the thesis with estimated length:
 - summary on what features are missing / what could be improved in existing features
 8.2 Workflows
 - not implemented ideas / what could be improved wrt. already implemented functionality
+----
 
 === 2011-11-03
 
@@ -1532,6 +1534,7 @@ Updated outline based on suggestions from Akos.
 
 Here is a plan for figures:
 
+----
 2. Background
 2.1 Document management
 2.1.1 General architecture of document management systems
@@ -1585,6 +1588,7 @@ Here is a plan for figures:
 - [done] architecture of the document management test system
 6.2 Workflows
 - [done] architecture of the extension client + workflow server + document server test system
+----
 
 Few ideas for better figures
 - use rounded boxes for processes, normal boxes for artifacts
