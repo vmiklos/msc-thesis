@@ -316,11 +316,14 @@ is strong, it's a common practice to use the same programming language to
 implement both. As a consequence, e.g. Java applications usually run on
 application servers implemented in Java, and so on.
 
-There are two approaches to match this requirement. One approach is to use a
-generic web server, like Apache HTTP Server\cite{apache-httpd}. Given that
-almost all programming languages has a C API to interact with managed code,
-plugins for the web server can be implemented in C to execute managed code when
-a HTTP requests arrives, addressing the application in question.
+There are two approaches\footnote{A third, but not ineffective method is to
+execute the interpreter of the programming language each time a request is
+served, referred as Common Gateway Interface (CGI).} to match this requirement.
+One approach is to use a generic web server, like Apache HTTP
+Server\cite{apache-httpd}. Given that almost all programming languages has a C
+API to interact with managed code, plugins for the web server can be
+implemented in C to execute managed code when a HTTP requests arrives,
+addressing the application in question.
 
 The other approach is to have a dedicated HTTP server, which can only execute
 applications written in a given programming language, but it so more
