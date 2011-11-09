@@ -309,6 +309,8 @@ include, but not limited to:
 \item management of a cluster
 \item load-balancing features
 \item fail-over capabilities
+\item centralized configuration
+\item security: cryptographic and authentication features
 \end{itemize}
 
 Given that the integration between a contained application and server framework
@@ -338,7 +340,44 @@ Microsoft provides this functionality in their Windows Server product and their
 \item Ruby: the Ruby on Rails framework includes the WEBrick HTTP server.
 \end{itemize}
 
+Note that though those are less popular, application servers providing support
+to execute BASIC, C++, Lisp, Haskell, Python, Perl, Smalltalk or Tcl code are
+also available.
+
 \subsubsection*{Java application servers}
+
+Java application servers have the benefit of implementing common interfaces:
+that way changing application servers is supposed to be an easy operation.
+
+These common interfaces live under the \emph{javax.servlet} namespace\cite{javax-servlet}.
+Some of the included concepts:
+
+\begin{itemize}
+\item The \emph{Servlet} interface: an implementing class runs within a web
+server. Its most used implementation is the \emph{HttpServlet} class, that can
+handle HTTP GET, PUT, POST and DELETE requests.
+\item The application can be packaged to a \emph{WAR} file before it's deployed
+on the application server.
+\item Servlets are invoked by a \emph{web container}, the module of the
+application server directly interacting with servlets.
+\item Template-based output can be generated using \emph{JavaServer Pages}
+(JSP). Such templates are processed by the JavaServer Pages compiler.
+\end{itemize}
+
+Popular Java application server implementations include:
+
+\begin{itemize}
+\item GlassFish: An open-source Java application server, started by Sun
+Microsystems for the Java EE platform, and it's still supported by Oracle. The
+name of the product with commercial support is Oracle GlassFish Server.
+\item JBoss Application Server: a detailed discussion is below.
+\item Apache Tomcat: This is the application server implemented by the Apache
+Software foundation, providing an implementation of the Java Servlet and
+JavaServer Pages specifications.
+\item IBM WebSphere Application Server (WAS): A commercial Java application
+server from IBM.
+\end{itemize}
+
 \subsubsection*{JBoss}
 
 \subsection{Workflow engines}
