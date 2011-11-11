@@ -36,7 +36,7 @@ applications. The advantage of the web browser interface is that it can be
 accessed from almost everywhere, however, document editing can't be performed.
 If such operation should be performed, then the user has to manually download
 the document, edit then upload it. This method occasionally does not cause a
-problem, but of course it's uncomfortable for daily work.
+problem, but of course it is uncomfortable for daily work.
 
 The other interface is a rich client, which is installed on the machine of the
 user. Vendors prefer to produce a corresponding client for their server,
@@ -79,7 +79,7 @@ Services\cite{cmis} is created to address compatibility issues between various
 document management server implementations. OASIS approved it on May 1, 2010.
 Also, at the time of writing implementation is far from complete among major
 document management servers. Alfresco 3.3+ implements the client side only,
-SharePoint 2007 does not support it yet, so at the moment it's a vision that
+SharePoint 2007 does not support it yet, so at the moment it is a vision that
 all major document servers will implement this specification.
 
 On the other hand, there are a lot of implementations in other products, such
@@ -89,7 +89,7 @@ and server side).
 CMIS has two main goals:
 
 \begin{itemize}
-\item Providing a list of web service (SOAP) interfaces, it's language-independent.
+\item Providing a list of web service (SOAP) interfaces, it is language-independent.
 \item It allows separating the service and content, making it possible to
 implement services for legacy document repositories without modifying them.
 \end{itemize}
@@ -149,7 +149,7 @@ documentation\cite{spdoc} does not mention the \emph{timestamp of last
 modification}, part of the meta information structure, which is in fact
 mandatory (and there is no problem with that being mandatory, since it uses an
 optimistic concurrency approach). There is no similar problem with Alfresco,
-where in worst case it's possible to check the source code.
+where in worst case it is possible to check the source code.
 
 When evaluating properties, we selected the most common use-cases, required by
 enterprise companies. We intentionally did not evaluate management of document
@@ -314,7 +314,7 @@ include, but not limited to:
 \end{itemize}
 
 Given that the integration between a contained application and server framework
-is strong, it's a common practice to use the same programming language to
+is strong, it is a common practice to use the same programming language to
 implement both. As a consequence, e.g. Java applications usually run on
 application servers implemented in Java, and so on.
 
@@ -356,7 +356,7 @@ Some of the included concepts:
 \item The \emph{Servlet} interface: an implementing class runs within a web
 server. Its most used implementation is the \emph{HttpServlet} class, that can
 handle HTTP GET, PUT, POST and DELETE requests.
-\item The application can be packaged to a \emph{WAR} file before it's deployed
+\item The application can be packaged to a \emph{WAR} file before it is deployed
 on the application server.
 \item Servlets are invoked by a \emph{web container}, the module of the
 application server directly interacting with servlets.
@@ -368,7 +368,7 @@ Popular Java application server implementations include:
 
 \begin{itemize}
 \item GlassFish: An open-source Java application server, started by Sun
-Microsystems for the Java EE platform, and it's still supported by Oracle. The
+Microsystems for the Java EE platform, and it is still supported by Oracle. The
 name of the product with commercial support is Oracle GlassFish Server.
 \item JBoss Application Server: a detailed discussion is below.
 \item Apache Tomcat: This is the application server implemented by the Apache
@@ -498,7 +498,7 @@ it tries to give better support for developers as well. Usually workflow
 engines target non-technical people, making the life of users already used to
 imperative programming hard.
 
-The biggest jBPM contributor is Red Hat, as a consequence it's not surprising
+The biggest jBPM contributor is Red Hat, as a consequence it is not surprising
 that -- when using it as a server -- the project runs best on the JBoss
 application server.
 
@@ -769,7 +769,7 @@ The console server supports \emph{runtime plugins}. These are:
 \begin{itemize}
 \item FormDispatcherPlugin: handles the completion of task forms
 \item GraphViewerPlugin: handles rendering of the current state of a process instance
-\item ProcessEnginePlugin: handles management of the process engine
+\item ProcessEnginePlugin: handles management of the process definitions
 \end{itemize}
 
 The same service loader mechanism is used to load the implementation of these
@@ -779,4 +779,34 @@ interface, it does not cause a fatal error.
 
 \subsubsection*{Management capabilities}
 
-Baz.
+Management capabilities are determined by the installed editor plugins. The
+project suggests that they try to keep a balance between:
+
+\begin{itemize}
+\item providing plugins which are just examples
+\item supporting every corner case
+\end{itemize}
+
+The process editor offers the following features:
+
+\begin{itemize}
+\item Management of the life cycle of process instances: process instances can
+be started, terminated or deleted. Termination ends the process instance,
+deletion also removes the history information.
+\item Visualization of process activity: the already mentioned
+\emph{GraphViewerPlugin} can draw the graphical representation of the BPMN
+definition and show the actual instance state.
+\item Instance data can be inspected: variables associated with a given process
+instance can be accessed read-only.
+\item Process form handling: if the process definition has a form associated
+(which is the way to start parametrized workflows), it will show it and let
+the user fill it out before the process instance starts.
+\end{itemize}
+
+The task editor can manage tasks of the currently logged in user. It features:
+
+\begin{itemize}
+\item a personal and a group task lister
+\item a manager for the task life cycle: it can be open or assigned (whenever it is completed, it gets removed from the list, so there is no such state in the user interface)
+\item a handler for task forms: whenever the task has an associated form, the user can provide input or review read-only data
+\end{itemize}
