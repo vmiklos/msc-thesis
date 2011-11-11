@@ -703,7 +703,40 @@ stored procedures.
 \label{fig:bpm-console}
 \end{figure}
 
-Foo.
+The BPM Console is a generic web console for process engines. In practice it is
+used by:
+
+\begin{itemize}
+\item Riftsaw: a BPEL engine
+\item jBPM: a BPMN engine
+\end{itemize}
+
+Components are shown on figure~\ref{fig:bpm-console}:
+
+\begin{itemize}
+\item the integration layer is an interface to be implemented by process engines
+\item the console server provides a REST API and translates HTTP requests to the integration layer
+\item the web console is a Google Web Toolkit (GWT) application communicating with the console server only
+\end{itemize}
+
+The integration layer discovers the available implementation using the standard
+J2EE service loader mechanism\cite{service-loader}. The console-related
+articats are described in table~\ref{tab:bpm-components}.
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{| l | l |}
+    \hline
+    \textbf{Archive name} & \textbf{Description} \\ \hline
+    gwt-console.war & The user interface \\ \hline
+    gwt-console-server.war & The REST server \\ \hline
+    gwt-console-rpc.jar & Domain model \\ \hline
+    gwt-console-server-integration.jar & Integration layer \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Artifacts of the BPM console}
+  \label{tab:bpm-components}
+\end{table}
 
 \subsubsection*{Workspace framework}
 
