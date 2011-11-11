@@ -1643,5 +1643,11 @@ In ULX. Wrote the Background -> Workflow engines subsection.
 
 Wrote the Background -> Business Process Model and Notation subsection.
 
+=== 2011-11-11
+
+In ULX. Worked on GUI to display error message when local save to /tmp fails.
+
+Version to test: lpsp-0.1-732-g152b9b5.oxt
+
 TODO:
 - long filenames in detailed view: horizontal scroller, but header does not move?
