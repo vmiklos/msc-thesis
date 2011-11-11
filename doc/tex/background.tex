@@ -709,6 +709,7 @@ used by:
 \begin{itemize}
 \item Riftsaw: a BPEL engine
 \item jBPM: a BPMN engine
+\item Drools: a business logic integration platform
 \end{itemize}
 
 Components are shown on figure~\ref{fig:bpm-console}:
@@ -740,7 +741,41 @@ articats are described in table~\ref{tab:bpm-components}.
 
 \subsubsection*{Workspace framework}
 
-Bar.
+The workspace of the BPM console is a concept completely independent from the
+document server workspace. The workspace here is the user interface of the web
+console. The workspace features editors. These editors are implementing a
+common API, and they serve two purposes:
+
+\begin{itemize}
+\item they can be used for management of the workflow engine
+\item they serve as an example on how to use the console server
+\end{itemize}
+
+The editor interface implementations are called \emph{buildtime plugins}. For our
+purposes, two plugins are interesting:
+
+\begin{itemize}
+\item \emph{ProcessEditor}: can be used to edit process instances: start, inspect or terminate
+\item \emph{TaskEditor}: can be used to complete, claim, release tasks
+\end{itemize}
+
+Both of these editors are specific to jBPM, the list of loaded plugins is
+determined build-time: a \emph{profile} can be specified as a parameter of the
+build process, and the jBPM profile lists these plugins. As a result, the
+selected profile becomes the \emph{workspace configuration}.
+
+The console server supports \emph{runtime plugins}. These are:
+
+\begin{itemize}
+\item FormDispatcherPlugin: handles the completion of task forms
+\item GraphViewerPlugin: handles rendering of the current state of a process instance
+\item ProcessEnginePlugin: handles management of the process engine
+\end{itemize}
+
+The same service loader mechanism is used to load the implementation of these
+interfaces as for the integration layer, however in case these are not
+available, then the related functionality is simply hidden from the web
+interface, it does not cause a fatal error.
 
 \subsubsection*{Management capabilities}
 
