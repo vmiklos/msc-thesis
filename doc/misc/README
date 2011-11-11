@@ -1379,7 +1379,7 @@ server in sync manually.
 Here is a plan for the thesis with estimated length:
 
 ----
-1. Introduction - 5 pages
+1. Introduction - 5 pages [ current: 5 pages ]
 1.1 Document management
 - introducing a document server, based on the VCS example
 - client-server vs cloud-based office
@@ -1388,7 +1388,7 @@ Here is a plan for the thesis with estimated length:
 - case study (explaining how live looks like without integrated document server + workflow support)
 - motivation (brief list of needed features: making a decision, group assignment, etc)
 
-2. Background - 30 pages
+2. Background - 30 pages [ current: 20 pages ]
 2.1 Document management
 2.1.1 General architecture of document management systems
 - client-server model, operations on the client, on the server
