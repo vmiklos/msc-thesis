@@ -1645,9 +1645,14 @@ Wrote the Background -> Business Process Model and Notation subsection.
 
 === 2011-11-11
 
-In ULX. Worked on GUI to display error message when local save to /tmp fails.
+In ULX. Worked on GUI to display error message when local save to `/tmp` fails.
 
-Version to test: lpsp-0.1-732-g152b9b5.oxt
+Version to test: lpsp-0.1-741-geb14ea5.oxt
+
+Wrote the Background -> Object-Relational Mapping and The BPM Console
+subsections. Asked Tamas about a real-world use-case, he asked not to mention
+the exact company name, but gave enough info so that I could add a reference in
+the introduction.
 
 TODO:
 - long filenames in detailed view: horizontal scroller, but header does not move?
