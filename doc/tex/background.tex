@@ -540,7 +540,7 @@ Business process modelling is a process of three steps:
 
 The Business Process Model and Notation (BPMN) standard\cite{bpmn} supports all
 these steps, figure~\ref{fig:bpmn-sample} shows such a completely defined
-process definition.
+process definition, using the Eclipse tool of jBPM.
 
 \begin{figure}[H]
 \centering
@@ -648,6 +648,22 @@ The two most common used gateway types (figure~\ref{fig:bpmn-gateway-types}):
 \includegraphics[width=200px,keepaspectratio]{bpmn-gateway-types.pdf}
 \caption{Two gateway types in BPMN}
 \label{fig:bpmn-gateway-types}
+\end{figure}
+
+The last BPMN type we introduce here are connectors. Three type of them can be
+seen on figure~\ref{fig:bpmn-connector-types}:
+
+\begin{itemize}
+\item sequence flow is used for ordering between tasks
+\item message flow indicates two activities are prepared to send / receive messages
+\item association is used to assign additional data to activities
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=300px,keepaspectratio]{bpmn-connector-types.pdf}
+\caption{Three connector types in BPMN}
+\label{fig:bpmn-connector-types}
 \end{figure}
 
 \subsubsection*{BPMN support in jBPM}
