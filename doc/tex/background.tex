@@ -551,7 +551,23 @@ process definition.
 
 \subsubsection*{BPMN basic concepts}
 
-A.
+The most important elements in a process definition are nodes, and transitions
+between these nodes. Figure~\ref{fig:bpmn-diagram-elements} shows that BPMN
+uses the following concepts to represent these:
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=250px,keepaspectratio]{bpmn-diagram-elements.pdf}
+\caption{The basic diagram elements of BPMN}
+\label{fig:bpmn-diagram-elements}
+\end{figure}
+
+\begin{itemize}
+\item activities: a step of the real-word process: for example a human task or a script task
+\item events: represent the start and end of a process, crossing a deadline or error handling
+\item gateways: diverging and converging gateways model parallelism and choices
+\item connectors: declare valid transitions between elements
+\end{itemize}
 
 \subsubsection*{BPMN support in jBPM}
 
