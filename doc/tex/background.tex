@@ -555,13 +555,6 @@ The most important elements in a process definition are nodes, and transitions
 between these nodes. Figure~\ref{fig:bpmn-diagram-elements} shows that BPMN
 uses the following concepts to represent these:
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=250px,keepaspectratio]{bpmn-diagram-elements.pdf}
-\caption{The basic diagram elements of BPMN}
-\label{fig:bpmn-diagram-elements}
-\end{figure}
-
 \begin{itemize}
 \item activities: a step of the real-word process: for example a human task or a script task
 \item events: represent the start and end of a process, crossing a deadline or error handling
@@ -569,9 +562,32 @@ uses the following concepts to represent these:
 \item connectors: declare valid transitions between elements
 \end{itemize}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=250px,keepaspectratio]{bpmn-diagram-elements.pdf}
+\caption{The basic diagram elements of BPMN}
+\label{fig:bpmn-diagram-elements}
+\end{figure}
+
+Figure\ref{fig:bpmn-activity-types} shows there are two types of activities: tasks and subprocesses.
+
+\begin{itemize}
+\item tasks are part of a process definition that are not described in more detail
+\item subprocesses refer to reusable independent parts of process definition
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=250px,keepaspectratio]{bpmn-activity-types.pdf}
+\caption{Activity types in BPMN}
+\label{fig:bpmn-activity-types}
+\end{figure}
+
 \subsubsection*{BPMN support in jBPM}
 
-B.
+jBPM 3.x and earlier supported the jPDL format declare process definitions.
+jBPM 4.x introduced support for BPMN, while jBPM 5.x supports BPMN exclusively.
+Tools are available to somewhat automate the conversion from jPDL to BPMN.
 
 \subsection{Object-Relational Mapping}
 
