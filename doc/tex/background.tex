@@ -583,6 +583,23 @@ Figure\ref{fig:bpmn-activity-types} shows there are two types of activities: tas
 \label{fig:bpmn-activity-types}
 \end{figure}
 
+BPMN supports start, intermediate and stop events. Start events mark where the
+execution of the process will begin. Figure\ref{fig:bpmn-start-event-types}
+shows three start even types:
+
+\begin{itemize}
+\item normal start is used when an explicit start invoked the process
+\item message start indicates the process was triggered by receiving a message
+\item rule start means the process was activated by a business rule
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=200px,keepaspectratio]{bpmn-start-event-types.pdf}
+\caption{Three start event types in BPMN}
+\label{fig:bpmn-start-event-types}
+\end{figure}
+
 \subsubsection*{BPMN support in jBPM}
 
 jBPM 3.x and earlier supported the jPDL format declare process definitions.
