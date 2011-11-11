@@ -620,6 +620,22 @@ can be (see figure~\ref{fig:bpmn-intermediate-event-types}):
 \label{fig:bpmn-intermediate-event-types}
 \end{figure}
 
+Finally end events indicate that the main process ended. Subtypes shown on
+figure~\ref{fig:bpmn-end-event-types}:
+
+\begin{itemize}
+\item none end means the main process ended, but subprocesses are still running
+\item terminate end indicates the execution of the process instance ends
+\item error end describes something unexpected happened
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=200px,keepaspectratio]{bpmn-end-event-types.pdf}
+\caption{Three end event types in BPMN}
+\label{fig:bpmn-end-event-types}
+\end{figure}
+
 \subsubsection*{BPMN support in jBPM}
 
 jBPM 3.x and earlier supported the jPDL format declare process definitions.
