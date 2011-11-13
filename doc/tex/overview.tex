@@ -192,9 +192,42 @@ one so other users can claim the task again.
 
 \subsection*{Document masking}
 
+Once the currently opened document has associated workflow information, the
+editor can map parts of the document to parts of the process definition. Using
+this knowledge, the editor can limit write access to the relevant subset of the
+document, based on the current task instance associated to the document.
+
 \subsection*{Decisions}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=350px,keepaspectratio]{decision-bpmn.png}
+\caption{Workflow with a diverging and a converging gateway}
+\label{fig:decision-bpmn}
+\end{figure}
+
+Figure~\ref{fig:decision-bpmn} shows a process definition containing a business
+decision. The problem is that in this case the \emph{First User Task} can't be
+completed without arguments: a decision has to be made to determine which
+transition to fire after task completion.
+
+The extension will query the list of possible choices from the workflow server
+and the user will be able to make the decision when saving the document.
+
 \subsection*{Audit log}
+
+A benefit of using a workflow engine is the ability to query information about
+completed process instances. The usual question are:
+
+\begin{itemize}
+\item When did an action happen?
+\item Who performed the action?
+\item Where did it happen?
+\item What was the outcome of the action?
+\end{itemize}
+
+The extension will be able to show details of completed process, task and node
+instances, answering these questions.
 
 In this chapter, we shown what component of the document-based workflow system we
 plan to implement. The next chapter will describe how the implementation is
