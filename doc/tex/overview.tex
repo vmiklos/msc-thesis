@@ -174,6 +174,28 @@ server as well -- without leaving the office environment for a second.  Behind
 the scenes, once the last human task is completed as well, the process instance
 simply ends.
 
+\subsection*{Group assignment}
+
+A natural extension of naming the assigned users in the process definition is
+think about roles or groups, so the exact user performing the task can be
+determined later, at runtime. When the user reaches the file picker, a button
+can navigate to an other virtual folder, called group tasks.
+
+A new operation in this case will be \emph{claiming a task}, which means
+selecting a document from the \emph{group tasks} folder and moving it to the
+\emph{personal tasks} folder. Once the task is a personal one, the user can
+proceed as before by editing the document, then completing the task.
+
+The claim of a task can be undone: group tasks can be \emph{released} -- which
+means moving from the \emph{group tasks} folder to the \emph{personal tasks}
+one so other users can claim the task again.
+
+\subsection*{Document masking}
+
+\subsection*{Decisions}
+
+\subsection*{Audit log}
+
 In this chapter, we shown what component of the document-based workflow system we
 plan to implement. The next chapter will describe how the implementation is
 designed to happen.
