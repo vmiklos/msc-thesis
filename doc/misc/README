@@ -1437,14 +1437,14 @@ Here is a plan for the thesis with estimated length:
 - overview of the differences between our approach and OPAL
 - state machine of a document
 3.2 Workflows
-- staring workflows
-- group assignment
 - document server and workflow server decoupling
+- staring workflows
+- incremental snapshots
+- group assignment
+- release task
 - document masking
 - decisions in workflows
 - audit log
-- incremental snapshots
-- release task
 
 4. Design - 20 pages
 4.1 Document management
@@ -1653,6 +1653,10 @@ Wrote the Background -> Object-Relational Mapping and The BPM Console
 subsections. Asked Tamas about a real-world use-case, he asked not to mention
 the exact company name, but gave enough info so that I could add a reference in
 the introduction.
+
+=== 2011-11-12
+
+Wrote the 'Overview of the Approach' chapter, workflow part - till group task support.
 
 TODO:
 - long filenames in detailed view: horizontal scroller, but header does not move?
