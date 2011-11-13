@@ -84,11 +84,15 @@ version with this step.
 \item Delete version: older versions can be deleted.
 \end{itemize}
 
-In this chapter, we shown what component of the document management system we
-plan to implement. The next chapter will describe how the implementation is
-designed to happen.
-
 \section{Workflows}
+
+\subsection*{Document and workflow server decoupling}
+
+Once the document-management client part of the system is in place, we propose
+a decoupled approach to connect the document management system and the workflow
+engine (figure~\ref{fig:decoupled-approach}). We already saw what are the
+benefits of a system where each module can be replaced without altering the
+whole system, the motivation is the same here.
 
 \begin{figure}[H]
 \centering
@@ -97,9 +101,79 @@ designed to happen.
 \label{fig:decoupled-approach}
 \end{figure}
 
+In our proposal the \emph{document server and the workflow server is
+decoupled}, and the connection between the two is provided by the office
+client. Documents are stored on the document server, process instances are
+managed by the workflow engine, and the client will have references to both.
+Additionally, the workflow server will store references to documents, but such
+references are resolved by the client. As a result, the workflow server will
+not have to be altered in case the document server changes.
+
+The system will have two operation modes:
+
+\begin{itemize}
+\item In case no workflow server is configured, or this is explicitly requested
+by the user, the extension will still connect to the document server only.
+\item Otherwise, the extension will query the tasks of the user in question
+from the workflow server, and that will be the basis of all future work.
+\end{itemize}
+
+The possible states of the later operation mode is demonstrated on
+figure~\ref{fig:decoupled-approach-workflow}.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=300px,keepaspectratio]{decoupled-approach-workflow.pdf}
 \caption{Control flow of the decoupled document based workflow approach}
 \label{fig:decoupled-approach-workflow}
 \end{figure}
+
+The remaining part of this chapter describes each key feature we plan to design
+later.
+
+\subsection*{Starting process instances}
+
+A process instance can be started externally or internally:
+
+\begin{itemize}
+\item If it is started externally, then the initiator of the process instance
+connects to the workflow console server using the console UI or using some
+other external application. After authentication, the user starts the process
+instance by manually specifying the reference (URL) of the associated document.
+\item A more integrated method is to start the workflow from the office client.
+First the associated document has to be opened, then the office client can be
+told to start a new process instance, once its type (a process definition) is
+selected from the process definition list.
+\end{itemize}
+
+\subsection*{Incremental snapshots}
+
+Once a process instance is started, its execution will be quickly blocked by
+waiting for a human task to be executed. The simplest case is when this human
+task is directly assigned to a user in the process definition. Given that each
+process instance has an associated document, we can talk about assigned
+documents. If a workflow server is configured, the file picker (the dialog that
+shows up when the user wants to open or save documents) will list these
+assigned documents for the user, providing them as documents in a virtual
+folder.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=350px,keepaspectratio]{step-bpmn.png}
+\caption{Workflow with two statically assigned human tasks}
+\label{fig:step-bpmn}
+\end{figure}
+
+Now in case the workflow has two human tasks and statically assigned users (see
+figure~\ref{fig:step-bpmn}), the extension will offer completing the task when saving the
+document. \emph{Incremental snapshots} is a feature that allows the user to
+choose if the task completion is wished or not, so the document can be
+incrementally saved to the document server as the task is being completed, and
+once it is done, the task complete operation is performed on the workflow
+server as well -- without leaving the office environment for a second.  Behind
+the scenes, once the last human task is completed as well, the process instance
+simply ends.
+
+In this chapter, we shown what component of the document-based workflow system we
+plan to implement. The next chapter will describe how the implementation is
+designed to happen.
