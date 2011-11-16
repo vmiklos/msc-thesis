@@ -254,6 +254,51 @@ class, called \emph{WFHandler}. It should provide the following features:
 Note that jBPM itself is stateless, but the client library mimics a stateful
 connection to avoid asking for connection parameters before all operations.
 
+A decision we made here is that we don't support all kind of process
+definitions, only the document-based ones. Our definition of being
+document-based is:
+
+\begin{itemize}
+\item the process definition has a string variable named \emph{url}
+\item the process definition has a task form, where this URL can be specified on process start
+\end{itemize}
+
+\subsubsection*{Parser classes}
+
+Whenever a REST method call returns from jBPM, the result can one of the following formats:
+
+\begin{itemize}
+\item HTML, when getting a task form
+\item XML, when asked for process instance data
+\item JSON, in any other case
+\end{itemize}
+
+There are multiple problems with arbitrary HTML in our case:
+
+\begin{itemize}
+\item jBPM expects an embedded HTML engine in the client, which is not the case with out SWING-based Java user interface
+\item once the form is submitted, the server would instruct the user to close
+the window, which would be inconsistent with our consistent ``the window is
+closed when no more input should be provided'' approach
+\item in our case the form should be extended to ask for document-management details as well
+\end{itemize}
+
+When using HTML, there are several ways to express business decision. Some example:
+
+\begin{itemize}
+\item using separate buttons for each decision
+\item using the HTML \texttt{<select>} tag to list choices
+\item using radio buttons
+\item some AJAX method
+\end{itemize}
+
+It is obviously impossible to support all these methods, so we declared a
+second constraint here: decisions should be described using submit buttons.
+
+As a result, the \emph{FormParser} class can simply parse submit tag name-value
+pairs from the form to detect multiple choices, and the list of values is sent
+to the user interface.
+
 \subsubsection*{Entity classes}
 
 \begin{itemize}
@@ -266,10 +311,6 @@ connection to avoid asking for connection parameters before all operations.
 \item TaskRef
 \item TaskRefWrapper
 \end{itemize}
-
-\subsubsection*{Parser classes}
-
-- FormParser
 
 \subsection{BPM server and BPM console}
 
