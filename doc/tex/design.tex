@@ -495,9 +495,37 @@ The UNO services invoke the following methods in the Java implementation:
 
 \subsubsection*{Dialog classes}
 
+Figure~\ref{fig:design-wfui} shows the new dialog classes used by the workflow
+UNO service implementations.
+
 \begin{figure}[p]
 \centering
 \includegraphics[width=400px,keepaspectratio]{design-wfui.pdf}
 \caption{Classes of the workflow user interface}
 \label{fig:design-wfui}
 \end{figure}
+
+To start a new workflow, a single new dialog -- \emph{StartWorkflowDialog} --
+is planned, that will show a list of process definitions available.
+
+The audit log will have three new dialogs:
+
+\begin{itemize}
+\item \emph{WorkflowProcessesDialog} is the initial window, showing the process instance list.
+\item \emph{WorkflowNodesDialog} can show node instances of a process instance, opened from the process instance list.
+\item \emph{WorkflowTasksDialog} displays task instances of a process instance, similarly opened by the process instance dialog.
+\end{itemize}
+
+Additionally here and there existing dialogs have to be extended with
+workflow-specific items:
+
+\begin{itemize}
+\item \emph{CommentVersionDialog}: When saving, new controls are needed to control decisions and completing of workflow tasks.
+\item \emph{FilePickerDialog}: During open, the file picker has to be improved to allow task claiming/releasing, also task listing should be handled here.
+\item \emph{ConfigServerDialog}: The table showing properties of different connections should show workflow server URL.
+\item \emph{ServerDialog}: New controls are needed to be able to edit workflow URL of a server connection.
+\end{itemize}
+
+All modifications in the existing dialog classes should tolerate the lack of a
+workflow server, so document management integration can be used as a standalone
+feature as well.
