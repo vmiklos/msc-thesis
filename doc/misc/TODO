@@ -5,17 +5,4 @@ diploma2:
 
 diploma1:
 
-- build without "commons-httpclient" (3.x) - port everything to httpcore/httpclient (4.x)
-
-done, but it's still in classpath, otherwise unopkg add fails:
-
-----
-ERROR: An error occurred while enabling: LPSP.jar
-       Cause: (com.sun.star.registry.CannotRegisterImplementationException) { { Message = "", Context = (com.sun.star.uno.XInterface) @0 } }
-
-unopkg failed.
-----
-
-- get rid of fr.starxpert namespace
-- l10n of the interface
 - save fails when server url is given without explicit port ':80'?
