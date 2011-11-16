@@ -301,16 +301,30 @@ to the user interface.
 
 \subsubsection*{Entity classes}
 
+Whenever a JSON data structure is returned by a REST method call, the client
+library provides the results as an entity class. A convention we follow here is that every type has two entity classes:
+
 \begin{itemize}
-\item NodeInstanceRef
-\item NodeInstanceRefWrapper
-\item ProcessInstanceRef
-\item ProcessInstanceRefWrapper
-\item ProcessRef
-\item ProcessRefWrapper
-\item TaskRef
-\item TaskRefWrapper
+\item \emph{TypeRef}: a reference to the instance of the given type itself
+\item \emph{TypeRefWrapper}: a class for the collection of instance references of the given type
 \end{itemize}
+
+This is handy because this way we don't have to decide what Java interface
+(\emph{java.util.List} could be a candidate) can cover all the details the
+server provides about an instance list.
+
+The following types are handled by the client:
+
+\begin{itemize}
+\item \emph{Process}: is a process definition
+\item \emph{ProcessInstance}: is a process instance
+\item \emph{NodeInstance}: is a node instance
+\item \emph{Task}: a task instance
+\end{itemize}
+
+The type names are in sync with the REST API, which is more helpful than simply
+trying to be consistent with ourselves -- and store the result of a task query
+in a task instance type.
 
 \subsection{BPM server and BPM console}
 
