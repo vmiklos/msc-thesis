@@ -1669,5 +1669,10 @@ Completed the 'Overview of the Approach' chapter.
 Reviewed the sharepoint part of the Design chapter, wrote Design -> Workflows
 -> The workflow library.
 
+=== 2011-11-15
+
+Wrote Design -> Workflows -> jBPM and the BPM console server (renamed from BPM
+server and BPM console).
+
 TODO:
 - long filenames in detailed view: horizontal scroller, but header does not move?
