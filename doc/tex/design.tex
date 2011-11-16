@@ -326,7 +326,65 @@ The type names are in sync with the REST API, which is more helpful than simply
 trying to be consistent with ourselves -- and store the result of a task query
 in a task instance type.
 
-\subsection{BPM server and BPM console}
+\subsection{jBPM and the BPM console server}
+
+The only functionality we need, but is not provided by the BPM console server
+REST API is the audit log. jBPM itself logs all the necessary information in
+its SQL backend, so we need the following steps to export this knowledge to the
+REST API:
+
+\begin{itemize}
+\item extend the interface of the integration layer in the BPM console server
+\item implement the extended interface in jBPM
+\item extend the REST API to use the extended interface
+\end{itemize}
+
+Given that jBPM and the BPM console are separate project, first we need an
+implementation in jBPM, then the new methods can be added to the integration
+layer interface in the BPM console.
+
+\subsubsection*{Extending jBPM}
+
+We need three new features -- the ability to get information about:
+
+\begin{itemize}
+\item historic process instances
+\item node instances of a process instance
+\item task instances of a process instance
+\end{itemize}
+
+In case of historic process instances, the following steps are needed:
+
+\begin{itemize}
+\item a new \emph{getHistoricProcessInstances} method should be introduced in the \emph{ProcessManagement} interface implementation, calling
+\item a new \emph{getInactiveProcessInstanceLogsByProcessId} method, to be introduced in the \emph{CommandDelegate} class in the integration implementation package, calling
+\item a new \emph{findInactiveProcessInstances} method, to be introduced in the \emph{ProcessInstanceDbLog} class in the audit package of jBPM
+\end{itemize}
+
+This last method uses Hibernate to get the necessary information from the SQL
+database. The naming of the new methods is chosen to be consistent with the
+existing API.
+
+Once the process instances are accessible, we need node instances. The
+following new methods are introduced to achieve this:
+
+\begin{itemize}
+\item a new \emph{getNodeInstances} method in the \emph{ProcessManagement} interface implementation, calling
+\item a new \emph{getNodeInstanceLogsByProcessInstanceId} method, to be introduced in the \emph{CommandDelegate} class
+\end{itemize}
+
+Modification of the \emph{ProcessInstanceDbLog} class is not necessary, support
+for querying node instances is already implemented there. However, the
+\emph{ProcessManagement} interface implementation should turn the Java object
+to a JSON serialization, which is handled by a new \emph{nodeInstance()} method
+in the \emph{Transform} class in the integration implementation package.
+
+Finally, getting information about task instances of a process instance is a
+bit more complex. The following methods should be introduced:
+
+\begin{itemize}
+\item
+\end{itemize}
 
 \begin{figure}[p]
 \centering
