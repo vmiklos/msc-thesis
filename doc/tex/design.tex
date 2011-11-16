@@ -215,12 +215,61 @@ For an UML class diagram showing these classes, see figure~\ref{fig:design-spui}
 
 \subsection{The workflow library}
 
+Similar to the document management support part, the Java implementation of
+workflow support is split to two parts as well: a generic jBPM client library
+and the workflow user interface. The jBPM client is designed under the
+\emph{hu.ulx.lpsp.workflow} namespace, the second is under the
+\emph{hu.ulx.lpsp.comp} one.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=425px,keepaspectratio]{design-packages-wf.pdf}
 \caption{Packages of the workflow-enabled SharePoint extension}
 \label{fig:design-packages-wf}
 \end{figure}
+
+Figure~\ref{fig:design-packages-wf} shows the updated UML package diagram of our
+solution. The recently introduced \emph{hu.ulx.lpsp.workflow} package can be divided to three
+parts:
+
+\begin{itemize}
+\item controller classes
+\item entity classes
+\item parser classes
+\end{itemize}
+
+\subsubsection*{Controller classes}
+
+Given that jBPM provides a REST API to control the workflow engine, the client
+library can be quite simple. Its business logic is implemented in a single
+class, called \emph{WFHandler}. It should provide the following features:
+
+\begin{itemize}
+\item authentication handling
+\item wrappers for used REST method calls
+\item mapping between JSON data and entity classes
+\item parsing task data from HTML forms
+\end{itemize}
+
+Note that jBPM itself is stateless, but the client library mimics a stateful
+connection to avoid asking for connection parameters before all operations.
+
+\subsubsection*{Entity classes}
+
+\begin{itemize}
+\item NodeInstanceRef
+\item NodeInstanceRefWrapper
+\item ProcessInstanceRef
+\item ProcessInstanceRefWrapper
+\item ProcessRef
+\item ProcessRefWrapper
+\item TaskRef
+\item TaskRefWrapper
+\end{itemize}
+
+\subsubsection*{Parser classes}
+
+- FormParser
 
 \subsection{BPM server and BPM console}
 
