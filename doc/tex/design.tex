@@ -149,7 +149,7 @@ The following ones are the utility macros (\emph{LPSP.utils} package):
 \item getAuthenticationManager: returns the document manager singleton.
 \end{itemize}
 
-The BASIC macros invoke the following UNO Services:
+The BASIC macros invoke the following UNO services:
 
 \begin{itemize}
 \item Connection: calls \emph{theAuthenticationManager::execute()}.
@@ -440,6 +440,60 @@ Finally, once a query about a task is received, then:
 \end{itemize}
 
 \subsection{User interface}
+
+\subsubsection*{Menu items}
+
+The following new menu items are introduced for workflow integration:
+
+\begin{itemize}
+\item \emph{Start workflow}: starts a new process instance associated with the current document.
+\item \emph{Workflow audit log}: shows a window with information about historic process instances.
+\end{itemize}
+
+\subsubsection*{BASIC macros}
+
+These menu items call the following BASIC macros in the \emph{LPSP.menu} script library:
+
+\begin{itemize}
+\item \emph{openWorkflow()} is called when the workflow definition list is opened.
+\item \emph{workflowProcesses()} is called when the process instance list is shown.
+\end{itemize}
+
+\subsubsection*{UNO interfaces and services}
+
+To allow the macros to invoke Java methods, first we need a UNO specification.
+Two new interfaces are introduced:
+
+\begin{itemize}
+\item \emph{XJbpmWorkflow}: invoke the Java library to start a new process instance.
+\item \emph{XJbpmWorkflowProcesses}: invoke the Java library to show historic process instances.
+\end{itemize}
+
+Given that it's not possible to instantiate interfaces, new services are
+defined to implement these interfaces:
+
+\begin{itemize}
+\item \emph{JbpmWorkflow}: implements \emph{XJbpmWorkflow}
+\item \emph{JbpmWorkflowProcesses}: implements \emph{XJbpmWorkflowProcesses}
+\end{itemize}
+
+With this, the basic macros can call the following UNO services:
+
+\begin{itemize}
+\item Start workflow: calls \emph{JbpmWorkflow::execute()}.
+\item Workflow audit log: calls \emph{JbpmWorkflowProcesses::execute()}.
+\end{itemize}
+
+\subsubsection*{Java implementation classes}
+
+The UNO services invoke the following methods in the Java implementation:
+
+\begin{itemize}
+\item Start workflow: \emph{JbpmWorkflowImpl.execute()}
+\item Workflow audit log: \emph{JbpmWorkflowProcessesImpl.execute()}
+\end{itemize}
+
+\subsubsection*{Dialog classes}
 
 \begin{figure}[p]
 \centering
