@@ -1674,5 +1674,11 @@ Reviewed the sharepoint part of the Design chapter, wrote Design -> Workflows
 Wrote Design -> Workflows -> jBPM and the BPM console server (renamed from BPM
 server and BPM console).
 
+=== 2011-11-16
+
+In ULX. Finished the Design chapter.
+
 TODO:
-- long filenames in detailed view: horizontal scroller, but header does not move?
+- more "logged-in"-like info messages when no error occurs
+- sample server is added back on restart (inherited bug from OPAL)
+- long filenames in detailed view: horizontal scrollbar, but header does not move?
