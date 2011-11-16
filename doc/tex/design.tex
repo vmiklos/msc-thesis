@@ -379,19 +379,28 @@ for querying node instances is already implemented there. However, the
 to a JSON serialization, which is handled by a new \emph{nodeInstance()} method
 in the \emph{Transform} class in the integration implementation package.
 
-Finally, getting information about task instances of a process instance is a
-bit more complex. The following methods should be introduced:
-
-\begin{itemize}
-\item
-\end{itemize}
-
 \begin{figure}[p]
 \centering
 \includegraphics[width=300px,keepaspectratio]{jbpm-modified-classes.pdf}
 \caption{Audit log provider classes of jBPM}
 \label{fig:jbpm-modified-classes}
 \end{figure}
+
+Finally, getting information about task instances of a process instance is a
+bit more complex. The following changes should be introduced:
+
+\begin{itemize}
+\item a new \emph{getProcessInstanceTasks} method in the \emph{TaskManagement}
+	interface implementation. This will instantiate a new
+	\emph{BlockingGetTasksResponseHandler} class, implementing a new
+	\emph{GetTasksResponseHandler} interface. Then it will call
+\item a new \emph{getTasksByProcessInstanceId} method in the \emph{TaskClient} class. This will use two new constants (one is \emph{QueryTasksByProcessInstanceId}, the other is \emph{QueryTasksByProcessInstanceIdResponse}), provided by the \emph{CommandName} class. This new method will call
+\item the \emph{TaskServerHandler} class, which should be extended to handle the \emph{QueryTasksByProcessInstanceId} token, which will call
+\item a new \emph{getTasksByProcessInstanceId} method in the \emph{TaskServiceSession} class. This will invoke a new stored procedure, named \emph{TasksByProcessInstanceId}. Finally it will call
+\item the \emph{TaskClientHandler} class, handling the \emph{QueryTasksByProcessInstanceIdResponse} token, calling back the original \emph{BlockingGetTasksResponseHandler} implementation.
+\end{itemize}
+
+The interaction between these classes can be seen on figure~\ref{fig:jbpm-modified-classes}.
 
 \subsection{User interface}
 
