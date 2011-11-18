@@ -163,7 +163,9 @@ dedicated \emph{UrlEncodedFormEntity} class for this purpose:
 
 \begin{itemize}
 \item Fields in the form should be collected to a \emph{NameValuePair} list;
-\item Once the list is ready, the entity generator class can produce the necessary payload for the HTTP request.
+\item Once the list is ready, the entity generator class can produce the
+necessary payload for the HTTP request, using the
+\texttt{application/x-www-form-urlencoded} MIME type\cite{form-encoding}.
 \end{itemize}
 
 There are two problems here:
@@ -190,6 +192,38 @@ the Java implementation does two logins in practice, though. The user interface
 signals an error in case any of these logins failed.
 
 \subsection{JSON handling}
+
+Most responses received from the jBPM server are JavaScript Object Notation
+(JSON) strings. The interested reader can look into the
+specification\cite{json}, all we need to know about it here is that it can
+represent a set of Java objects, allowing references between them.
+
+Once entity classes are available (as described in the \emph{Design} chapter),
+the Gson library\cite{gson} can be used to parse those strings to entity class
+instances.
+
+The benefits of using Gson over other implementations (like
+\emph{org.json}\cite{org-json}):
+
+\begin{itemize}
+\item it requires no pollution of the entity classes regarding JSON (i.e. no \emph{toJson()} methods are necessary)
+\item when a default constructor is not available for an entity class, it supports the registration of instance creators for such types
+\end{itemize}
+
+It uses reflection to access fields, so the usual implementation can
+be used: the fields themselves are private and public getter/setter methods are
+provided. Also, the parser is quite liberal about entity classes, in case a
+field is part of the JSON string but the associated Java class does not have
+such a field, it is simply ignored. That helps our extension to be compatible
+with future jBPM server versions.
+
+A pitfall during the implementation was that the usage of generic types is
+mandatory when using references between the classes:
+
+\begin{itemize}
+\item In case a generalized collection is used as a field type, Gson can extract the type information of the referenced objects from the field type, and instantiate the correct class.
+\item Otherwise, there is no way to guess the type of the referenced instance, so a parse exception is thrown.
+\end{itemize}
 
 \subsection{User interface}
 
