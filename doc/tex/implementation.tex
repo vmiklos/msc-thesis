@@ -302,3 +302,73 @@ questions:
 \end{itemize}
 
 \subsection{Error handling}
+
+There are multiple levels where error handling should be implemented:
+
+\begin{itemize}
+\item Accessing jBPM without a connection.
+\item Accessing jBPM with a connection not configured for workflows.
+\item Accessing a jBPM service which is not implemented by the server instance in question.
+\item Handling errors from existing services.
+\end{itemize}
+
+\subsubsection*{Accessing without a connection}
+
+Detecting this status is implemented in the BASIC macros:
+
+\begin{itemize}
+\item Macros call the \emph{getCurrentConnection()} function get the connection reference.
+\item \emph{getCurrentConnection()} gets the current connection from the authentication manager (which is always available, since it is a singleton).
+\item In case there is already a connection, it returns the reference. If there is no connection, it calls the \emph{getConnection()} function, that shows the connection dialog.
+\end{itemize}
+
+In case the user cancels the connection dialog, the action is cancelled, this
+way the Java implementation can assume there is always a connection available.
+
+\subsubsection*{Accessing without workflow support}
+
+The user always has the possibility to leave the workflow URL of a server
+configuration empty. In this case the extension does not try to connect,
+either.
+
+Later during workflow-related operations the control flow always starts with the following steps:
+
+\begin{itemize}
+\item get a reference to the current connection
+\item call the \emph{getWFHandler()} method of the connection, to check if workflow support is available
+\end{itemize}
+
+In case the second step fails, the user gets an error message explaining the issue.
+
+\subsubsection*{Checking workflow services}
+
+jBPM support listing available services, however that is more about serving as
+a user guide to show what can be done, rather than a page to be machine-parsed.
+The already mentioned TagSoup parser could be used to extract the necessary
+information, but the page is not part of any stable API, so that approach could
+easily break with the next jBPM version.
+
+A better method is to properly handle all JSON parsing exception. This is
+possible because in case a service is not supported, a HTML error is returned
+by the server, which -- of course -- cannot be handled by the JSON parser.
+
+Using this technique we can inform the user about exactly what required service
+is missing on the server.
+
+\subsubsection*{Errors in existing services}
+
+A rather generic approach would be to check the HTTP code to detect errors, but it has two problems:
+
+\begin{itemize}
+\item The server returns HTTP 200 (\emph{OK}) even in case the HTML title of the page is \emph{HTTP 401}.
+\item Even if the code would not be 200, we can't distinguish between service errors and non-existing services, unless different error codes are used (e.g. 500 for service errors, 503 for unavailable services).
+\item One can also argue that HTTP error codes are to be used by the application server itself, not by servlets running on the server.
+\end{itemize}
+
+A better method is to check the content-type, and -- in case it is HTML -- the
+title of the page.  If the content-type is unexpected, that will mean the
+service is not available, as described above. Otherwise, the title of the
+returned HTML page correctly contains the error code.
+
+An example is when a login fails, in that case the \emph{HTTP 401} error code
+is properly returned in the rendered HTML error page.
