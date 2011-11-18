@@ -227,12 +227,49 @@ mandatory when using references between the classes:
 
 \subsection{User interface}
 
+The first challenge was to map the concepts of a user and the associated
+personal / group tasks to the file / folder metaphor, already known by users.
+
+In LibreOffice, access to files is usually handled by a sequence of property
+values (key-value pairs), where usually the \emph{URL} property is used to
+access the physical file. However in some cases there is no real URL, but the
+contents of the object is provided as a \emph{Stream} property.  An example is
+the framework module\cite{lo-framework-module}, where even a define (with a
+value of \emph{private:stream}) is provided to be used as a fake URL for such
+streams.  A similar constant is available to access factories with a
+\emph{private:factory} URL. Using that URL e.g. in Writer, a new empty document
+is opened.
+
+Extending this technique, the extension introduces the following identifiers in
+the \emph{private:} namespace:
+
+\begin{itemize}
+\item \emph{private:personaltasks} is used to access personal tasks
+\item \emph{private:grouptasks} is used to access group tasks
+\end{itemize}
+
+The \emph{WFHandler.urlopen()} method, which was originally designed to open
+regular URL's, can handle these special ones. During the opening operation it performs the following steps:
+
+\begin{itemize}
+\item It queries task instances of the given task type from the workflow server.
+\item Once as task instance is selected, it extracts the associated document URL from the associated process instance variables.
+\item Finally the extension already knows how to open a document server URL.
+\end{itemize}
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=200px,keepaspectratio]{implementation-decision.png}
 \caption{Implementation of making a business decision when completing a human task}
 \label{fig:implementation-decision}
 \end{figure}
+
+During save, the \emph{CommentVersionDialog} class invokes \emph{WFHandler} to check if the document has a task associated. If so, the two controls at the bottom of the dialog are enabled to control the interaction with the workflow server during save (see figure~\ref{fig:implementation-decision}):
+
+\begin{itemize}
+\item if the workflow should be stepped
+\item what is the answer for the business decision, if available
+\end{itemize}
 
 \begin{figure}[H]
 \centering
