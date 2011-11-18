@@ -1691,6 +1691,18 @@ Version to test: lpsp-0.1-772-g66e9e4d.oxt
 
 Wrote Implementation -> Workflow -> Authentication and JSON handling.
 
+=== 2011-11-18
+
+In ULX. Worked on bugfixes:
+
+- Improved file picker to explain what are the consequences of not checking out a document during open.
+- When the filename already had an extension, changing the save format type did not update the extension.
+- The typed in filename was lost when navigating to a subdirectory.
+
+Version to test: lpsp-0.1-789-g4e35f4d.oxt
+
+Finished the Implementation chapter.
+
 TODO:
 - more "logged-in"-like info messages when no error occurs
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
