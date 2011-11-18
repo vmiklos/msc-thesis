@@ -52,10 +52,10 @@ clear, we could begin writing the LibreOffice extension.
 It was obvious that doing HTTP communication with NTLM authentication is an
 already solved problem, but we needed to decide which library to use. Given that
 OPAL already used Apache \emph{commons-httpclient}\cite{httpclient} 3.x for
-HTTP communication. Unfortunately that version does not support NTLM, so we used
+HTTP communication, that was an option. Unfortunately that version does not support NTLM, so we used
 Apache \emph{httpcomponents}\cite{httpcomponents}, which is the successor of
 the previous library (starting with version 4.x). The two version series have
-different APIs, so it's possible to use both in parallel, and migrating code
+different APIs, so it was possible to temporarily use both in parallel, and migrating code
 incrementally.
 
 Once we had \emph{httpcomponents}, we still needed to write detection code that
@@ -122,17 +122,18 @@ figure~\ref{fig:implementation-versiondialog}.
 
 \subsection{Exception handling}
 
-The last challenge was the localization of error messages in BASIC. It does not
-support any kind of localization. What it supports is the following technique:
+The last challenge was the localization of error messages in BASIC. The
+language does not support any kind of localization. What it supports is the
+following technique:
 
 \begin{lstlisting}
 Sub openVersion
 ...
-        On Error GoTo errAlfDoc
+        On Error GoTo errSpDoc
         oVersion.execute()
         Exit Sub
 
-        errAlfDoc:
+        errSpDoc:
                 MsgBox(oVersion.ErrorReason)
                 Exit Sub
 End Sub
@@ -140,7 +141,7 @@ End Sub
 
 The \emph{On Error} part can hide any kind of exception thrown by Java, and as
 long as the Java side calls \emph{setErrorReason()} on the
-\emph{AlfrescoVersionsImpl} object before throwing an exception, the user gets
+\emph{SharepointVersionsImpl} object before throwing an exception, the user gets
 a friendly error message, which is even localized.
 
 \section{Workflows}
