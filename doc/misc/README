@@ -1680,6 +1680,8 @@ In ULX. Finished the Design chapter.
 
 Fixed bug: sample server is added back on restart (inherited bug from OPAL)
 
+Version to test: lpsp-0.1-772-g66e9e4d.oxt
+
 TODO:
 - more "logged-in"-like info messages when no error occurs
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
