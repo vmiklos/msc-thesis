@@ -227,6 +227,8 @@ mandatory when using references between the classes:
 
 \subsection{User interface}
 
+\subsubsection*{Private streams}
+
 The first challenge was to map the concepts of a user and the associated
 personal / group tasks to the file / folder metaphor, already known by users.
 
@@ -264,12 +266,22 @@ regular URL's, can handle these special ones. During the opening operation it pe
 \label{fig:implementation-decision}
 \end{figure}
 
-During save, the \emph{CommentVersionDialog} class invokes \emph{WFHandler} to check if the document has a task associated. If so, the two controls at the bottom of the dialog are enabled to control the interaction with the workflow server during save (see figure~\ref{fig:implementation-decision}):
+During save, the \emph{CommentVersionDialog} class invokes \emph{WFHandler} to
+check if the document has a task associated. If so, the two controls at the
+bottom of the dialog are enabled to control the interaction with the workflow
+server during save (see figure~\ref{fig:implementation-decision}):
 
 \begin{itemize}
 \item if the workflow should be stepped
 \item what is the answer for the business decision, if available
 \end{itemize}
+
+\subsubsection*{Audit log}
+
+The second new menu item introduced by the workflow integration is the audit
+log. First a dialog asks the process type to audit (similar to the process
+definition selector when starting a new process instance), then the list of
+historic process instances appear.
 
 \begin{figure}[H]
 \centering
@@ -277,5 +289,16 @@ During save, the \emph{CommentVersionDialog} class invokes \emph{WFHandler} to c
 \caption{Implementation of the audit log: process instances, node instances and users performing human tasks}
 \label{fig:implementation-auditlog}
 \end{figure}
+
+Buttons next to this table are available to inspect node and task instances
+associated to the process. With this, we can answer all of our original
+questions:
+
+\begin{itemize}
+\item When did an action happen? Date columns of the process and node dialogs.
+\item Who performed the action? Assignee column of the task dialog.
+\item Where did it happen? Name column of the process and task dialogs.
+\item What was the outcome of the action? Name column of the node dialog.
+\end{itemize}
 
 \subsection{Error handling}
