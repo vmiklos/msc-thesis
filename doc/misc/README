@@ -1678,7 +1678,8 @@ server and BPM console).
 
 In ULX. Finished the Design chapter.
 
+Fixed bug: sample server is added back on restart (inherited bug from OPAL)
+
 TODO:
 - more "logged-in"-like info messages when no error occurs
-- sample server is added back on restart (inherited bug from OPAL)
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
