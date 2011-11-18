@@ -1676,7 +1676,12 @@ server and BPM console).
 
 === 2011-11-16
 
-In ULX. Finished the Design chapter.
+In ULX. Meeting with Gabor, he explained he wants to keep the source code and
+binaries of LPSP private after my thesis is ready. Consensus: discuss license &
+copyright questions after the thesis is ready, that's the #1 priority at the
+moment.
+
+Finished the Design chapter.
 
 Fixed bug: sample server is added back on restart (inherited bug from OPAL)
 
