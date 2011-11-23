@@ -1703,6 +1703,15 @@ Version to test: lpsp-0.1-789-g4e35f4d.oxt
 
 Finished the Implementation chapter.
 
+== 12th week
+
+=== 2011-11-21
+
+Worked on the Evaluation chapter:
+
+- updated the document management section
+- wrote the workflow section
+
 TODO:
 - more "logged-in"-like info messages when no error occurs
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
