@@ -6,12 +6,13 @@ In this section, we take table~\ref{tab:background-comparison} as a starting
 point and check what features are implemented and what are not.
 
 The testing environment was built from a client machine, a SharePoint server
-and an Alfresco server:
+and an Alfresco server, as can be seen on figure~\ref{fig:test-arch}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=300px,keepaspectratio]{test-arch.pdf}
 \caption{Architecture of the test system}
+\label{fig:test-arch}
 \end{figure}
 
 The client machine had the following details:
@@ -74,8 +75,47 @@ lack of the update of the user interface background in many cases.
 
 \section{Workflows}
 
+\subsection*{Test architecture}
+
+The evaluation of workflow support is based on the use-cases of the workflow
+part of the \emph{Overview of the Approach} chapter.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=300px,keepaspectratio]{test-arch-wf.pdf}
 \caption{Architecture of the workflow-enabled test system}
+\label{fig:test-arch-wf}
 \end{figure}
+
+The test architecture we designed to evaluate features can be seen on
+figure~\ref{fig:test-arch-wf}. The test system has the following dependencies:
+
+\begin{itemize}
+\item The connection should be initiated from our LibreOffice extension when
+both the document server and the workflow engine is ready.
+\item The workflow server can be started before the Human Task server, but user
+connections can only be served when both are ready.
+\item Additionally, in case a custom storage backend is used for jBPM (for
+example MySQL instead of the default H2 backend), then that should be ready
+before any component of jBPM is started.
+\end{itemize}
+
+During our tests we used the same document servers and office suites than for
+the document-server-only tests. jBPM was set up on the same physical machine
+where the office suite ran.
+
+The workflow-specific tests were executed using the following component versions:
+
+\begin{itemize}
+\item jBPM (jbpm-bpmn2 and jbpm-human-task) 5.1.x: latest version at the time
+of writing (Nov 2011) with additional patches detailed earlier.
+\item BPM Console 2.1 with the patches.
+\item MySQL 5.5.14 without additional modifications.
+\end{itemize}
+
+The jBPM developers are looking forward to the modifications and are planning
+to review them once the thesis is ready.
+
+\subsection*{Used test methods}
+
+Foo.
