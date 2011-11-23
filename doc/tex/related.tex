@@ -93,3 +93,30 @@ SharePoint server, which is not enough for our purposes.
 \end{table}
 
 \section{Workflows}
+
+As already mentioned, there is no ready approach today for document-based workflow management, that
+
+\begin{itemize}
+\item supports arbitrary process definitions
+\item decouples document and workflow management
+\item available under an open-source license
+\end{itemize}
+
+On the other hand, these are partly implemented in some other projects, which we present here.
+
+\subsection*{Related papers}
+
+Document-based workflows\footnote{Also known as document-centric or
+document-driven workflows} is an active research topic today. Multiple
+interesting ideas are raised in recent papers.
+
+\emph{A framework for document-driven workflow systems}\cite{paper-framework}:
+\begin{itemize}
+\item details why information and resource based workflows are also important, not just control based ones
+\item use case: user changes the document, change listeners intercepts changes, check constraints, then accept or reject them
+\item various complex features planned: split/merge of documents, different locking types
+\item proposed implementation using SQL triggers
+\item detailed comparison of control flow based versus document based approach
+\end{itemize}
+
+
