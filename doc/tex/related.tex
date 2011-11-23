@@ -88,13 +88,14 @@ SharePoint server, which is not enough for our purposes.
     \makecell[l]{SharePoint 2007 \\ support} & no & no    & no               & yes                           & partial \\ \hline
     \end{tabular}
   \end{center}
-  \caption{Comparison of related works}
+  \caption{Comparison of related document management works}
   \label{tab:related-cmp}
 \end{table}
 
 \section{Workflows}
 
-As already mentioned, there is no ready approach today for document-based workflow management, that
+Table~\ref{tab:related-wf-cmp} shows that there is no ready approach today for
+document-based workflow management, that
 
 \begin{itemize}
 \item supports arbitrary process definitions
@@ -184,3 +185,19 @@ able to operate with standard BPMN or similar formats.
 
 Its office integration is solely due to the WebDAV interface, with its known
 limitations for our purpose.
+
+\begin{table}[H]
+  \begin{center}
+    \begin{tabular}{| l | l | l | l |}
+    \hline
+    \textbf{Feature} & \textbf{Sharepoint Workflow} & \textbf{Liferay} & \textbf{jBPM} \\ \hline
+    License          & proprietary                  & open-source      & open-source \\ \hline
+    Decoupling       & no                           & no               & yes \\ \hline
+    Office integration & yes                        & no               & no \\ \hline
+    \makecell[l]{Standard process \\ definition format} & no & no      & yes \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{Comparison of related workflow solutions}
+  \label{tab:related-wf-cmp}
+\end{table}
+
