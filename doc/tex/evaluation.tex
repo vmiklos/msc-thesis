@@ -118,4 +118,45 @@ to review them once the thesis is ready.
 
 \subsection*{Used test methods}
 
-Foo.
+Three different test methods were used:
+
+\begin{itemize}
+\item The existing document management unit tests were used to ensure that we do not the earlier document-management-only use cases.
+\item Separate command-line applications were used to test features of the workflow library. These are to be turned into unit tests.
+\item Due to the complex architecture, integration tests were performed manually.
+\end{itemize}
+
+The last method does not only mean it was continuously tested by the author: a closed set of users also tested it once the document management part was ready. They were already used to using a document server and office suite separately, and they all had the possibility not to use the extension if they think it complicates their daily work. The general feedback was:
+
+\begin{itemize}
+\item The extension made their work easier: in most cases they did use the extension once it was installed.
+\item Even if they had to report bugs here and there, the extension never
+damaged data on the servers (e.g. by accidentally deleting a version of a
+document).
+\end{itemize}
+
+\subsection*{Limitations}
+
+The workflow support part has the following known limitations:
+
+\begin{itemize}
+\item Process definitions without a start form -- where the associated document URL can be specified -- are not supported.
+\item Free-form HTML is not allowed in task forms when making a business decision.
+\item The audit log features is not available with an official jBPM version.
+\end{itemize}
+
+The first two are design decisions, the last one will be resolved in the near
+future, as mentioned earlier.
+
+However the document management integration also causes two limitations, which affects workflows as well:
+
+\begin{itemize}
+\item The SharePoint protocol does not allow listing files without an
+extension. This means when using the extension to start a workflow, such files
+can't be associated to the process instance.
+\item With choosing a decoupled approach, we also require an external method to
+be used for keeping user accounts on the document management and workflow
+servers in sync.
+\end{itemize}
+
+Here the first item is a known limitation, the second was a design decision.
