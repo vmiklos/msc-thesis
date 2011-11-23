@@ -39,6 +39,34 @@ writing (November 2011).
 required a server-side component as well.
 \end{itemize}
 
+\subsection*{libcmis}
+libcmis\cite{libcmis} is a general purpose CMIS library, written in C++.
+LibreOffice has a built-in Universal Content Provider built into its core,
+internally using libcmis.
+
+It has two issues at the moment:
+
+\begin{itemize}
+\item its CMIS support is incomplete
+\item like LibreOffice CMIS, it does not support SharePoint 2007
+\end{itemize}
+
+The first problem is expected to be resolved in the long term, the second is
+not a priority for this project.
+
+\subsection*{SharePoint Connector}
+The Oracle Connector for SharePoint Server\cite{oracle-sp-connector} is a
+commercial OpenOffice.org extension, providing SharePoint support in
+OpenOffice.org. It has multiple problems:
+
+\begin{itemize}
+\item It is not free. Sadly it is part of Oracle Open Office Enterprise
+Edition, which is no longer available from the Oracle Store at the time of
+writing (November 2011).
+\item When we earlier checked it, It was only available on Windows 32-bit and it
+required a server-side component as well.
+\end{itemize}
+
 \subsection*{Drupal SharePoint module}
 
 An additional SharePoint module\cite{drupal-sp} for the Drupal content management system is also available. It solves a different problem, though:
@@ -52,12 +80,12 @@ SharePoint server, which is not enough for our purposes.
 
 \begin{table}[H]
   \begin{center}
-    \begin{tabular}{| l | l | l | l | l |}
+    \begin{tabular}{| l | l | l | l | l | l |}
     \hline
-    \textbf{Feature} & \textbf{OPAL} & \textbf{LibO CMIS} & \textbf{SharePoint Connector} & \textbf{Drupal} \\ \hline
-    License & open-source & open-source & proprietary & open-source \\ \hline
-    Server component & yes & no & yes & no \\ \hline
-    \makecell[l]{SharePoint 2007 \\ support} & no & no & yes & partial \\ \hline
+    \textbf{Feature} & \textbf{OPAL} & \textbf{LibO CMIS} & \textbf{libcmis} & \textbf{SP Conn.} & \textbf{Drupal} \\ \hline
+    License          & open-source   & open-source        & open-source      & proprietary                   & open-source \\ \hline
+    Server component & yes           & no                 & no               & yes                           & no \\ \hline
+    \makecell[l]{SharePoint 2007 \\ support} & no & no    & no               & yes                           & partial \\ \hline
     \end{tabular}
   \end{center}
   \caption{Comparison of related works}
