@@ -1,5 +1,5 @@
 ULX: http://build.ulx.hu/svn/vmiki-diploma
 MIT: https://svn.inf.mit.bme.hu/student/onlab/trunk/vmiklos (mirror of ULX)
 
-jbpm: http://vmiklos.hu/gitweb/?p=diploma/jbpm.git;a=summary
-bpm-console: http://vmiklos.hu/gitweb/?p=diploma/bpm-console.git;a=summary
+jbpm: http://vmiklos.hu/git/diploma/jbpm.git
+bpm-console: http://vmiklos.hu/git/diploma/bpm-console.git
