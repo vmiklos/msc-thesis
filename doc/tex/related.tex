@@ -102,7 +102,8 @@ As already mentioned, there is no ready approach today for document-based workfl
 \item available under an open-source license
 \end{itemize}
 
-On the other hand, these are partly implemented in some other projects, which we present here.
+On the other hand, these are partly detailed in papers and implemented in some
+other projects, which we present here.
 
 \subsection*{Related papers}
 
@@ -136,4 +137,22 @@ interesting ideas are raised in recent papers.
 \begin{itemize}
 \item this approach is without decoupling as well
 \item the workflow object is proposed to communicate with the document object
+\end{itemize}
+
+\subsection*{SharePoint Designer}
+
+The SharePoint Designer\cite{sp-designer} tool support designing process definitions, to
+be executed within the SharePoint document management server itself. It focuses on two features:
+
+\begin{itemize}
+\item triggers, executing an action when a document-related event occurs
+\item a few builtin process definitions (review, approval, collecting signatures)
+\end{itemize}
+
+Its problems for our purposes:
+
+\begin{itemize}
+\item decoupling of the document and workflow server
+\item document masking
+\item standard workflow format (such as BPMN)
 \end{itemize}
