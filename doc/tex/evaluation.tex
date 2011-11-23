@@ -42,8 +42,16 @@ supported at the moment:
 \item User management, including roles and permissions inside workspaces.
 \item Task management in workspaces.
 \item Link management in workspaces.
-\item Creating and deleting workspaces is supported, but nested folder
-structures can only be read by the extension.
+\end{itemize}
+
+The following items are not in the feature table, but are available:
+
+\begin{itemize}
+\item Creating and deleting workspaces is supported by Microsoft Office, but nested
+folder structures can only be read. It turned out that the protocol allows
+creation, so the extension supports this.
+\item Namespaces of settings and classes are renamed, so parallel installation
+of our extension and OPAL is possible.
 \end{itemize}
 
 The extension is written in Java and BASIC, so it is meant to be portable.
@@ -59,10 +67,6 @@ Finally, the extension inherited some of its limitation from the original OPAL
 codebase:
 
 \begin{itemize}
-\item We decided not to bother with renaming namespaces, so untouched code still
-lives under \emph{fr.starxpert}, which may cause a problem if one wants to use
-our extension and OPAL at the same time.
-\item The \emph{commons-httpclient} jar is still part of the project, though it is not used in fact.
 \item The GUI is not started in a separate thread in all cases, resulting the
 lack of the update of the user interface background in many cases.
 \item Classes we did not touch still have French comments inside.
