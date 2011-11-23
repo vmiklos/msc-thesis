@@ -108,7 +108,7 @@ other projects, which we present here.
 \subsection*{Related papers}
 
 Document-based workflows\footnote{Also known as document-centric or
-document-driven workflows} is an active research topic today. Multiple
+document-driven workflows.} is an active research topic today. Multiple
 interesting ideas are raised in recent papers.
 
 \emph{A framework for document-driven workflow systems}\cite{paper-framework}:
@@ -141,7 +141,7 @@ interesting ideas are raised in recent papers.
 
 \subsection*{SharePoint Designer}
 
-The SharePoint Designer\cite{sp-designer} tool support designing process definitions, to
+The SharePoint Designer\cite{sp-designer} 2007 tool support designing process definitions, to
 be executed within the SharePoint document management server itself. It focuses on two features:
 
 \begin{itemize}
@@ -156,3 +156,27 @@ Its problems for our purposes:
 \item document masking
 \item standard workflow format (such as BPMN)
 \end{itemize}
+
+\subsection*{Liferay}
+
+Liferay\cite{liferay}\footnote{The exact version I evaluated:
+liferay-portal-tomcat-6.0.6-20110225.} is an open-source content management
+system, focusing on the needs of enterprises. Regarding document management, it
+comes with a \emph{Document Library} feature, which is similar to the one
+Sharepoint and Alfresco provides.
+
+The Document Library publishes the contents via WebDAV, so basic file
+operations (open, save) are simple from an external application as well. It
+also supports versioning, document metadata. Advanced Sharepoint-like actions
+like commit message during checkin is not yet supported.
+
+It has pluggable workflow integration, the following engines are supported out of the box:
+
+\begin{itemize}
+\item jBPM3
+\item Kaleo
+\end{itemize}
+
+The later is configured by default, and it even has a few sample definitions
+after installation. Sadly it seems Liferay invented its own schema for process
+definitions\cite{liferay-kaleo}
