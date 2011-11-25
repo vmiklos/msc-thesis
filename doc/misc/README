@@ -1746,6 +1746,10 @@ Alfresco crashed again:
 
 (Yes, this is the JVM provided by Alfresco itself.)
 
+=== 2011-11-24
+
+Worked on the Conclusion and Future Work chapter.
+
 TODO:
 - more "logged-in"-like info messages when no error occurs
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
