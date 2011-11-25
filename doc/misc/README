@@ -1712,6 +1712,40 @@ Worked on the Evaluation chapter:
 - updated the document management section
 - wrote the workflow section
 
+=== 2011-11-22
+
+Worked on the Related Work chapter.
+
+=== 2011-11-22
+
+In ULX. Bugfixes:
+
+- fixed Hungarian accelerator of the main menu (so alt-D now opens it)
+- no need to fire up the save dialog when every input control is disabled
+
+Version to test: lpsp-0.1-807-g6bed690.oxt
+
+Alfresco crashed again:
+
+----
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (safepoint.cpp:237), pid=1263, tid=1684433776
+#  Error: guarantee(PageArmed == 0,"invariant")
+#
+# JRE version: 6.0_18-b07
+# Java VM: Java HotSpot(TM) Client VM (16.0-b13 mixed mode linux-x86 )
+# An error report file with more information is saved as:
+# /mnt/data/documents/bme/diploma1/alfresco/alfresco-3.4.d/hs_err_pid1263.log
+#
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+----
+
+(Yes, this is the JVM provided by Alfresco itself.)
+
 TODO:
 - more "logged-in"-like info messages when no error occurs
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
