@@ -3,8 +3,8 @@
 \section{Document management}
 
 We finished the design of the solution, and it was clear that creating a
-LibreOffice extension that has the required properties is certainly possible,
-We also implemented support for the most important use-cases.
+LibreOffice extension that provides the necessary features is certainly
+possible. We also implemented support for the most important use-cases.
 
 As already discussed above, the most important weakness of the solution is that
 it focuses only on the core functionality:
@@ -23,12 +23,6 @@ There are some implementation and design issues that need to be addressed,
 however, in the future:
 
 \begin{itemize}
-\item It was a design decision that we focused on document workspaces only,
-however, there are other areas to improve in LibreOffice for enterprise
-environments, for example to design better integration with workflow management
--- when one node of a workflow completes once a user edited a complex document.
-(Doing such an operation is usually not possible from a web browser if the
-document is complex enough.)
 \item An implementation improvement would be to review the inherited codebase
 and make sure that the user interface runs in a separate thread in all cases.
 Currently there are cases when the user interface is not repainted due to
@@ -41,3 +35,35 @@ communication instead of the native SharePoint one.
 \end{itemize}
 
 \section{Workflows}
+
+Once the design of the document management part was ready, we continued
+planning the workflow integration part. Our approach shows how a workflow
+engine and an existing document-management server can be successfully
+integrated to open-source office suites, addressing several use-cases
+originating from an enterprise environment.
+
+The following features are not designed in the current thesis, but they could
+be done in the future:
+
+\begin{itemize}
+\item The gwt-console-server already provides REST API to access the audit log,
+the gwt-console native UI could be improved to take advantage of that.
+\item The current extension can communicate with jBPM only, it could be
+extended to support various other pluggable workflow engines.
+\end{itemize}
+
+The following features are partly provided by our extension, but could be
+improved further:
+
+\begin{itemize}
+\item Extending business decision support, adding integration for other kind of
+decisions (see figures \ref{fig:decision-bpmn} and
+\ref{fig:bpmn-gateway-types}) would be helpful.
+\item A document can be attached to a single process instance only, this could
+be extended to allow multiple process instances accessing the same document in
+parallel -- but in that case proper locking should be designed first.
+\end{itemize}
+
+We hope that the release of our LibreOffice extension as an open-source
+component contributes in general to the acceptance of open-source software in
+enterprise environments.
