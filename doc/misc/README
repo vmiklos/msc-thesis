@@ -1754,6 +1754,25 @@ Alfresco crashed again:
 
 Worked on the Conclusion and Future Work chapter.
 
+=== 2011-11-25
+
+In ULX. Bugfixes:
+
+- LPSP -> close now confirms exit in case of modified doc
+- LPSP -> connnection -> configure: edit button needs more space
+- UI spelling fixes, e.g. Url to URL
+
+Version to test: lpsp-0.1-824-g6b2d715.oxt
+
 TODO:
+
+Ivan:
 - more "logged-in"-like info messages when no error occurs
+
+TT:
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
+
+Gabor:
+- megbeszelni: aktualis kapcsolat (2) tszodjon valahol
+- megjeleniteni az "allapot"-ot: helyi, kiolvasva, kivéve (lockolt)
+- ez utobbi 2-re toolbar, ha bonyolult, akkor status dialog -> 3 gomb: doku server, wf server, allapot => mindegyikre status window jon fel
