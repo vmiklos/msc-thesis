@@ -16,11 +16,21 @@
 \usepackage{float}
 \usepackage{makecell}
 \usepackage{threeparttable}
+\usepackage{color}
+\definecolor{lightgray}{rgb}{0.95,0.95,0.95}
 \usepackage{listings}
 \lstset{
-breaklines=true,
-basicstyle=\footnotesize
-} 
+        basicstyle=\scriptsize\ttfamily, % print whole listing small
+        keywordstyle=\color{black}\bfseries\underbar, % underlined bold black keywords
+        identifierstyle=,                                       % nothing happens
+        commentstyle=\color{white}, % white comments
+        stringstyle=\scriptsize\sffamily,                       % typewriter type for strings
+        showstringspaces=false,     % no special string spaces
+        aboveskip=3pt,
+        belowskip=3pt,
+        columns=fixed,
+        backgroundcolor=\color{lightgray},
+}
 
 % avoid widow / orphan lines
 \widowpenalty=10000
