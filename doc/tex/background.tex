@@ -89,52 +89,20 @@ and server side).
 CMIS has two main goals:
 
 \begin{itemize}
-\item Providing a list of web service (SOAP) interfaces, it is language-independent.
+\item Providing a list of web service (SOAP) interfaces, which are language-independent.
 \item It allows separating the service and content, making it possible to
 implement services for legacy document repositories without modifying them.
 \end{itemize}
 
-To achieve this, it defines a domain model, describing the following data model
-elements (see \autoref{fig:cmis}):
-
-\begin{itemize}
-\item repository: A container for objects.
-\item object: Common ancestor for document, folder, relationship and policy objects.
-\item object-type: A set of properties, all instances of a type have those.
-\item document object: The document entities managed by the repository.
-\item folder object: Container for file objects.
-\item relationship object: Representing links between objects.
-\item policy object: Policies enforced by a repository.
-\item access control: Consists of pre-defined permissions and allows defining new ones.
-\item versioning: Versions document objects (other object types are not allowed).
-\item query: Type-based query to list objects matching a specified criteria.
-\item change log: Changes to objects since a given timestamp.
-\end{itemize}
-
-Then -- using this data model -- it specifies services to operate on them:
-
-\begin{itemize}
-\item common service elements: Includes paging, exception handling.
-\item repository services
-\item navigation services
-\item object services: Includes factory functions for different object types.
-\item multi-filing services: Makes it possible to add/remove objects to folders.
-\item discovering services: To search query-able objects within a repository.
-\item versioning services: Includes check in, check out, cancel checkout, get
-	versions.
-\item relationship services: Provides the relationships of an object.
-\item policy services: Apply and remove policies, list applied ones.
-\item ACL services: Get and apply an ACL.
-\end{itemize}
-
-Finally it explains concrete syntaxes: the Restful AtomPub Binding and the Web
-Services (SOAP) binding.
+To achieve this, it defines a domain model, describing data model elements,
+services to operate on this data model and concrete syntaxes: the Restful
+AtomPub Binding and the Web Services (SOAP) binding (see \autoref{fig:cmis}).
 
 \subsection{Concrete implementations}
 
 In this subsection, we give a short comparision of Microsoft SharePoint 2007 and
-Alfresco Community Edition 3.4, which claims to be "The Open Source Alternative
-for Enterprise Content Management".
+Alfresco Community Edition 3.4, which claims to be ``The Open Source Alternative
+for Enterprise Content Management''. \cite{alfwiki}
 
 A difference is that Alfresco does not allow deletion where possible. Of course
 it is possible to delete documents, but it isn't possible to delete document
