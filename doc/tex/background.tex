@@ -6,7 +6,7 @@
 
 A document management system is a typical client-server model: a document
 management server stores the documents in a document repository, which can be
-accessed via various interfaces.  The other part of the system is a client,
+accessed via various interfaces.  The other part of the system is accessed via a client,
 which has built-in support for opening, saving and editing documents.
 
 \begin{figure}[H]
@@ -26,8 +26,16 @@ sharing documents of a user to others.
 \item The client, connecting to one or more document server.
 \end{itemize}
 
-Every user can have access to document \textbf{workspaces}.\footnote{Users and workspaces are in an N:N relation: a user can have access to multiple workspaces and multiple users can use the same workspace.} Workspaces can have documents,
-links and tasks. A workspace can be shared with different permissions
+Every user can have access to document \textbf{workspaces}.  Workspaces can
+have documents, links and tasks:
+
+\begin{itemize}
+\item documents: text files, spreadsheets, presentations, drawings
+\item links: collection of bookmarks
+\item tasks: work items related to the internal workflow engine
+\end{itemize}
+
+A workspace can be shared with different permissions
 (read-only, read-write), and that is typically done by sending an invitation
 email which can be accepted by the other user.
 
@@ -47,11 +55,10 @@ selection of the used protocol is selected differently on client and server
 side. Servers can listen on different addresses, and in this case the address
 identifies not only the server, but the used protocol as well.
 
-For example Alfresco, has its native protocol, but also (more or less) provides
+For example, Alfresco, has its native protocol, but also (more or less) provides
 support for the SharePoint protocol. As a result, it can be configured to
 listen on one URL as an Alfresco server, and on an other URL as a SharePoint
-server. Additionally, it even supports CIFS, FTP and NFS for some
-operations. \cite{alfresco-fsc}
+server.
 
 Clients can have different extensions or plug-ins to handle different
 protocols. For example Microsoft Office can accept SharePoint URL-s in the
