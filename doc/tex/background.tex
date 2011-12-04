@@ -51,7 +51,7 @@ For example Alfresco, has its native protocol, but also (more or less) provides
 support for the SharePoint protocol. As a result, it can be configured to
 listen on one URL as an Alfresco server, and on an other URL as a SharePoint
 server. Additionally, it even supports CIFS, FTP and NFS for some
-operations.\cite{alfresco-fsc}
+operations. \cite{alfresco-fsc}
 
 Clients can have different extensions or plug-ins to handle different
 protocols. For example Microsoft Office can accept SharePoint URL-s in the
@@ -75,7 +75,7 @@ is uncomfortable for system administrators.
 \end{figure}
 
 The specification called Content Management Interoperability
-Services\cite{cmis} is created to address compatibility issues between various
+Services \cite{cmis} is created to address compatibility issues between various
 document management server implementations. OASIS approved it on May 1, 2010.
 Also, at the time of writing implementation is far from complete among major
 document management servers. Alfresco 3.3+ implements the client side only,
@@ -83,7 +83,7 @@ SharePoint 2007 does not support it yet, so at the moment it is a vision that
 all major document servers will implement this specification.
 
 On the other hand, there are a lot of implementations in other products, such
-as IBM Lotus Connections 3.0\cite{lotus} (server side only) or TYPO3 (client
+as IBM Lotus Connections 3.0 \cite{lotus} (server side only) or TYPO3 (client
 and server side).
 
 CMIS has two main goals:
@@ -145,7 +145,7 @@ On the other hand, SharePoint uses its leading position to avoid publishing
 proper documentation on how communication protocol it uses works. This protocol
 existed before the CMIS standard was published, and it is not a standard. For
 example the \emph{put document} method has a \emph{document} parameter -- the
-documentation\cite{spdoc} does not mention the \emph{timestamp of last
+documentation \cite{spdoc} does not mention the \emph{timestamp of last
 modification}, part of the meta information structure, which is in fact
 mandatory (and there is no problem with that being mandatory, since it uses an
 optimistic concurrency approach). There is no similar problem with Alfresco,
@@ -167,7 +167,7 @@ table~\ref{tab:background-comparison}.
     \hline
     \textbf{Feature} & \textbf{SharePoint} & \textbf{Alfresco} \\ \hline
     License & proprietary & open-source \\ \hline
-    Maturity & 8 years\cite{sphist} & 6 years \\ \hline
+    Maturity & 8 years \cite{sphist} & 6 years \\ \hline
     Creating a document workspace & supported & supported \\ \hline
     Deleting a document workspace & supported & not supported\tnote{1}\\ \hline
     Checking out a document & supported & supported \\ \hline
@@ -242,7 +242,7 @@ problem, so either of them is an ultimate tool, making the other one useless.
 
 \subsection{UNO compontents}
 
-My solution will be a LibreOffice extension that registers an UNO\cite{uno}
+My solution will be a LibreOffice extension that registers an UNO \cite{uno}
 component. UNO is the interface based component model of LibreOffice. The main
 feature it provides is that interfaces are defined in a language-idependent
 IDL-like syntax, and they can be implemented in multiple languages:
@@ -322,7 +322,7 @@ There are two approaches\footnote{A third, but not ineffective method is to
 execute the interpreter of the programming language each time a request is
 served, referred as Common Gateway Interface (CGI).} to match this requirement.
 One approach is to use a generic web server, for example the Apache HTTP
-Server\cite{apache-httpd}. Given that almost all programming languages has a C
+Server \cite{apache-httpd}. Given that almost all programming languages has a C
 API to interact with managed code, plugins for the web server can be
 implemented in C to execute managed code when a HTTP requests arrives,
 addressing the application in question.
@@ -349,7 +349,7 @@ also available.
 Java application servers have the benefit of implementing common interfaces:
 that way changing application servers is supposed to be an easy operation.
 
-These common interfaces live under the \emph{javax.servlet} namespace\cite{javax-servlet}.
+These common interfaces live under the \emph{javax.servlet} namespace \cite{javax-servlet}.
 Some of the included concepts:
 
 \begin{itemize}
@@ -388,7 +388,7 @@ usable on any operating system Java runs on.
 
 At the time of writing, the latest stable version of JBoss is AS7, which
 introduces a rewritten code, focusing on parallel execution, radically speeding
-up start-up time\cite{jboss-fast}.
+up start-up time \cite{jboss-fast}.
 
 However, AS 7 is quite new, it was released on July 12, 2011 -- what we used as
 a workflow engine is AS 5.1, as that was the best supported by other components
@@ -492,7 +492,7 @@ increased performance.
 
 \subsubsection*{jBPM}
 
-jBPM\cite{jbpm} is an open-source business process manager, implemented in
+jBPM \cite{jbpm} is an open-source business process manager, implemented in
 Java. One property that makes it different from other workflow engines is that
 it tries to give better support for developers as well. Usually workflow
 engines target non-technical people, making the life of users already used to
@@ -538,7 +538,7 @@ Business process modelling is a process of three steps:
 \item transition between nodes: once transitions are declared, we can have an executable process definition
 \end{itemize}
 
-The Business Process Model and Notation (BPMN) standard\cite{bpmn} supports all
+The Business Process Model and Notation (BPMN) standard \cite{bpmn} supports all
 these steps, figure~\ref{fig:bpmn-sample} shows such a completely defined
 process definition, using the Eclipse tool of jBPM.
 
@@ -721,7 +721,7 @@ Components are shown on figure~\ref{fig:bpm-console}:
 \end{itemize}
 
 The integration layer discovers the available implementation using the standard
-J2EE service loader mechanism\cite{service-loader}. The console-related
+J2EE service loader mechanism \cite{service-loader}. The console-related
 articats are described in table~\ref{tab:bpm-components}.
 
 \begin{table}[H]

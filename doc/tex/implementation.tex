@@ -22,7 +22,7 @@ machines:
 \item The other running Microsoft Office 2007.
 \end{itemize}
 
-Finally we used Wireshark\cite{wireshark} to monitor the network traffic
+Finally we used Wireshark \cite{wireshark} to monitor the network traffic
 between the two virtual machines to reverse engineer the details of the
 protocol missing from the reference documentation.
 
@@ -51,9 +51,9 @@ clear, we could begin writing the LibreOffice extension.
 
 It was obvious that doing HTTP communication with NTLM authentication is an
 already solved problem, but we needed to decide which library to use. Given that
-OPAL already used Apache \emph{commons-httpclient}\cite{httpclient} 3.x for
+OPAL already used Apache \emph{commons-httpclient} \cite{httpclient} 3.x for
 HTTP communication, that was an option. Unfortunately that version does not support NTLM, so we used
-Apache \emph{httpcomponents}\cite{httpcomponents}, which is the successor of
+Apache \emph{httpcomponents} \cite{httpcomponents}, which is the successor of
 the previous library (starting with version 4.x). The two version series have
 different APIs, so it was possible to temporarily use both in parallel, and migrating code
 incrementally.
@@ -81,7 +81,7 @@ For example, part of the response is:
 </html>\end{lstlisting}
 
 That means a simple XML parser was not enough to extract the needed values from
-this response. To solve this issue, we used TagSoup\cite{tagsoup}, which is a
+this response. To solve this issue, we used TagSoup \cite{tagsoup}, which is a
 SAX parser, accepting plain old HTML input.
 
 \subsection{User interface}
@@ -165,7 +165,7 @@ dedicated \emph{UrlEncodedFormEntity} class for this purpose:
 \item Fields in the form should be collected to a \emph{NameValuePair} list;
 \item Once the list is ready, the entity generator class can produce the
 necessary payload for the HTTP request, using the
-\texttt{application/x-www-form-urlencoded} MIME type\cite{form-encoding}.
+\texttt{application/x-www-form-urlencoded} MIME type \cite{form-encoding}.
 \end{itemize}
 
 There are two problems here:
@@ -195,15 +195,15 @@ signals an error in case any of these logins failed.
 
 Most responses received from the jBPM server are JavaScript Object Notation
 (JSON) strings. The interested reader can look into the
-specification\cite{json}, all we need to know about it here is that it can
+specification \cite{json}, all we need to know about it here is that it can
 represent a set of Java objects, allowing references between them.
 
 Once entity classes are available (as described in the \emph{Design} chapter),
-the Gson library\cite{gson} can be used to parse those strings to entity class
+the Gson library \cite{gson} can be used to parse those strings to entity class
 instances.
 
 The benefits of using Gson over other implementations (like
-\emph{org.json}\cite{org-json}):
+\emph{org.json} \cite{org-json}):
 
 \begin{itemize}
 \item it requires no pollution of the entity classes regarding JSON (i.e. no \emph{toJson()} methods are necessary)
@@ -236,7 +236,7 @@ In LibreOffice, access to files is usually handled by a sequence of property
 values (key-value pairs), where usually the \emph{URL} property is used to
 access the physical file. However in some cases there is no real URL, but the
 contents of the object is provided as a \emph{Stream} property.  An example is
-the framework module\cite{lo-framework-module}, where even a define (with a
+the framework module \cite{lo-framework-module}, where even a define (with a
 value of \emph{private:stream}) is provided to be used as a fake URL for such
 streams.  A similar constant is available to access factories with a
 \emph{private:factory} URL. Using that URL e.g. in Writer, a new empty document

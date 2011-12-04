@@ -21,13 +21,13 @@ We already introduced OPAL, which is open-source, but:
 However, its user interface and concepts are quite similar to our solution.
 
 \subsection*{LibreOffice CMIS}
-LibreOffice CMIS\cite{locmis} is a LibreOffice extension: a Java based
+LibreOffice CMIS \cite{locmis} is a LibreOffice extension: a Java based
 implementation of a Universal Content Provider for making any content in a CMIS
 repository usable from LibreOffice. The main problem with it is that SharePoint
 2007 does not implement CMIS, so this does not solve our problem at the moment.
 
 \subsection*{SharePoint Connector}
-The Oracle Connector for SharePoint Server\cite{oracle-sp-connector} is a
+The Oracle Connector for SharePoint Server \cite{oracle-sp-connector} is a
 commercial OpenOffice.org extension, providing SharePoint support in
 OpenOffice.org. It has multiple problems:
 
@@ -40,7 +40,7 @@ required a server-side component as well.
 \end{itemize}
 
 \subsection*{libcmis}
-libcmis\cite{libcmis} is a general purpose CMIS library, written in C++.
+libcmis \cite{libcmis} is a general purpose CMIS library, written in C++.
 LibreOffice has a built-in Universal Content Provider built into its core,
 internally using libcmis.
 
@@ -55,7 +55,7 @@ The first problem is expected to be resolved in the long term, the second is
 not a priority for this project.
 
 \subsection*{SharePoint Connector}
-The Oracle Connector for SharePoint Server\cite{oracle-sp-connector} is a
+The Oracle Connector for SharePoint Server \cite{oracle-sp-connector} is a
 commercial OpenOffice.org extension, providing SharePoint support in
 OpenOffice.org. It has multiple problems:
 
@@ -69,7 +69,7 @@ required a server-side component as well.
 
 \subsection*{Drupal SharePoint module}
 
-An additional SharePoint module\cite{drupal-sp} for the Drupal content management system is also available. It solves a different problem, though:
+An additional SharePoint module \cite{drupal-sp} for the Drupal content management system is also available. It solves a different problem, though:
 
 \begin{itemize}
 \item It can only read from a SharePoint server.
@@ -112,7 +112,7 @@ Document-based workflows\footnote{Also known as document-centric or
 document-driven workflows.} is an active research topic today. Multiple
 interesting ideas are raised in recent papers.
 
-\emph{A framework for document-driven workflow systems}\cite{paper-framework}:
+\emph{A framework for document-driven workflow systems} \cite{paper-framework}:
 \begin{itemize}
 \item details why information and resource based workflows are also important, not just control based ones
 \item use case: user changes the document, change listeners intercepts changes, check constraints, then accept or reject them
@@ -121,20 +121,20 @@ interesting ideas are raised in recent papers.
 \item detailed comparison of control flow based versus document based approach
 \end{itemize}
 
-\emph{Mobility in the virtual office: a document-centric workflow approach}\cite{paper-mobility}:
+\emph{Mobility in the virtual office: a document-centric workflow approach} \cite{paper-mobility}:
 \begin{itemize}
 \item introduces decentralized document-driven workflows
 \item changes to workflows travel with the documents
 \item decentralization is handled with a peer-to-peer architecture
 \end{itemize}
 
-\emph{XDoC-WFMS -- A Framework for Document Centric Workflow Management System}\cite{paper-xdoc}
+\emph{XDoC-WFMS -- A Framework for Document Centric Workflow Management System} \cite{paper-xdoc}
 \begin{itemize}
 \item presents use cases of intiutive workflow and document management integration: newspaper editing, processing job applications
 \item proposed solution: documents have an embedded micro-agent, so the document itself will know where to go after a task is completed
 \end{itemize}
 
-\emph{Access control in document-centric workflow systems -- an agent-based approach}\cite{paper-access}
+\emph{Access control in document-centric workflow systems -- an agent-based approach} \cite{paper-access}
 \begin{itemize}
 \item this approach is without decoupling as well
 \item the workflow object is proposed to communicate with the document object
@@ -142,7 +142,7 @@ interesting ideas are raised in recent papers.
 
 \subsection*{SharePoint Designer}
 
-The SharePoint Designer\cite{sp-designer} 2007 tool support designing process definitions, to
+The SharePoint Designer \cite{sp-designer} 2007 tool support designing process definitions, to
 be executed within the SharePoint document management server itself. It focuses on two features:
 
 \begin{itemize}
@@ -160,7 +160,7 @@ Its problems for our purposes:
 
 \subsection*{Liferay}
 
-Liferay\cite{liferay}\footnote{The exact version I evaluated:
+Liferay \cite{liferay}\footnote{The exact version I evaluated:
 liferay-portal-tomcat-6.0.6-20110225.} is an open-source content management
 system, focusing on the needs of enterprises. Regarding document management, it
 comes with a \emph{Document Library} feature, which is similar to the one
@@ -180,7 +180,7 @@ It has pluggable workflow integration, the following engines are supported out o
 
 The later is configured by default, and it even has a few sample definitions
 after installation. Sadly it seems Liferay invented its own schema for process
-definitions when using Kaleo\cite{liferay-kaleo}, which resulted in not being
+definitions when using Kaleo \cite{liferay-kaleo}, which resulted in not being
 able to operate with standard BPMN or similar formats.
 
 Its office integration is solely due to the WebDAV interface, with its known
