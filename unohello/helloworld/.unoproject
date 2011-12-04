@@ -1,5 +1,3 @@
-#UNO project configuration file
-#Mon Mar 21 17:43:14 CET 2011
 project.srcdir=/source
 regclassname=org.openoffice.helloworld.comp.RegistrationHandler
 javaversion=java4
