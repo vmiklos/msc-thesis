@@ -1781,6 +1781,10 @@ Remaining items:
 - handle mouse clicks on buttons
 - remove toolbar on doc close [done]
 
+=== 2011-11-30
+
+In ULX. Continued work on toolbar.
+
 TODO:
 
 Ivan:
@@ -1790,6 +1794,7 @@ TT:
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
 
 Gabor:
-- megbeszelni: aktualis kapcsolat (2) tszodjon valahol
-- megjeleniteni az "allapot"-ot: helyi, kiolvasva, kiveve (lockolt)
-- ez utobbi 2-re toolbar, ha bonyolult, akkor status dialog -> 3 gomb: doku server, wf server, allapot => mindegyikre status window jon fel
+- toolbar modositasok:
+  - dokutar url nem kell, csak az, hogy kapcsolodva -> kulon status tooltip/window irhatja ezt az infot
+  - checkout gomb: lehessen lockot toggle-ozni
+  - mentes utan popup, h sikeres-es es mi az uj verzio
