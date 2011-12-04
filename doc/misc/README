@@ -1764,6 +1764,23 @@ In ULX. Bugfixes:
 
 Version to test: lpsp-0.1-824-g6b2d715.oxt
 
+=== 2011-11-29
+
+Worked on a new toolbar, showing the extensions status. The core of the toolbar
+is now implemented. The two features that caused so much pain:
+
+- toolbars in general are specific to an application, while here we want
+  document-specific toolbars
+- the toolbar contents is supposed to be defined in a declarative way in an XML
+  file build-time, while we want runtime configuration
+
+Remaining items:
+
+- add all necessary buttons [done]
+- real content on buttons [done]
+- handle mouse clicks on buttons
+- remove toolbar on doc close [done]
+
 TODO:
 
 Ivan:
