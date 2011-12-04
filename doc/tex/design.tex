@@ -356,7 +356,7 @@ We need three new features -- the ability to get information about:
 In case of historic process instances, the following steps are needed:
 
 \begin{itemize}
-\item a new \emph{getHistoricProcessInstances} method should be introduced in the \emph{ProcessManagement} interface implementation, calling
+\item a new \emph{getHistoricProcessInstances} method is introduced in the \emph{ProcessManagement} interface implementation, calling
 \item a new \emph{getInactiveProcessInstanceLogsByProcessId} method, to be introduced in the \emph{CommandDelegate} class of the integration implementation package, calling
 \item a new \emph{findInactiveProcessInstances} method, to be introduced in the \emph{ProcessInstanceDbLog} class in the audit package of jBPM
 \end{itemize}
@@ -387,7 +387,7 @@ in the \emph{Transform} class of the integration implementation package.
 \end{figure}
 
 Finally, getting information about task instances of a process instance is a
-bit more complex. The following changes should be introduced:
+bit more complex. The following changes are introduced:
 
 \begin{itemize}
 \item A new \emph{getProcessInstanceTasks} method in the \emph{TaskManagement}
