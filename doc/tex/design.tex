@@ -162,8 +162,8 @@ The BASIC macros invoke the following UNO services:
 
 At this point, we know the user interface entry points in our Java
 implementation. As mentioned above, Java bytecode for the UNO services are
-automatically generated (by \emph{javamaker}). Now one may ask: how does the
-stub know where is the real implementation? This is handled by the
+automatically generated (by \emph{javamaker}). The next task is to let the stub
+know where is its implementation. This is handled by the
 \emph{RegistrationHandler} class. The list of implementation classes
 implementing a UNO service is in the \emph{RegistrationHandler.classes} file.
 Each implementation class specifies what service does it implement, then the
