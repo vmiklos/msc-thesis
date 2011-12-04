@@ -60,86 +60,16 @@ Definitions:
 \item checkout, checkin, uncheckout: acquiring and releasing a lock on the document
 \end{itemize}
 
-The following operations are supported by the SharePoint library:
+The following workspace management operations are supported by the SharePoint
+library:
 
 \begin{enumerate}
 \item login: simply tries to access \texttt{/\_vti\_inf.html} on the server with the provided credentials
-
-\item checkin: SOAP request to \texttt{/\_vti\_bin/lists.asmx} in the workspace root
-\begin{itemize}
-\item method name: \texttt{CheckInFile}
-\item parameters: \texttt{pageUrl} (URL of the document to check in), \texttt{comment} (the "commit message") and \texttt{CheckinType} (0 = \texttt{MinorCheckIn}, 1 = \texttt{MajorCheckIn}, and 2 = \texttt{OverwriteCheckIn})
-\item returns: \texttt{CheckInFileResult}, containing a boolean value
-\end{itemize}
-
-\item checkout: SOAP request to \texttt{/\_vti\_bin/lists.asmx} in the workspace root
-\begin{itemize}
-\item method name: \texttt{CheckOutFile}
-\item parameters: \texttt{pageUrl} (URL of the document to check out), \texttt{lastmodified} (last modification date of the document, in case the document is already opened but not checked out)
-\item returns: \texttt{CheckOutFileResult}, containing a boolean value
-\end{itemize}
-
-\item checkout: SOAP request to \texttt{/\_vti\_bin/lists.asmx} in the workspace root
-\begin{itemize}
-\item method name: \texttt{UndoCheckOut}
-\item parameters: \texttt{pageUrl} (URL of the document to uncheckout)
-\item returns: \texttt{UndoCheckOutResponse}, containing a boolean value
-\end{itemize}
-
-\item save: RPC request to \texttt{/\_vti\_bin/\_vti\_aut/author.dll} in the workspace root
-\begin{itemize}
-\item method name: \texttt{put document} (yes, RPC method names can contain spaces)
-\item parameters: \texttt{service\_name} (name of the workspace), \texttt{document} (structure containing the document name and last modification date), \texttt{comment} (this option should be provided, but its value is ignored)
-\item payload: everything after a double newline character is considered as the document data
-\item returns: an RPC response packet, containing a "successfully put document" string with a \texttt{msg=} or \texttt{message=} prefix
-\end{itemize}
-
-\item restore version: SOAP request to \texttt{/\_vti\_bin/versions.asmx} in the workspace root
-\begin{itemize}
-\item method name: \texttt{RestoreVersion}
-\item parameters: \texttt{fileName} (URL of the document to restore), \texttt{fileVersion} (old version number)
-\item returns: a list of \texttt{soap:Fault} elements -- if it is empty, it means success
-\end{itemize}
-
-\item delete version: SOAP request to \texttt{/\_vti\_bin/versions.asmx} in the workspace root
-\begin{itemize}
-\item method name: \texttt{DeleteVersion}
-\item parameters: \texttt{fileName} (URL of the document), \texttt{fileVersion} (version number)
-\item returns: a list of \texttt{soap:Fault} elements -- if it is empty, it means success
-\end{itemize}
-
-\item list versions: SOAP request to \texttt{/\_vti\_bin/versions.asmx} in the workspace root
-\begin{itemize}
-\item method name: \texttt{GetVersions}
-\item parameters: \texttt{fileName} (URL of the document)
-\item returns: a list of \texttt{result} elements -- each contains "version", "created", "createdBy", "size", "comments" and "url" fields
-\end{itemize}
-
-\item delete workspace: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the workspace root
-\begin{itemize}
-\item method name: \texttt{DeleteDws}
-\item parameters: none
-\item returns: the HTTP status code (200 means success) can be used to check if the operation was successful
-\end{itemize}
 
 \item create workspace: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the site root
 \begin{itemize}
 \item method name: \texttt{CreateDws}
 \item parameters: \texttt{title} (name of the workspace)
-\item returns: the HTTP status code (200 means success) can be used to check if the operation was successful
-\end{itemize}
-
-\item create folder: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the site root
-\begin{itemize}
-\item method name: \texttt{CreateFolder}
-\item parameters: \texttt{url} (url of the folder)
-\item returns: the HTTP status code (200 means success) can be used to check if the operation was successful
-\end{itemize}
-
-\item delete folder: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the site root
-\begin{itemize}
-\item method name: \texttt{DeleteDws}
-\item parameters: \texttt{url} (url of the folder)
 \item returns: the HTTP status code (200 means success) can be used to check if the operation was successful
 \end{itemize}
 
@@ -150,12 +80,50 @@ The following operations are supported by the SharePoint library:
 \item returns: HTML page, a single enumeration provides the URL of the workspaces
 \end{itemize}
 
-\item list workspace contents: HTTP GET to \texttt{/\_vti\_bin/owssvr.dll} in the workspace root
+\item delete workspace: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the workspace root
+\begin{itemize}
+\item method name: \texttt{DeleteDws}
+\item parameters: none
+\item returns: the HTTP status code (200 means success) can be used to check if the operation was successful
+\end{itemize}
+\end{enumerate}
+
+Folder management:
+
+\begin{enumerate}
+\item create folder: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the site root
+\begin{itemize}
+\item method name: \texttt{CreateFolder}
+\item parameters: \texttt{url} (url of the folder)
+\item returns: the HTTP status code (200 means success) can be used to check if the operation was successful
+\end{itemize}
+
+\item list folders: HTTP GET to \texttt{/\_vti\_bin/owssvr.dll} in the workspace root
 \begin{itemize}
 \item parameters: \texttt{location} (URL of the folder), \texttt{FileDialogFilterValue} (filter to apply to result on server side, for example \texttt{*.*})
 \item returns: HTML page, containing a table where every row is a folder or a
 document and each column contains properties of the item. The property names
 can be configured runtime on the server.
+\end{itemize}
+
+\item delete folder: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the site root
+\begin{itemize}
+\item method name: \texttt{DeleteDws}
+\item parameters: \texttt{url} (url of the folder)
+\item returns: the HTTP status code (200 means success) can be used to check if the operation was successful
+\end{itemize}
+\end{enumerate}
+
+Document management:
+
+\begin{enumerate}
+\item open: no dedicated method, HTTP GET should be used with the URL's returned by \emph{list folders}
+\item save: RPC request to \texttt{/\_vti\_bin/\_vti\_aut/author.dll} in the workspace root
+\begin{itemize}
+\item method name: \texttt{put document} (yes, RPC method names can contain spaces)
+\item parameters: \texttt{service\_name} (name of the workspace), \texttt{document} (structure containing the document name and last modification date), \texttt{comment} (this option should be provided, but its value is ignored)
+\item payload: everything after a double newline character is considered as the document data
+\item returns: an RPC response packet, containing a "successfully put document" string with a \texttt{msg=} or \texttt{message=} prefix
 \end{itemize}
 
 \item remove documents: RPC request to \texttt{/\_vti\_bin/\_vti\_aut/author.dll} in the workspace root
@@ -170,6 +138,57 @@ can be configured runtime on the server.
 \item method name: \texttt{getDocsMetaInfo}
 \item parameters: \texttt{url\_list} (list of URL's to query)
 \item returns: several HTML enumerations, one for each URL
+\end{itemize}
+\end{enumerate}
+
+Lock management:
+
+\begin{enumerate}
+\item checkout: SOAP request to \texttt{/\_vti\_bin/lists.asmx} in the workspace root
+\begin{itemize}
+\item method name: \texttt{CheckOutFile}
+\item parameters: \texttt{pageUrl} (URL of the document to check out), \texttt{lastmodified} (last modification date of the document, in case the document is already opened but not checked out)
+\item returns: \texttt{CheckOutFileResult}, containing a boolean value
+\end{itemize}
+
+\item checkin: SOAP request to \texttt{/\_vti\_bin/lists.asmx} in the workspace root
+\begin{itemize}
+\item method name: \texttt{CheckInFile}
+\item parameters: \texttt{pageUrl} (URL of the document to check in), \texttt{comment} (the "commit message") and \texttt{CheckinType} (0 = \texttt{MinorCheckIn}, 1 = \texttt{MajorCheckIn}, and 2 = \texttt{OverwriteCheckIn})
+\item returns: \texttt{CheckInFileResult}, containing a boolean value
+\end{itemize}
+
+\item undo checkout: SOAP request to \texttt{/\_vti\_bin/lists.asmx} in the workspace root
+\begin{itemize}
+\item method name: \texttt{UndoCheckOut}
+\item parameters: \texttt{pageUrl} (URL of the document to uncheckout)
+\item returns: \texttt{UndoCheckOutResponse}, containing a boolean value
+\end{itemize}
+\end{enumerate}
+
+Version management:
+
+\begin{enumerate}
+\item create version: no dedicated method, a \emph{save} or \emph{checkin} can create a new version
+\item list versions: SOAP request to \texttt{/\_vti\_bin/versions.asmx} in the workspace root
+\begin{itemize}
+\item method name: \texttt{GetVersions}
+\item parameters: \texttt{fileName} (URL of the document)
+\item returns: a list of \texttt{result} elements -- each contains "version", "created", "createdBy", "size", "comments" and "url" fields
+\end{itemize}
+
+\item restore version: SOAP request to \texttt{/\_vti\_bin/versions.asmx} in the workspace root
+\begin{itemize}
+\item method name: \texttt{RestoreVersion}
+\item parameters: \texttt{fileName} (URL of the document to restore), \texttt{fileVersion} (old version number)
+\item returns: a list of \texttt{soap:Fault} elements -- if it is empty, it means success
+\end{itemize}
+
+\item delete version: SOAP request to \texttt{/\_vti\_bin/versions.asmx} in the workspace root
+\begin{itemize}
+\item method name: \texttt{DeleteVersion}
+\item parameters: \texttt{fileName} (URL of the document), \texttt{fileVersion} (version number)
+\item returns: a list of \texttt{soap:Fault} elements -- if it is empty, it means success
 \end{itemize}
 
 \end{enumerate}
