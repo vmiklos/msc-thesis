@@ -1774,5 +1774,5 @@ TT:
 
 Gabor:
 - megbeszelni: aktualis kapcsolat (2) tszodjon valahol
-- megjeleniteni az "allapot"-ot: helyi, kiolvasva, kivéve (lockolt)
+- megjeleniteni az "allapot"-ot: helyi, kiolvasva, kiveve (lockolt)
 - ez utobbi 2-re toolbar, ha bonyolult, akkor status dialog -> 3 gomb: doku server, wf server, allapot => mindegyikre status window jon fel
