@@ -112,7 +112,7 @@ The user interface dialogs are reachable from the \emph{Document repository}
 menu item, which is registered by the \emph{Addons.xcu} configuration file,
 which is a standard configuration file of LibreOffice extensions.
 
-\subsubsection*{Menu items}
+\notocsubsubsection{Menu items}
 
 The following \textbf{menu items} (see \autoref{fig:design-technologies}) are designed:
 
@@ -129,7 +129,7 @@ if the user is already connected.
 The menu items call BASIC macros, which invoke UNO services. Those services are
 finally implemented in the Java user interface.
 
-\subsubsection*{Macros}
+\notocsubsubsection{Macros}
 
 The macros are split into two packages: the ones directly called by the menu
 items, and the other utility macros.
@@ -168,7 +168,7 @@ The BASIC macros invoke the following UNO services:
 \item Versions: calls \emph{SharepointVersions::execute()}
 \end{itemize}
 
-\subsubsection*{Java implementation}
+\notocsubsubsection{Java implementation}
 
 At this point, we know the user interface entry points in our Java
 implementation. As mentioned above, Java bytecode for the UNO services are
@@ -200,7 +200,7 @@ interfaces, they are always implemented in separate classes. Given that there
 are common tasks for all of our user interface dialogs, there is a common
 ancestor for all of them, called \emph{AbstractDialog}.
 
-\subsubsection*{Dialog classes}
+\notocsubsubsection{Dialog classes}
 
 The following \textbf{dialog classes} (see \autoref{fig:design-technologies}) are included in the \emph{ui} package:
 
@@ -250,7 +250,7 @@ parts:
 \item parser classes
 \end{itemize}
 
-\subsubsection*{Controller classes}
+\notocsubsubsection{Controller classes}
 
 Given that jBPM provides a REST API to control the workflow engine, the client
 library can be quite simple. Its business logic is implemented in a single
@@ -266,7 +266,7 @@ class, called \emph{WFHandler}. It should provide the following features:
 Note that jBPM itself is stateless, but the client library mimics a stateful
 connection to avoid asking for connection parameters before all operations.
 
-\subsubsection*{Parser classes}
+\notocsubsubsection{Parser classes}
 
 Whenever a REST method call returns from jBPM, the result can one of the following formats:
 
@@ -302,7 +302,7 @@ As a result, the \emph{FormParser} class can simply parse submit tag name-value
 pairs from the form to detect multiple choices, and the list of values is sent
 to the user interface.
 
-\subsubsection*{Entity classes}
+\notocsubsubsection{Entity classes}
 
 Whenever a JSON data structure is returned by a REST method call, the client
 library provides the results as an entity class. A convention we follow here is that every type has two entity classes:
@@ -346,7 +346,7 @@ Given that jBPM and the BPM console are separate project, first we need an
 implementation in jBPM, then the new methods can be added to the integration
 layer interface in the BPM console.
 
-\subsubsection*{Extending jBPM}
+\notocsubsubsection{Extending jBPM}
 
 We need three new features -- the ability to get information about:
 
@@ -407,7 +407,7 @@ bit more complex. The following changes are introduced:
 
 The interaction between these classes can be seen on \autoref{fig:jbpm-modified-classes}.
 
-\subsubsection*{Extending the BPM console server}
+\notocsubsubsection{Extending the BPM console server}
 
 Once the implementation of the integration layer in jBPM is in place, we can
 export these features in the REST API, using the following paths:
@@ -458,7 +458,7 @@ Workflow support affects the user interface in the following areas:
 
 The rest of this chapter details these modifications.
 
-\subsubsection*{Menu items}
+\notocsubsubsection{Menu items}
 
 The following new menu items are introduced for workflow integration:
 
@@ -467,7 +467,7 @@ The following new menu items are introduced for workflow integration:
 \item \emph{Workflow audit log}: shows a window with information about historic process instances.
 \end{itemize}
 
-\subsubsection*{BASIC macros}
+\notocsubsubsection{BASIC macros}
 
 These menu items call the following BASIC macros in the \emph{LPSP.menu} script library:
 
@@ -476,7 +476,7 @@ These menu items call the following BASIC macros in the \emph{LPSP.menu} script 
 \item \emph{workflowProcesses()} is called when the process instance list is shown.
 \end{itemize}
 
-\subsubsection*{UNO interfaces and services}
+\notocsubsubsection{UNO interfaces and services}
 
 To allow the macros to invoke Java methods, first we need a UNO specification.
 Two new interfaces are introduced:
@@ -501,7 +501,7 @@ With this, the basic macros can call the following UNO services:
 \item Workflow audit log: calls \emph{JbpmWorkflowProcesses::execute()}.
 \end{itemize}
 
-\subsubsection*{Java implementation classes}
+\notocsubsubsection{Java implementation classes}
 
 The UNO services invoke the following methods in the Java implementation:
 
@@ -510,7 +510,7 @@ The UNO services invoke the following methods in the Java implementation:
 \item Workflow audit log: \emph{JbpmWorkflowProcessesImpl.execute()}
 \end{itemize}
 
-\subsubsection*{Dialog classes}
+\notocsubsubsection{Dialog classes}
 
 \autoref{fig:design-wfui} shows the new dialog classes used by the workflow
 UNO service implementations.

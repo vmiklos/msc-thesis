@@ -393,7 +393,7 @@ mandatory when using references between the classes:
 
 \subsection{User interface}
 
-\subsubsection*{Private streams}
+\notocsubsubsection{Private streams}
 
 The first challenge was to map the concepts of a user and the associated
 personal / group tasks to the file / folder metaphor, already known by users.
@@ -442,7 +442,7 @@ server during save (see \autoref{fig:implementation-decision}):
 \item what is the answer for the business decision, if available
 \end{itemize}
 
-\subsubsection*{Audit log}
+\notocsubsubsection{Audit log}
 
 The second new menu item introduced by the workflow integration is the audit
 log. First a dialog asks the process type to audit (similar to the process
@@ -486,7 +486,7 @@ There are multiple levels where error handling should be implemented
 \item Handling errors from existing services.
 \end{itemize}
 
-\subsubsection*{Accessing without a connection}
+\notocsubsubsection{Accessing without a connection}
 
 Detecting this status is implemented in the BASIC macros:
 
@@ -499,7 +499,7 @@ Detecting this status is implemented in the BASIC macros:
 In case the user cancels the connection dialog, the action is cancelled, this
 way the Java implementation can assume there is always a connection available.
 
-\subsubsection*{Accessing without workflow support}
+\notocsubsubsection{Accessing without workflow support}
 
 The user always has the possibility to leave the workflow URL of a server
 configuration empty. In this case the extension does not try to connect,
@@ -514,7 +514,7 @@ Later during workflow-related operations the control flow always starts with the
 
 In case the second step fails, the user gets an error message explaining the issue.
 
-\subsubsection*{Checking workflow services}
+\notocsubsubsection{Checking workflow services}
 
 The jBPM support listing available services, however that is more about serving as
 a user guide to show what can be done, rather than a page to be machine-parsed.
@@ -529,7 +529,7 @@ by the server, which -- of course -- cannot be handled by the JSON parser.
 Using this technique we can inform the user about exactly what required service
 is missing on the server.
 
-\subsubsection*{Errors in existing services}
+\notocsubsubsection{Errors in existing services}
 
 A rather generic approach would be to check the HTTP code to detect errors, but it has two problems:
 

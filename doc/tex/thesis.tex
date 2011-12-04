@@ -37,6 +37,11 @@
 \clubpenalty=10000
 \raggedbottom
 
+\newcommand{\notocsubsubsection}[1]{
+	\refstepcounter{subsubsection}
+	\subsubsection*{#1}
+}
+
 \begin{document}
 \singlespacing
 \include{preliminaries}

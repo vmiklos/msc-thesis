@@ -267,7 +267,7 @@ The term application server is used to describe the software framework on which
 the business logic of an application runs. The application server typically
 interacts with SQL database servers, file server or web servers.
 
-\subsubsection*{Web application servers}
+\notocsubsubsection{Web application servers}
 
 A common usage of application servers is a web application server, where the
 framework handles common web-related tasks, so that application developers can
@@ -311,7 +311,7 @@ Microsoft provides this functionality in their Windows Server product and their
 \item Ruby: the Ruby on Rails framework includes the WEBrick HTTP server.
 \end{itemize}
 
-\subsubsection*{Java application servers}
+\notocsubsubsection{Java application servers}
 
 Java application servers have the benefit of implementing common interfaces:
 that way changing application servers is supposed to be an easy operation.
@@ -345,7 +345,7 @@ JavaServer Pages specifications.
 server from IBM.
 \end{itemize}
 
-\subsubsection*{JBoss}
+\notocsubsubsection{JBoss}
 
 JBoss Application server (in short, JBoss AS) is an open-source application server
 based on Java EE, originally developed by JBoss, Inc -- now a division of Red
@@ -377,7 +377,7 @@ JBoss itself is open-source, though commercial support is available from Red Hat
 \subsection{Business Process Model and Notation}
 \label{sec:bpmn}
 
-\subsubsection*{What is business process modelling?}
+\notocsubsubsection{What is business process modelling?}
 
 Business process modelling is a process of three steps:
 
@@ -402,7 +402,7 @@ The rest of this subsection gives a brief introduction to BPMN concepts used in
 the later chapters of this thesis. Due to size limitations, we didn't consider
 describing all types of each concept here.
 
-\subsubsection*{BPMN basic concepts}
+\notocsubsubsection{BPMN basic concepts}
 
 The most important elements in a process definition are nodes, and transitions
 between these nodes. \autoref{fig:bpmn-diagram-elements} shows that BPMN
@@ -515,7 +515,7 @@ seen on \autoref{fig:bpmn-connector-types}:
 \label{fig:bpmn-connector-types}
 \end{figure}
 
-\subsubsection*{BPMN support in jBPM}
+\notocsubsubsection{BPMN support in jBPM}
 
 3.x series of jBPM and earlier supported the jPDL format declare process definitions.
 4.x series of jBPM introduced support for BPMN, while jBPM 5.x supports BPMN exclusively.
@@ -523,7 +523,7 @@ Tools are available to somewhat automate the conversion from jPDL to BPMN.
 
 \subsection{Workflow engines}
 
-\subsubsection*{What is a workflow engine}
+\notocsubsubsection{What is a workflow engine}
 
 As already mentioned in the \emph{Introduction} chapter, a workflow engine
 manages process definitions and instances. The primary functionality the engine
@@ -568,7 +568,7 @@ executable language where the business process interacts with web services.
 by JBoss, focusing on readability.
 \end{itemize}
 
-\subsubsection*{Operation modes}
+\notocsubsubsection{Operation modes}
 
 A workflow engine can have two different operation modes. The first follows a
 client-server model. \autoref{fig:workflow-server} shows this situation,
@@ -600,7 +600,7 @@ In this case the application and the workflow server can run in the same
 process, the workflow engine is used as a simple library, which produces
 increased performance.
 
-\subsubsection*{jBPM}
+\notocsubsubsection{jBPM}
 
 Implemented in Java, jBPM \cite{jbpm} is an open-source business process
 manager. One property that makes it different from other workflow engines is
@@ -657,7 +657,7 @@ The BPM Console is a frontend to jBPM, allowing the usage of the workflow
 engine in a client-server model. Here we introduce concepts which will be later
 necessary to understand how we extended this project to meet our needs.
 
-\subsubsection*{Technical overview}
+\notocsubsubsection{Technical overview}
 
 \begin{figure}[H]
 \centering
@@ -702,7 +702,7 @@ artifacts are described in \autoref{tab:bpm-components}.
   \label{tab:bpm-components}
 \end{table}
 
-\subsubsection*{Workspace framework}
+\notocsubsubsection{Workspace framework}
 
 The workspace of the BPM console is a concept completely independent from the
 document server workspace. The workspace here is the user interface of the web
@@ -740,7 +740,7 @@ interfaces as for the integration layer, however, in case these are not
 available, then the related functionality is simply hidden from the web
 interface, it does not cause a fatal error.
 
-\subsubsection*{Management capabilities}
+\notocsubsubsection{Management capabilities}
 
 Management capabilities are determined by the installed editor plugins. The
 project suggests that they try to keep a balance between:
