@@ -103,7 +103,7 @@ dependency between the document management server and the workflow engine,
 which introduces the problem of vendor lock-in once again.
 
 On the other hand, in case a decoupled document server / workflow engine
-architecture is wished, the necessary integration logic has to be implemented
+architecture is found to be necessary, the integration logic has to be implemented
 in the client. Given that there is already a planned document management client
 in the office suite running on the client, it's a natural extension to
 introduce workflow integration in the office client to manage document-based
@@ -121,7 +121,7 @@ that document can be done from the office suite, which already has a reference
 to the document. Think about starting a chosen process definition to start a
 new instance, associated with the current document.
 \item The workflow server talks about tasks and group of tasks, and each task
-is connected to a certain document. This is a concept different to the model of
+is connected to a certain document. This is a conceptional difference to the model of
 folders and files, which is already familiar to a user.
 \item A common pattern is to assign a task to a group of users, and then
 require exactly one member of the group to perform the task.
@@ -129,8 +129,8 @@ require exactly one member of the group to perform the task.
 touching the workflow engine -- and also the other way around -- may be a
 requirement when planning a document-based workflow system.
 \item It can be necessary to limit the write access to the associated document
-when working on it to a certain part of the document. This helps the user
-performing the task focusing on the task itself, even if the document is a
+when working on it to a certain part of the file. This helps the user
+performing the task focusing on the work item itself, even if the document is a
 large one.
 \item It is uncomfortable if storing the document on the server and making a
 decision as part of the current workflow task is not a single atomic operation.
@@ -140,11 +140,10 @@ makes viewing them much easier.
 \item It is important to realise that while finishing the work on a document
 and marking a given workflow task is usually done together, sometimes only the
 previous is wished. Support for such incremental snapshots is vital.
-\item Finally, even if rolling back the workflow state is not
-trivial\footnote{Given that the workflow interacts with external services,
-rolling back the workflow itself is not enough, external components should be
-notified using compensation actions.}, support
-for releasing claimed group tasks is required.
+\item Finally, even if rolling back the workflow state is not trivial (given
+that the workflow interacts with external services, rolling back the workflow
+itself is not enough, external components should be notified using compensation
+actions), support for releasing claimed group tasks is required.
 \end{itemize}
 
 Based on that, we can build a list of functionality that can serve as a
@@ -158,10 +157,10 @@ user following the well-known file-metaphor.
 allow a modular architecture, having independent layers.
 \item Support for both personal and indirectly assigned group tasks is required.
 \item Even if group task is claimed by a user, the system should support
-releasing the task back to the group, in the user realises he/she is not able to
+releasing the task back to the group, if the user realises he/she is not able to
 perform it in time.
-\item Starting a process instance which automatically picks up the current
-document should be possible.
+\item It should be possible to associate a new process instance to the current
+document.
 \item If the current task involve making decisions, the list of possible
 choices should be retrieved from the workflow engine.
 \item Accessing the audit log from the office client is required.
