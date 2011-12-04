@@ -8,7 +8,7 @@ we discuss the case here when an enterprise company tries to replace the client
 part of the document management system with an open-source alternative, while
 keeping the existing proprietary server-side part of the system. As a
 consequence, the center of our approach is the client -- the document management
-part of the client, to be more exact (figure~\ref{fig:overview-architecture}).
+part of the client, to be more exact (\autoref{fig:overview-architecture}).
 
 \begin{figure}[H]
 \centering
@@ -54,7 +54,7 @@ installations.
 
 Now that we understood what component we want to create and from where, it's
 essential to understand what workflow the document management clients take part
-in (figure~\ref{fig:overview-workflow}).
+in (\autoref{fig:overview-workflow}).
 
 \begin{figure}[H]
 \centering
@@ -90,7 +90,7 @@ version with this step.
 
 Once the document-management client part of the system is in place, we propose
 a decoupled approach to connect the document management system and the workflow
-engine (figure~\ref{fig:decoupled-approach}). We already saw what are the
+engine (\autoref{fig:decoupled-approach}). We already saw what are the
 benefits of a system where each module can be replaced without altering the
 whole system, the motivation is the same here.
 
@@ -119,7 +119,7 @@ from the workflow server, and that will be the basis of all future work.
 \end{itemize}
 
 The possible states of the later operation mode is demonstrated on
-figure~\ref{fig:decoupled-approach-workflow}.
+\autoref{fig:decoupled-approach-workflow}.
 
 \begin{figure}[H]
 \centering
@@ -165,7 +165,7 @@ folder.
 \end{figure}
 
 Now in case the workflow has two human tasks and statically assigned users (see
-figure~\ref{fig:step-bpmn}), the extension will offer completing the task when saving the
+\autoref{fig:step-bpmn}), the extension will offer completing the task when saving the
 document. \emph{Incremental snapshots} is a feature that allows the user to
 choose if the task completion is wished or not, so the document can be
 incrementally saved to the document server as the task is being completed, and
@@ -206,7 +206,7 @@ document, based on the current task instance associated to the document.
 \label{fig:decision-bpmn}
 \end{figure}
 
-Figure~\ref{fig:decision-bpmn} shows a process definition containing a business
+\autoref{fig:decision-bpmn} shows a process definition containing a business
 decision. The problem is that in this case the \emph{First User Task} can't be
 completed without arguments: a decision has to be made to determine which
 transition to fire after task completion.

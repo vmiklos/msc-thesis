@@ -9,7 +9,7 @@ and the user interface, which is an UNO component. The previous lives under the
 \emph{hu.ulx.lpsp.sharepoint} namespace, the other does so under
 \emph{hu.ulx.lpsp.comp}.
 
-The UML package diagram on figure~\ref{fig:design-packages} diagram shows these
+The UML package diagram on \autoref{fig:design-packages} diagram shows these
 packages with their dependencies.
 
 \begin{figure}[H]
@@ -59,7 +59,7 @@ Where it made sense, we reused code from there, and changed it to work with
 Sharepoint.
 
 It's an UNO convention that interfaces start with a capital X. The following
-interfaces are provided by the extension (see figure~\ref{fig:design-technologies}):
+interfaces are provided by the extension (see \autoref{fig:design-technologies}):
 
 \begin{itemize}
 \item \emph{XSharepointFilePicker}: an open/save as file picker.
@@ -79,7 +79,7 @@ the list of LibreOffice applications it handles. (It's current value is:
 Writer, Calc, Impress and Draw.)
 
 UNO services are interfaces containing static methods only.  The following
-services are provided by the extension (see figure~\ref{fig:design-technologies}):
+services are provided by the extension (see \autoref{fig:design-technologies}):
 
 \begin{itemize}
 \item \emph{Connection}: implementation for XConnection.
@@ -109,7 +109,7 @@ The user interface dialogs are reachable from the \emph{Document repository}
 menu item, which is registered by the \emph{Addons.xcu} configuration file,
 which is a standard configuration file of LibreOffice extensions.
 
-The following menu items are designed (see figure~\ref{fig:design-technologies}):
+The following menu items are designed (see \autoref{fig:design-technologies}):
 
 \begin{itemize}
 \item Connection: force connecting to an other document management server, even
@@ -127,7 +127,7 @@ finally implemented in the Java user interface.
 The macros are split into two packages: the ones directly called by the menu
 items, and the other utility macros.
 
-The menu items call the following macros (\emph{LPSP.menu} package) (see figure~\ref{fig:design-technologies}):
+The menu items call the following macros (\emph{LPSP.menu} package) (see \autoref{fig:design-technologies}):
 
 \begin{itemize}
 \item openFile: shows the File Open dialog.
@@ -173,7 +173,7 @@ asked. Finally, the \emph{RegistrationClassName:} header in the
 handler class name.
 
 As a result, the following entry points are designed in the Java
-implementation (see figure~\ref{fig:design-technologies}):
+implementation (see \autoref{fig:design-technologies}):
 
 \begin{itemize}
 \item Connection: \emph{AuthenticationManagerImpl.execute()}
@@ -190,7 +190,7 @@ interfaces, they are always implemented in separate classes. Given that there
 are common tasks for all of our user interface dialogs, there is a common
 ancestor for all of them, called \emph{AbstractDialog}.
 
-The following dialog classes are included in the \emph{ui} package (see figure~\ref{fig:design-technologies}):
+The following dialog classes are included in the \emph{ui} package (see \autoref{fig:design-technologies}):
 
 \begin{itemize}
 \item Connection: \emph{ConnectionDialog} (connect dialog), \\
@@ -202,7 +202,7 @@ individual target)
 \item Versions: \emph{VersionsDialog}
 \end{itemize}
 
-For an UML class diagram showing these classes, see figure~\ref{fig:design-spui}.
+For an UML class diagram showing these classes, see \autoref{fig:design-spui}.
 
 \begin{figure}[p]
 \centering
@@ -228,7 +228,7 @@ and the workflow user interface. The jBPM client is designed under the
 \label{fig:design-packages-wf}
 \end{figure}
 
-Figure~\ref{fig:design-packages-wf} shows the updated UML package diagram of our
+\autoref{fig:design-packages-wf} shows the updated UML package diagram of our
 solution. The recently introduced \emph{hu.ulx.lpsp.workflow} package can be divided to three
 parts:
 
@@ -400,7 +400,7 @@ bit more complex. The following changes should be introduced:
 \item the \emph{TaskClientHandler} class, handling the \emph{QueryTasksByProcessInstanceIdResponse} token, calling back the original \emph{BlockingGetTasksResponseHandler} implementation.
 \end{itemize}
 
-The interaction between these classes can be seen on figure~\ref{fig:jbpm-modified-classes}.
+The interaction between these classes can be seen on \autoref{fig:jbpm-modified-classes}.
 
 \subsubsection*{Extending the BPM console server}
 
@@ -507,7 +507,7 @@ The UNO services invoke the following methods in the Java implementation:
 
 \subsubsection*{Dialog classes}
 
-Figure~\ref{fig:design-wfui} shows the new dialog classes used by the workflow
+\autoref{fig:design-wfui} shows the new dialog classes used by the workflow
 UNO service implementations.
 
 \begin{figure}[p]
