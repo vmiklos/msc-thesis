@@ -1,10 +1,23 @@
 \chapter{Conclusion and Future Work}
 
+The designed solution shows a way to integrate open-source office productivity
+software in an enterprise environment. We described how today's document
+management servers and workflow management systems work, designed and
+implemented office integration to document management systems, implemented
+office integration of workflow support, finally we evaluated the solution on
+multiple platforms.
+
 \section{Document management}
 
 We finished the design of the solution, and it was clear that creating a
 LibreOffice extension that provides the necessary features is certainly
-possible. We also implemented support for the most important use-cases.
+possible. We also implemented support for the most important use-cases:
+
+\begin{itemize}
+\item workspace and document management based on the folder/file metaphor
+\item version control of documents
+\item collaboration during document editing: lock management
+\end{itemize}
 
 As already discussed above, the most important weakness of the solution is that
 it focuses only on the core functionality:
@@ -40,7 +53,15 @@ Once the design of the document management part was ready, we continued
 planning the workflow integration part. Our approach shows how a workflow
 engine and an existing document-management server can be successfully
 integrated to open-source office suites, addressing several use-cases
-originating from an enterprise environment.
+originating from an enterprise environment:
+
+\begin{itemize}
+\item personal and group task management
+\item decoupling of the document server and the workflow engine
+\item document masking
+\item support of business decisions
+\item audit log integration
+\end{itemize}
 
 The following features are not designed in the current thesis, but they could
 be done in the future:
