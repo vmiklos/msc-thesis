@@ -59,7 +59,8 @@ Where it made sense, we reused code from there, and changed it to work with
 Sharepoint.
 
 It's an UNO convention that interfaces start with a capital X. The following
-interfaces are provided by the extension (see \autoref{fig:design-technologies}):
+\textbf{UNO interfaces} (see \autoref{fig:design-technologies}) are provided by the
+extension:
 
 \begin{itemize}
 \item \emph{XSharepointFilePicker}: an open/save as file picker.
@@ -79,7 +80,8 @@ the list of LibreOffice applications it handles. (It's current value is:
 Writer, Calc, Impress and Draw.)
 
 UNO services are interfaces containing static methods only.  The following
-services are provided by the extension (see \autoref{fig:design-technologies}):
+\textbf{UNO services} (see \autoref{fig:design-technologies}) are provided by the
+extension:
 
 \begin{itemize}
 \item \emph{Connection}: implementation for XConnection.
@@ -109,7 +111,9 @@ The user interface dialogs are reachable from the \emph{Document repository}
 menu item, which is registered by the \emph{Addons.xcu} configuration file,
 which is a standard configuration file of LibreOffice extensions.
 
-The following menu items are designed (see \autoref{fig:design-technologies}):
+\subsubsection*{Menu items}
+
+The following \textbf{menu items} (see \autoref{fig:design-technologies}) are designed:
 
 \begin{itemize}
 \item Connection: force connecting to an other document management server, even
@@ -124,10 +128,13 @@ if the user is already connected.
 The menu items call BASIC macros, which invoke UNO services. Those services are
 finally implemented in the Java user interface.
 
+\subsubsection*{Macros}
+
 The macros are split into two packages: the ones directly called by the menu
 items, and the other utility macros.
 
-The menu items call the following macros (\emph{LPSP.menu} package) (see \autoref{fig:design-technologies}):
+The menu items call the following \textbf{macros} (see
+\autoref{fig:design-technologies}) in the \emph{LPSP.menu} package:
 
 \begin{itemize}
 \item openFile: shows the File Open dialog.
@@ -160,6 +167,8 @@ The BASIC macros invoke the following UNO services:
 \item Versions: calls \emph{SharepointVersions::execute()}
 \end{itemize}
 
+\subsubsection*{Java implementation}
+
 At this point, we know the user interface entry points in our Java
 implementation. As mentioned above, Java bytecode for the UNO services are
 automatically generated (by \emph{javamaker}). The next task is to let the stub
@@ -172,8 +181,8 @@ asked. Finally, the \emph{RegistrationClassName:} header in the
 \emph{META-INF/MANIFEST.MF} file of the Jar package defines the registration
 handler class name.
 
-As a result, the following entry points are designed in the Java
-implementation (see \autoref{fig:design-technologies}):
+As a result, the following entry points are designed in the \textbf{Java
+implementation} (see \autoref{fig:design-technologies}):
 
 \begin{itemize}
 \item Connection: \emph{AuthenticationManagerImpl.execute()}
@@ -190,7 +199,9 @@ interfaces, they are always implemented in separate classes. Given that there
 are common tasks for all of our user interface dialogs, there is a common
 ancestor for all of them, called \emph{AbstractDialog}.
 
-The following dialog classes are included in the \emph{ui} package (see \autoref{fig:design-technologies}):
+\subsubsection*{Dialog classes}
+
+The following \textbf{dialog classes} (see \autoref{fig:design-technologies}) are included in the \emph{ui} package:
 
 \begin{itemize}
 \item Connection: \emph{ConnectionDialog} (connect dialog), \\
