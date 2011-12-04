@@ -3,6 +3,7 @@ diploma2:
 - add missing license headers
 - bug: document url is not accessible after completing the first human task?
 
-diploma1:
+Regularly:
 
-- save fails when server url is given without explicit port ':80'?
+- externalize strings
+- e.printStackTrace(); -> log.severe(ExceptionUtils.getFullStackTrace(e));
