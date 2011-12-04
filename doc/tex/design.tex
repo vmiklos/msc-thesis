@@ -4,7 +4,7 @@
 
 \subsection{The SharePoint library}
 
-The Java implementation is split to two parts, the generic SharePoint library
+The Java implementation is split into two parts, the generic SharePoint library
 and the user interface, which is an UNO component. The previous lives under the
 \emph{hu.ulx.lpsp.sharepoint} namespace, the other does so under
 \emph{hu.ulx.lpsp.comp}.
@@ -41,7 +41,7 @@ RPC \cite{vermeer} response packet.
 \item \emph{Version}: Handles document versions.
 \end{itemize}
 
-We paid attention in our solution to not require additional server-side component
+We paid attention in our solution not to require additional server-side component
 installation, the SharePoint library can communicate with a standard SharePoint
 server, without any server modifications.
 
@@ -227,7 +227,7 @@ For an UML class diagram showing these classes, see \autoref{fig:design-spui}.
 \subsection{The workflow library}
 
 Similar to the document management support part, the Java implementation of
-workflow support is split to two parts as well: a generic jBPM client library
+workflow support is split into two parts as well: a generic jBPM client library
 and the workflow user interface. The jBPM client is designed under the
 \emph{hu.ulx.lpsp.workflow} namespace, the second is under the
 \emph{hu.ulx.lpsp.comp} one.
