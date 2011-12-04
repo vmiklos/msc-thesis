@@ -1778,12 +1778,23 @@ Remaining items:
 
 - add all necessary buttons [done]
 - real content on buttons [done]
-- handle mouse clicks on buttons
+- handle mouse clicks on buttons [done]
 - remove toolbar on doc close [done]
 
 === 2011-11-30
 
-In ULX. Continued work on toolbar.
+In ULX. Finished toolbar idea from Friday. This involved adding support for
+releasing a lock in the sharepoint lib as well.
+
+Meeting with Akos, lots of feedback on the paper. I have address those till
+2011-12-02 17:00.
+
+Debugged an odd issue: toolbar freezes after saving a checked out document.
+Workaround: hit ctrl-s and that will un-freeze the toolbar. No solution yet.
+
+Reference on basic dialog box integer codes:
+
+http://wiki.services.openoffice.org/wiki/Documentation/BASIC_Guide/Message_and_Input_Boxes_%28Runtime_Library%29
 
 TODO:
 
@@ -1795,6 +1806,5 @@ TT:
 
 Gabor:
 - toolbar modositasok:
-  - dokutar url nem kell, csak az, hogy kapcsolodva -> kulon status tooltip/window irhatja ezt az infot
-  - checkout gomb: lehessen lockot toggle-ozni
+  - dokutar url nem kell, csak az, hogy kapcsolodva -> kulon status window irhatja az aktualis server(ek) adatait
   - mentes utan popup, h sikeres-es es mi az uj verzio
