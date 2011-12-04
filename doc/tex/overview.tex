@@ -54,18 +54,11 @@ installations.
 
 Now that we understood what component we want to create and from where, it's
 essential to understand what workflow the document management clients take part
-in (\autoref{fig:overview-workflow}).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=300px,keepaspectratio]{overview-workflow.pdf}
-\caption{Workflow of the approach}
-\label{fig:overview-workflow}
-\end{figure}
+in.
 
 The workflow has the following steps:
 
-\begin{itemize}
+\begin{enumerate}
 \item Create workspace: It creates a document workspace, which is the top-level
 container for any document stored on the document management server.
 \item Browse workspace: An existing workspace can be browsed, and a documents
@@ -82,7 +75,24 @@ read-only anytime.
 \item Restore version: it's possible to revert all changes after a given
 version with this step.
 \item Delete version: older versions can be deleted.
-\end{itemize}
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=300px,keepaspectratio]{overview-workflow.pdf}
+\caption{Workflow of the approach. Yellow: operations on workspaces, green: operation on documents.}
+\label{fig:overview-workflow}
+\end{figure}
+
+\autoref{fig:overview-workflow} shown what combination of steps are allowed. An example:
+
+\begin{enumerate}
+\item A workspace is created.
+\item The workspace is browsed.
+\item A document is put to the workspace.
+\item The workspace is browsed again.
+\item The workspace gets deleted.
+\end{enumerate}
 
 \section{Workflows}
 
