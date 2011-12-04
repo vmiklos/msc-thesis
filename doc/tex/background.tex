@@ -243,10 +243,10 @@ problem, so either of them is an ultimate tool, making the other one useless.
 \subsection{UNO compontents}
 
 My solution will be a LibreOffice extension that registers an UNO \cite{uno}
-component. UNO is the interface based component model of LibreOffice. The main
-feature it provides is that interfaces are defined in a language-idependent
-IDL-like syntax, and they can be implemented in multiple languages: C++,
-Python, Java or BASIC.
+component. UNO is the interface based component model of LibreOffice. The
+purpose of UNO is to abstract service definitions (defined in a
+language-idependent IDL-like syntax) from service implementations -- they can
+be developed in multiple languages: C++, Python, Java or BASIC.
 
 The caller is not aware which language the implementation uses, and it does not
 need to, either. In our extension, we call BASIC macros from the menu elements,
