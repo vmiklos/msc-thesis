@@ -1805,6 +1805,17 @@ chapters after it are ready.
 
 Finished next iteration of the thesis.
 
+=== 2011-12-03
+
+Fixed a few bugs pointed out by Akos:
+
+- the correct spelling of the wf engine is 'jBPM', but don't start sentences with it, as it looks confusing
+- a design decision should be at the end of the design chapter
+- "store data in sql" -> "store data in relational database, accessed using sql"
+- "below" -> \ref
+- size of one more figure reduced to match the font size of the surrounding text
+- in intro, split requirement list: patching wf server is needed / not needed
+
 TODO:
 
 Ivan:
