@@ -210,12 +210,12 @@ The benefits of using Gson over other implementations (like
 \item when a default constructor is not available for an entity class, it supports the registration of instance creators for such types
 \end{itemize}
 
-It uses reflection to access fields, so the usual implementation can
-be used: the fields themselves are private and public getter/setter methods are
-provided. Also, the parser is quite liberal about entity classes, in case a
-field is part of the JSON string but the associated Java class does not have
-such a field, it is simply ignored. That helps our extension to be compatible
-with future jBPM server versions.
+It uses reflection to access fields, so the general object-oriented methodology
+where the fields themselves are private and public getter/setter methods are
+provided is possible to use. Also, the parser is quite liberal about entity
+classes, in case a field is part of the JSON string but the associated Java
+class does not have such a field, it is simply ignored. That helps our
+extension to be compatible with future jBPM server versions.
 
 A pitfall during the implementation was that the usage of generic types is
 mandatory when using references between the classes:
