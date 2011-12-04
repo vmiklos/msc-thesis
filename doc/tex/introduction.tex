@@ -1,15 +1,15 @@
 \chapter{Introduction}
 
+Integration of an office productivity suite to electronic document flows can be
+divided to two parts: document management integration can be done alone, then
+on top of that, adding workflow support to office client is possible.
+
 \section{Document management}
 
 Every major software development project uses some kind of version control
 system to track the source code of project. The introduction of such a system
-helps multiple developers to synchronize their work, helps debugging, when
-retrieving older versions is necessary and provides a way to document changes.
-
-In fact, even if a version control system is not used, developers tend to
-(poorly) invent a similar system implicitly: they copy files with a date string
-appended or manually copy files over to an other machine.
+helps multiple developers to synchronize their work, helps debugging (when
+retrieving older versions is necessary) and provides a way to document changes.
 
 There are two main approaches for version control: centralized and distributed.
 Centralized (Subversion \cite{subversion} is probably the most
@@ -17,14 +17,14 @@ popular centralized solution) systems have a central server, distributed
 systems operate in a distributed environment (Git \cite{git} is a good such
 example). A centralized system has a simpler architecture, but on the other
 hand provides less features. Distributed systems can operate in more extreme
-conditions, while it is harder to learn, because of the more complex
-architecture.
+conditions, while they are harder to learn, because of their steep learning
+curve.
 
 The need for tracking versions and collaborating documents is not specific to
 software developers. An other type of similar software is usually referred as
-document management system. It focuses on project management: it is meant to be
-used  not only by software developers, but users without technical knowledge.
-That means usually it does not manage software source code files, but documents
+document management system. It focuses on project management and meant to be
+used by a wider range of users without specific software engineering knowledge.
+That means usually they do not manage software source code files, but documents
 created by office suites such as Microsoft Office \cite{mso} or
 LibreOffice \cite{lo} (formerly OpenOffice.org \cite{ooo}).
 
