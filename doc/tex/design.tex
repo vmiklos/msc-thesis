@@ -390,13 +390,13 @@ Finally, getting information about task instances of a process instance is a
 bit more complex. The following changes should be introduced:
 
 \begin{itemize}
-\item a new \emph{getProcessInstanceTasks} method in the \emph{TaskManagement}
+\item A new \emph{getProcessInstanceTasks} method in the \emph{TaskManagement}
 	interface implementation. This will instantiate a new
 	\emph{BlockingGetTasksResponseHandler} class, implementing a new
-	\emph{GetTasksResponseHandler} interface. Then it will call
-\item a new \emph{getTasksByProcessInstanceId} method in the \emph{TaskClient} class. This will use two new constants (one is \emph{QueryTasksByProcessInstanceId}, the other is \emph{QueryTasksByProcessInstanceIdResponse}), provided by the \emph{CommandName} class. This new method will call
-\item the \emph{TaskServerHandler} class, which should be extended to handle the \emph{QueryTasksByProcessInstanceId} token, which will call
-\item a new \emph{getTasksByProcessInstanceId} method in the \emph{TaskServiceSession} class. This will invoke a new stored procedure, named \emph{TasksByProcessInstanceId}. Finally it will call
+	\emph{GetTasksResponseHandler} interface. Then it will call:
+\item A new \emph{getTasksByProcessInstanceId} method in the \emph{TaskClient} class. This will use two new constants (one is \emph{QueryTasksByProcessInstanceId}, the other is \emph{QueryTasksByProcessInstanceIdResponse}), provided by the \emph{CommandName} class. This new method will call:
+\item the \emph{TaskServerHandler} class, which should be extended to handle the \emph{QueryTasksByProcessInstanceId} token, which will call:
+\item A new \emph{getTasksByProcessInstanceId} method in the \emph{TaskServiceSession} class. This will invoke a new stored procedure, named \emph{TasksByProcessInstanceId}. Finally it will call:
 \item the \emph{TaskClientHandler} class, handling the \emph{QueryTasksByProcessInstanceIdResponse} token, calling back the original \emph{BlockingGetTasksResponseHandler} implementation.
 \end{itemize}
 
@@ -416,15 +416,15 @@ export these features in the REST API, using the following paths:
 When a query about a process instance is received, then:
 
 \begin{itemize}
-\item a new \emph{getCompletedInstances} method in the \emph{ProcessMgmtFacade} class is invoked, calling
-\item the new \emph{getHistoricProcessInstances} method in the \emph{ProcessManagement} interface of the integration layer.
+\item A new \emph{getCompletedInstances} method in the \emph{ProcessMgmtFacade} class is invoked, calling:
+\item The new \emph{getHistoricProcessInstances} method in the \emph{ProcessManagement} interface of the integration layer.
 \end{itemize}
 
 Similarly, if a query about a node instance is received, then:
 
 \begin{itemize}
-\item a new \emph{getCompletedNodes} method in the same \emph{ProcessMgmtFacade} class is invoked, calling
-\item the new \emph{getNodeInstances} method in the above \emph{ProcessManagement} interface.
+\item A new \emph{getCompletedNodes} method in the same \emph{ProcessMgmtFacade} class is invoked, calling:
+\item The new \emph{getNodeInstances} method in the above \emph{ProcessManagement} interface.
 \end{itemize}
 
 In this case serialization to JSON has to be handled by the new
@@ -435,8 +435,8 @@ client library, as only the JSON output is public, allowing loose coupling.
 Finally, once a query about a task is received, then:
 
 \begin{itemize}
-\item a new \emph{getTasksForProcessInstance} method in the \emph{TaskListFacade} class is invoked, calling
-\item the new \emph{getProcessInstanceTasks} method in the \emph{TaskManagement} interface of the integration layer.
+\item A new \emph{getTasksForProcessInstance} method in the \emph{TaskListFacade} class is invoked, calling:
+\item The new \emph{getProcessInstanceTasks} method in the \emph{TaskManagement} interface of the integration layer.
 \end{itemize}
 
 \subsection{User interface}
