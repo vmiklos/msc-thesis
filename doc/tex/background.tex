@@ -568,11 +568,11 @@ itself provides is the ability to execute these instances, storing the state of
 the process instance in a permanent database. Once the process is finished, it
 becomes a \emph{historic} process instance, which is still stored.
 
-A process definition consists of nodes, which can be executed:
+A process definition consists of nodes. There are two node classes:
 
 \begin{itemize}
-\item manually: human tasks are for this purpose
-\item automatically: script tasks, diverging or converging gateways are in this category
+\item human tasks are to be executed manually
+\item script tasks, diverging or converging gateways are executed automatically
 \end{itemize}
 
 Additionally, each node can have several properties, for example imperative code
