@@ -124,7 +124,7 @@ with Alfresco, due to the shortcomings of their SharePoint implementation), see
 
 The last challenge was the localization of error messages in BASIC. The
 language does not support any kind of localization. What it supports is the
-following technique:
+following technique (control flow shown on \autoref{fig:basic-l10n}):
 
 \begin{lstlisting}
 Sub openVersion
@@ -138,6 +138,13 @@ Sub openVersion
                 Exit Sub
 End Sub
 \end{lstlisting}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=200px,keepaspectratio]{basic-l10n.pdf}
+\caption{Control flow of localized error messages in BASIC, thrown by Java.}
+\label{fig:basic-l10n}
+\end{figure}
 
 The \emph{On Error} part can hide any kind of exception thrown by Java, and as
 long as the Java side calls \emph{setErrorReason()} on the
