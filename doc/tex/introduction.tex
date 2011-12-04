@@ -113,7 +113,7 @@ We looked at what tasks a user has to perform to keep a document management
 server and a workflow engine in sync, in case the integration is not available
 \footnote{Based on a set of requirements from a real-world project for a
 finance company.}.  In this use-case, the most painful operations where the
-integration would help are:
+integration would help and modification of the workflow server is not needed:
 
 \begin{itemize}
 \item If there is a document opened, it's useful if operations connected to
@@ -134,9 +134,6 @@ performing the task focusing on the work item itself, even if the document is a
 large one.
 \item It is uncomfortable if storing the document on the server and making a
 decision as part of the current workflow task is not a single atomic operation.
-\item In general, but especially when group tasks or decisions are involved, audit logs of
-process and node instances are important. Reaching them from the office client
-makes viewing them much easier.
 \item It is important to realise that while finishing the work on a document
 and marking a given workflow task is usually done together, sometimes only the
 previous is wished. Support for such incremental snapshots is vital.
@@ -145,6 +142,11 @@ that the workflow interacts with external services, rolling back the workflow
 itself is not enough, external components should be notified using compensation
 actions), support for releasing claimed group tasks is required.
 \end{itemize}
+
+There is one more operation where a modified workflow server is needed. In
+general, but especially when group tasks or decisions are involved, creating
+audit logs of process and node instances are important. Reaching them from the
+office client makes viewing them much easier.
 
 Based on that, we can build a list of functionality that can serve as a
 motivation -- to help interacting with document-based workflows, in no
