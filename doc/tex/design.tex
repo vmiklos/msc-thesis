@@ -266,15 +266,6 @@ class, called \emph{WFHandler}. It should provide the following features:
 Note that jBPM itself is stateless, but the client library mimics a stateful
 connection to avoid asking for connection parameters before all operations.
 
-A decision we made here is that we don't support all kind of process
-definitions, only the document-based ones. Our definition of being
-document-based is:
-
-\begin{itemize}
-\item the process definition has a string variable named \emph{url}
-\item the process definition has a task form, where this URL can be specified on process start
-\end{itemize}
-
 \subsubsection*{Parser classes}
 
 Whenever a REST method call returns from jBPM, the result can one of the following formats:
@@ -555,3 +546,13 @@ workflow-specific items:
 All modifications in the existing dialog classes should tolerate the lack of a
 workflow server, so document management integration can be used as a standalone
 feature as well.
+
+Finally, a decision we made is we don't support all kind of process
+definitions, only the document-based ones. Our definition of being
+document-based is:
+
+\begin{itemize}
+\item the process definition has a string variable named \emph{url}
+\item the process definition has a task form, where this URL can be specified on process start
+\end{itemize}
+
