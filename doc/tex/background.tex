@@ -412,6 +412,7 @@ next to other existing non-OSGi deployments
 JBoss itself is open-source, though commercial support is available from Red Hat.
 
 \subsection{Business Process Model and Notation}
+\label{sec:bpmn}
 
 \subsubsection*{What is business process modelling?}
 
@@ -599,8 +600,7 @@ There are two popular standards to describe a process definition:
 \begin{itemize}
 \item Business Process Execution Language (BPEL): is standard describing an
 executable language where the business process interacts with web services.
-\item Business Process Model and Notation (BPMN): we will discuss it in the
-next subsection in detail.
+\item Business Process Model and Notation (BPMN): we will discuss it in \autoref{sec:bpmn}.
 \item jBPM Process Definition Language (JPDL): a proprietary language developed
 by JBoss, focusing on readability.
 \end{itemize}
@@ -620,7 +620,7 @@ where the workflow engine is behind a server interface.
 
 For example, in case of jBPM there is a REST API available for clients to
 interact with the engine. The benefit is that the workflow server can run on a
-separate machine, also no need to start or stop it when clients start or stop.
+separate machine, also there is no need to start or stop it when clients start or stop.
 Additionally, multiple clients can connect to the workflow server at the same
 time.
 
