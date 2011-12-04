@@ -8,7 +8,7 @@ we discuss the case here when an enterprise company tries to replace the client
 part of the document management system with an open-source alternative, while
 keeping the existing proprietary server-side part of the system. As a
 consequence, the center of our approach is the client -- the document management
-part of the client, to be more exact (\autoref{fig:overview-architecture}).
+part of the client, to be more exact.
 
 \begin{figure}[H]
 \centering
@@ -17,18 +17,13 @@ part of the client, to be more exact (\autoref{fig:overview-architecture}).
 \label{fig:overview-architecture}
 \end{figure}
 
-Components of the above example can be replaced, for example the Alfresco (with
+Components of \autoref{fig:overview-architecture} can be replaced, for example the Alfresco (with
 its SharePoint module) can be used in place of SharePoint, and OpenOffice.org
-can be used in place of LibreOffice. The SharePoint server, the office
-productivity suite is already available.
+can be used in place of LibreOffice.
 
-By observing the network traffic between the SharePoint server and a native
-Microsoft Office, the protocol can also be known. As mentioned earlier, the
-documentation on its own is not enough, as it's not complete\footnote{And it's
-purely a reference, there are no guide or tutorial to get started.}.
-
-Finally at this stage the only remaining component is the SharePoint extension
-in LibreOffice what is missing, and our approach creates that.
+The SharePoint server, the office productivity suite is already available, so
+at this stage the only remaining component is the SharePoint extension in
+LibreOffice what is missing, and our approach creates that.
 
 Note that Alfresco already has an OpenOffice.org extension called
 OPAL \cite{opal}. That naturally uses Alfresco's native protocol to communicate
