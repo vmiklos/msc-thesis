@@ -276,9 +276,9 @@ Whenever a REST method call returns from jBPM, the result can one of the followi
 There are multiple problems with arbitrary HTML in our case:
 
 \begin{itemize}
-\item jBPM expects an embedded HTML engine in the client, which is not the case with out SWING-based Java user interface
+\item jBPM expects an embedded HTML engine in the client, which is not the case with our SWING-based Java user interface
 \item once the form is submitted, the server would instruct the user to close
-the window, which would be inconsistent with our consistent ``the window is
+the window, which would be inconsistent with our ``the window is
 closed when no more input should be provided'' approach
 \item in our case the form should be extended to ask for document-management details as well
 \end{itemize}
