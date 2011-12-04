@@ -517,8 +517,8 @@ seen on \autoref{fig:bpmn-connector-types}:
 
 \subsubsection*{BPMN support in jBPM}
 
-jBPM 3.x and earlier supported the jPDL format declare process definitions.
-jBPM 4.x introduced support for BPMN, while jBPM 5.x supports BPMN exclusively.
+3.x series of jBPM and earlier supported the jPDL format declare process definitions.
+4.x series of jBPM introduced support for BPMN, while jBPM 5.x supports BPMN exclusively.
 Tools are available to somewhat automate the conversion from jPDL to BPMN.
 
 \subsection{Workflow engines}
@@ -558,13 +558,13 @@ When executing actions for external events, the following steps are implemented:
 \item Executing the action itself: once the operation finished, act based on its exit code (initiate error handling if necessary).
 \end{itemize}
 
-There are two popular standards to describe a process definition:
+There are three popular standards to describe a process definition:
 
 \begin{itemize}
-\item Business Process Execution Language (BPEL): is standard describing an
+\item The Business Process Execution Language (BPEL): is standard describing an
 executable language where the business process interacts with web services.
-\item Business Process Model and Notation (BPMN): we will discuss it in \autoref{sec:bpmn}.
-\item jBPM Process Definition Language (JPDL): a proprietary language developed
+\item The Business Process Model and Notation (BPMN): will discuss it in \autoref{sec:bpmn}.
+\item The jBPM Process Definition Language (JPDL): a proprietary language developed
 by JBoss, focusing on readability.
 \end{itemize}
 
@@ -602,9 +602,9 @@ increased performance.
 
 \subsubsection*{jBPM}
 
-jBPM \cite{jbpm} is an open-source business process manager, implemented in
-Java. One property that makes it different from other workflow engines is that
-it tries to give better support for developers as well. Usually workflow
+Implemented in Java, jBPM \cite{jbpm} is an open-source business process
+manager. One property that makes it different from other workflow engines is
+that it tries to give better support for developers as well. Usually workflow
 engines target non-technical people, making the life of users already used to
 imperative programming hard.
 

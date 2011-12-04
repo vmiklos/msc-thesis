@@ -322,7 +322,7 @@ The implementation of workflow integration had multiple interesting challenges:
 
 \subsection{Authentication}
 
-jBPM uses form-based authentication. That means that in case the user is not
+The jBPM uses form-based authentication. That means that in case the user is not
 yet logged in, he/she is redirected to a login form, where the user name and
 password should be submitted. The \emph{httpcomponents} package provides a
 dedicated \emph{UrlEncodedFormEntity} class for this purpose:
@@ -516,7 +516,7 @@ In case the second step fails, the user gets an error message explaining the iss
 
 \subsubsection*{Checking workflow services}
 
-jBPM support listing available services, however that is more about serving as
+The jBPM support listing available services, however that is more about serving as
 a user guide to show what can be done, rather than a page to be machine-parsed.
 The already mentioned TagSoup parser could be used to extract the necessary
 information, but the page is not part of any stable API, so that approach could
