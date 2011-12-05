@@ -1,8 +1,3 @@
-diploma2:
-
-- add missing license headers
-- bug: document url is not accessible after completing the first human task?
-
 Regularly:
 
 - externalize strings
