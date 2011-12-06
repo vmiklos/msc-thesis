@@ -1818,6 +1818,13 @@ Fixed a few bugs pointed out by Akos:
 - size of one more figure reduced to match the font size of the surrounding text
 - in intro, split requirement list: patching wf server is needed / not needed
 
+== 14th week
+
+=== 2011-12-06
+
+Fixed the toolbar freeze bug by using UNO UI instead of
+JOptionPane.showMessageDialog().
+
 TODO:
 
 Ivan:
