@@ -1,4 +1,0 @@
-Regularly:
-
-- externalize strings
-- e.printStackTrace(); -> log.severe(ExceptionUtils.getFullStackTrace(e));
