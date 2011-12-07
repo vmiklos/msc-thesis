@@ -3,7 +3,7 @@
 The solution designed shows a way to integrate open-source office productivity
 software in an enterprise environment. We described how today's document
 management servers and workflow management systems work, designed and
-implemented office integration to document management systems, implemented
+developed office integration to document management systems, developed
 office integration of workflow support, finally we evaluated the solution on
 multiple platforms.
 
@@ -38,13 +38,13 @@ however, in the future:
 \begin{itemize}
 \item An implementation improvement would be to review the inherited codebase
 and make sure that the user interface runs in a separate thread in all cases.
-Currently there are cases when the user interface is not repainted due to
+Currently, there are cases when the user interface is not repainted due to
 waiting for an input from the user.
 \item Using LibreOffice's filepickers instead of reinventing our own would
 result in a more consistent user experience.
 \item Once CMIS will be widely implemented by proprietary document management
-servers, it would make sense to use the CMIS protocol for client-server
-communication instead of the native SharePoint one.
+servers, use the CMIS protocol instead of the native SharePoint for
+client-server communication.
 \end{itemize}
 
 \section{Workflows}
