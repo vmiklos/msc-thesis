@@ -3,7 +3,7 @@
 \section{Document management}
 
 In the current thesis, we propose a client-based approach for the integration
-of open-source productivity software to enterprise document management systems.
+of open-source productivity software into enterprise document management systems.
 We discuss the case here when an enterprise company tries to replace the client
 part of the document management system with an open-source alternative, while
 keeping the existing proprietary server-side part of the system. As a
@@ -17,37 +17,37 @@ part of the client.
 \label{fig:overview-architecture}
 \end{figure}
 
-Components of \autoref{fig:overview-architecture} can be replaced, for example the Alfresco (with
+Components of \autoref{fig:overview-architecture} can be replaced, for example, Alfresco (with
 its SharePoint module) can be used in place of SharePoint, and OpenOffice.org
 can be used in place of LibreOffice.
 
-The SharePoint server, the office productivity suite is already available, so
+The SharePoint server and the office productivity suite is already available, so
 at this stage the only remaining component is the SharePoint extension in
-LibreOffice what is missing, and our approach creates that.
+LibreOffice that is missing, and our approach creates that.
 
 Note that Alfresco already has an OpenOffice.org extension called
 OPAL \cite{opal}. That naturally uses Alfresco's native protocol to communicate
-with the server. The following major changes are needed to make to suit our
+with the server. The following major changes are needed to make it suit our
 needs:
 
 \begin{itemize}
 \item It's intended to be used with OpenOffice.org 3.1 -- the last stable
 version of OpenOffice.org is 3.3, and it won't work with this version. The
 oldest stable release of LibreOffice is based on OpenOffice.org 3.3 as well, so
-poring the extension to 3.3 is essential to make it working at all with
+porting the extension to 3.3 is essential to make it work at all with
 LibreOffice.
 \item It works by installing an additional module on the Alfresco server, so
 the business logic is minimal in the extension. My approach is to communicate
 without any server-side component installations required.
-\item The SharePoint protocol supports more than Alfresco, the user interface
-has to be extended to cover the new features.
-\item Finally the used protocol has to be changed: by using the SharePoint
+\item The SharePoint protocol supports more features than Alfresco, so the user 
+interface has to be extended to cover the new features.
+\item Finally, the protocol used has to be changed: by using the SharePoint
 protocol, the extension can communicate with both SharePoint and Alfresco,
-covering a lot from today's enterprise document management server
+covering a lot of today's enterprise document management server
 installations.
 \end{itemize}
 
-Now that we understood what component we want to create and from where, it's
+Now that we understand what component we want to create and how, it's
 essential to understand what workflow the document management clients take part
 in.
 
@@ -79,7 +79,7 @@ version with this step.
 \label{fig:overview-workflow}
 \end{figure}
 
-\autoref{fig:overview-workflow} shown what combination of steps are allowed. An example:
+\autoref{fig:overview-workflow} shows what combinations of steps are allowed. An example:
 
 \begin{enumerate}
 \item A workspace is created.
@@ -123,13 +123,13 @@ by the user, the extension will still connect to the document server only.
 from the workflow server, and that will be the basis of all future work.
 \end{itemize}
 
-The possible states of the later operation mode is demonstrated on
+The possible states of the latter mode of operation is demonstrated in
 \autoref{fig:decoupled-approach-workflow}.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=300px,keepaspectratio]{decoupled-approach-workflow.pdf}
-\caption{Control flow of the decoupled document based workflow approach}
+\caption{Control flow of the decoupled document-based workflow approach}
 \label{fig:decoupled-approach-workflow}
 \end{figure}
 
@@ -174,7 +174,7 @@ Now in case the workflow has two human tasks and statically assigned users (see
 document. \emph{Incremental snapshots} is a feature that allows the user to
 choose if the task completion is wished or not, so the document can be
 incrementally saved to the document server as the task is being completed, and
-once it is done, the task complete operation is performed on the workflow
+once it is done, the complete task operation is performed on the workflow
 server as well -- without leaving the office environment for a second.  Behind
 the scenes, once the last human task is completed as well, the process instance
 simply ends.
@@ -182,9 +182,9 @@ simply ends.
 \subsection*{Group assignment}
 
 A natural extension of naming the assigned users in the process definition is
-think about roles or groups, so the exact user performing the task can be
+to think about roles or groups, so the exact user performing the task can be
 determined later, at runtime. When the user reaches the file picker, a button
-can navigate to an other virtual folder, called group tasks.
+can navigate to another virtual folder, called group tasks.
 
 A new operation in this case will be \emph{claiming a task}, which means
 selecting a document from the \emph{group tasks} folder and moving it to the
@@ -234,6 +234,6 @@ completed process instances. The usual question are:
 The extension will be able to show details of completed process, task and node
 instances, answering these questions.
 
-In this chapter, we shown what component of the document-based workflow system we
+In this chapter, we have shown what component of the document-based workflow system we
 plan to implement. Chapter~\ref{chap:design} will describe how the implementation
 is designed to happen.

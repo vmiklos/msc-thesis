@@ -1,17 +1,17 @@
 \chapter{Introduction}
 
-Integration of an office productivity suite to electronic document flows can be
-divided to two parts: document management integration can be done alone, then
-on top of that, adding workflow support to office client is possible.
+Integration of an office productivity suite into electronic document flows can be
+divided into two parts: document management integration can be done alone, then
+on top of that, adding workflow support to an office client is possible.
 
 \section{Document management}
 
 Every major software development project uses some kind of version control
-system to track the source code of project. The introduction of such a system
+system to track the source code of the project. The introduction of such a system
 helps multiple developers to synchronize their work, helps debugging (when
 retrieving older versions is necessary) and provides a way to document changes.
 
-There are different approaches for version control:
+There are different approaches to version control:
 
 \begin{itemize}
 \item centralized
@@ -21,53 +21,53 @@ There are different approaches for version control:
 
 Centralized (Subversion \cite{subversion} is probably the most
 popular centralized solution) systems have a central server, distributed
-systems operate in a distributed environment (Git \cite{git} is a good such
+systems operate in a distributed environment (Git \cite{git} is a good
 example). A centralized system has a simpler architecture, but on the other
-hand provides less features. Distributed systems can operate in more extreme
+hand, it provides less features. Distributed systems can operate in more extreme
 conditions, while they are harder to learn, because of their steep learning
 curve.
 
-The need for tracking versions and collaborating documents is not specific to
-software developers. An other type of similar software is usually referred as
-document management system. It focuses on project management and meant to be
+The need for tracking versions and collaborating on documents is not specific to
+software developers. An other type of similar software is usually referred to as
+a document management system. It focuses on project management and it is meant to be
 used by a wider range of users without specific software engineering knowledge.
-That means usually they do not manage software source code files, but documents
+That means they usually do not manage software source code files, but documents
 created by office suites such as Microsoft Office \cite{mso} or
 LibreOffice \cite{lo} (formerly OpenOffice.org \cite{ooo}).
 
 There are numerous, currently unsolved problems in this area. Such enterprise
 systems are supposed to be modular: each module communicates with the other
 using an open (documented) protocol and companies are allowed to replace one
-module with an other implementation, as long as it communicates using the same
-protocol. In fact this is one of the major reasons for using open-source
+module with another implementation, as long as it communicates using the same
+protocol. In fact, this is one of the major reasons for using open-source
 software components in an enterprise environment: that way protocols are always
 open, and companies can avoid vendor lock-in.
 
 Enterprise companies using proprietary software, but wanting to adopt
 open-source solutions can start the migration with server products. The benefit
-of starting with servers is that only central infrastructure has to be
-modified. Given that the communication is unchanged, the clients can be left
-untouched. An other approach is to focus on the client-side, as important data
+of starting with servers is that only the central infrastructure has to be
+modified. Given that the way of communication is unchanged, the clients can be left
+untouched. Another approach is to focus on the client-side, as important data
 is rarely stored there, so starting the migration with the client components
 avoids the risk of a potential data loss, in case software quality is lower
 than expected.
 
-One of the most widely used document management server is Microsoft
-SharePoint \cite{sharepoint}. This is well integrated with Microsoft Office, but
+One of the most widely used document management servers is Microsoft
+SharePoint \cite{sharepoint}. It is well integrated with Microsoft Office, but
 previously it was not possible to replace the office suite with an open-source
 alternative, because of the lack of SharePoint support. An open-source
 alternative of SharePoint is Alfresco \cite{alfresco}, which provides similar
 features, but uses its own, different protocol.
 
-Finally a radically different solution is a hybrid cloud-based approach: in that case
-the client is a simple web browser and even editing software is downloaded from
+Finally, a radically different solution is a hybrid cloud-based approach: in that case
+the client is a simple web browser and even the editing software is downloaded from
 the server each time the user wants to edit the documents (Google
 Docs \cite{google-docs} is a good example). While this method is easy to use, it
 has its drawbacks as well. At the moment none of the cloud-based solutions have
 all features a rich client such as Microsoft Office or LibreOffice provides.
-Additionally, storing documents in the cloud requires stable and fast network
+Additionally, storing documents in the cloud requires a stable and fast network
 connection during the editing process (which is currently isn't guaranteed in many
-cases) and requires trust from the cloud provider when editing sensitive
+cases) and requires trust in the cloud provider when editing sensitive
 documents of a company.
 
 In the current thesis, we are presenting a centralized client-side solution for
@@ -91,13 +91,13 @@ Such an object then always has a precise state:
 \item It can have multiple associated variables.
 \end{itemize}
 
-This model then can help to extract some of the business logic of applications
-to more abstract process definitions, described in a more separated,
+This model then can help extract some of the business logic of applications
+into more abstract process definitions, described in a more separated,
 declarative way\footnote{Even if script tasks can contain imperative code, the
 main structure of a process definition is always declarative.}.
 
 It is a common pattern to use workflows to represent processes which describe a
-set of changes of a given document. In short, they are referred as
+set of changes of a given document. In short, they are referred to as
 document-based workflows. Most such solutions are implemented with a strong
 dependency between the document management server and the workflow engine,
 which introduces the problem of vendor lock-in once again.
@@ -116,7 +116,7 @@ finance company.}.  In this use-case, the most painful operations where the
 integration would help are:
 
 \begin{itemize}
-\item If there is a document opened, it's useful if operations connected to
+\item If a document is open, it's useful if operations on
 that document can be done from the office suite, which already has a reference
 to the document. Think about starting a chosen process definition to start a
 new instance, associated with the current document.
@@ -135,7 +135,7 @@ large one.
 \item It is uncomfortable if storing the document on the server and making a
 decision as part of the current workflow task is not a single atomic operation.
 \item In general, but especially when group tasks or decisions are involved, audit logs of
-process and node instances are important. Reaching them from the office client
+process and node instances are important. Being able to access them from the office client
 makes viewing them much easier.
 \item It is important to realise that while finishing the work on a document
 and marking a given workflow task is usually done together, sometimes only the
@@ -161,11 +161,11 @@ releasing the task back to the group, if the user realises he/she is not able to
 perform it in time.
 \item It should be possible to associate a new process instance to the current
 document.
-\item If the current task involve making decisions, the list of possible
+\item If the current task involves making decisions, the list of possible
 choices should be retrieved from the workflow engine.
 \item Accessing the audit log from the office client is required.
 \item Supporting incremental snapshots till the task is marked as completed is
-mandatory.
+needed.
 \item As a helper feature, masking the document so that only the relevant parts
 are editable by the user is useful.
 \end{itemize}

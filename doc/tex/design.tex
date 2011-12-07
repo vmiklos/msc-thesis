@@ -6,11 +6,11 @@
 \subsection{The SharePoint library}
 
 The Java implementation is split into two parts, the generic SharePoint library
-and the user interface, which is an UNO component. The previous lives under the
+and the user interface, which is a UNO component. The previous lives under the
 \emph{hu.ulx.lpsp.sharepoint} namespace, the other does so under
 \emph{hu.ulx.lpsp.comp}.
 
-The UML package diagram on \autoref{fig:design-packages} diagram shows these
+The UML package diagram on \autoref{fig:design-packages} shows these
 packages with their dependencies.
 
 \begin{figure}[H]
@@ -44,7 +44,7 @@ RPC \cite{vermeer} response packet.
 
 We paid attention in our solution not to require additional server-side component
 installation, the SharePoint library can communicate with a standard SharePoint
-server, without any server modifications.
+server without any server modifications.
 
 \subsection{The UNO interfaces}
 
@@ -59,7 +59,7 @@ The UNO interfaces are inspired by the already referenced OPAL extension.
 Where it made sense, we reused code from there, and changed it to work with
 Sharepoint.
 
-It's an UNO convention that interfaces start with a capital X. The following
+It's a UNO convention that interfaces start with a capital X. The following
 \textbf{UNO interfaces} (see \autoref{fig:design-technologies}) are provided by the
 extension:
 
@@ -77,7 +77,7 @@ The extension provides a single exception type -- \emph{SharepointException} --
 when it throws errors.
 
 It also provides a single enumeration type -- \emph{FileTypes} -- to declare
-the list of LibreOffice applications it handles. (It's current value is:
+the list of LibreOffice applications it handles. (Its current value is:
 Writer, Calc, Impress and Draw.)
 
 UNO services are interfaces containing static methods only.  The following
@@ -96,7 +96,7 @@ extension:
 \subsection{User interface}
 
 The user interface lives in the \emph{hu.ulx.lpsp.comp} package. The classes of
-the user interface are organized in 4 Java packages:
+the user interface are organized into 4 Java packages:
 
 \begin{itemize}
 \item \emph{hu.ulx.lpsp.comp.model}: a model for the folder and document
@@ -108,16 +108,16 @@ windows).
 services: authentication manager, document manager, document, connection, etc.
 \end{itemize}
 
-The user interface dialogs are reachable from the \emph{Document repository}
+The user interface dialogs are located in the \emph{Document repository}
 menu item, which is registered by the \emph{Addons.xcu} configuration file,
-which is a standard configuration file of LibreOffice extensions.
+a standard configuration file of LibreOffice extensions.
 
 \subsubsection*{Menu items}
 
 The following \textbf{menu items} (see \autoref{fig:design-technologies}) are designed:
 
 \begin{itemize}
-\item Connection: force connecting to an other document management server, even
+\item Connection: force connecting to another document management server, even
 if the user is already connected.
 \item Open: downloads an existing document from the server.
 \item Close: discards the local copy of a downloaded document.
@@ -150,8 +150,8 @@ copy.
 The following ones are the utility macros (\emph{LPSP.utils} package):
 
 \begin{itemize}
-\item getCurrentSharepointDocument: asks the document model of the current LibreOffice component (Writer document, Calc spreadsheet, etc.) from the document manager.
-\item getCurrentConnection: asks the current connection from the authentication manager.
+\item getCurrentSharepointDocument: gets the document model of the current LibreOffice component (Writer document, Calc spreadsheet, etc.) from the document manager.
+\item getCurrentConnection: gets the current connection from the authentication manager.
 \item getConnection: shows the Connection dialog.
 \item getDocumentManager: returns the document manager singleton.
 \item getAuthenticationManager: returns the document manager singleton.
@@ -171,13 +171,13 @@ The BASIC macros invoke the following UNO services:
 \subsubsection*{Java implementation}
 
 At this point, we know the user interface entry points in our Java
-implementation. As mentioned above, Java bytecode for the UNO services are
+implementation. As mentioned above, Java bytecode for the UNO services is
 automatically generated (by \emph{javamaker}). The next task is to let the stub
 know where is its implementation. This is handled by the
 \emph{RegistrationHandler} class. The list of implementation classes
 implementing a UNO service is in the \emph{RegistrationHandler.classes} file.
-Each implementation class specifies what service does it implement, then the
-registration handler collects this information and sends it to UNO, when it is
+Each implementation class specifies what service it implements, then the
+registration handler collects this information and sends it to UNO, when 
 asked. Finally, the \emph{RegistrationClassName:} header in the
 \emph{META-INF/MANIFEST.MF} file of the Jar package defines the registration
 handler class name.
@@ -214,7 +214,7 @@ individual target)
 \item Versions: \emph{VersionsDialog}
 \end{itemize}
 
-For an UML class diagram showing these classes, see \autoref{fig:design-spui}.
+For a UML class diagram showing these classes, see \autoref{fig:design-spui}.
 
 \begin{figure}[p]
 \centering
@@ -241,7 +241,7 @@ and the workflow user interface. The jBPM client is designed under the
 \end{figure}
 
 \autoref{fig:design-packages-wf} shows the updated UML package diagram of our
-solution. The recently introduced \textbf{\emph{hu.ulx.lpsp.workflow}} package can be divided to three
+solution. The recently introduced \textbf{\emph{hu.ulx.lpsp.workflow}} package can be divided into three
 parts:
 
 \begin{itemize}
@@ -258,7 +258,7 @@ class, called \emph{WFHandler}. It should provide the following features:
 
 \begin{itemize}
 \item authentication handling
-\item wrappers for used REST method calls
+\item wrappers for the REST method calls used
 \item mapping between JSON data and entity classes
 \item parsing task data from HTML forms
 \end{itemize}
@@ -288,14 +288,14 @@ Whenever a REST method call returns from jBPM, the result can one of the followi
 There are multiple problems with arbitrary HTML in our case:
 
 \begin{itemize}
-\item jBPM expects an embedded HTML engine in the client, which is not the case with our SWING-based Java user interface
+\item jBPM expects an embedded HTML engine in the client, which does not exist in our SWING-based Java user interface
 \item once the form is submitted, the server would instruct the user to close
 the window, which would be inconsistent with our ``the window is
 closed when no more input should be provided'' approach
 \item in our case the form should be extended to ask for document-management details as well
 \end{itemize}
 
-When using HTML, there are several ways to express business decision. Some example:
+When using HTML, there are several ways to express business decisions. Some example:
 
 \begin{itemize}
 \item using separate buttons for each decision
@@ -340,7 +340,7 @@ in a task instance type.
 
 \subsection{jBPM and the BPM console server}
 
-The only functionality we need, but is not provided by the BPM console server
+The only functionality we need that is not provided by the BPM console server
 REST API is the audit log. jBPM itself logs all the necessary information in
 its SQL backend, so we need the following steps to export this knowledge to the
 REST API:
@@ -443,7 +443,7 @@ Similarly, if a query about a node instance is received, then:
 
 In this case serialization to JSON has to be handled by the new
 \emph{NodeInstanceRef} and \emph{NodeInstanceRefWrapper} classes. Note that
-these private classes are independent from the ones having the same name in the
+these private classes are independent of the ones having the same name in the
 client library, as only the JSON output is public, allowing loose coupling.
 
 Finally, once a query about a task is received, then:
@@ -546,8 +546,8 @@ Additionally here and there existing dialogs have to be extended with
 workflow-specific items:
 
 \begin{itemize}
-\item \emph{CommentVersionDialog}: When saving, new controls are needed to control decisions and completing of workflow tasks.
-\item \emph{FilePickerDialog}: During open, the file picker has to be improved to allow task claiming/releasing, also task listing should be handled here.
+\item \emph{CommentVersionDialog}: When saving, new controls are needed to control decisions and completion of workflow tasks.
+\item \emph{FilePickerDialog}: While opening, the file picker has to be improved to allow task claiming/releasing, and task listing should also be handled here.
 \item \emph{ConfigServerDialog}: The table showing properties of different connections should show workflow server URL.
 \item \emph{ServerDialog}: New controls are needed to be able to edit workflow URL of a server connection.
 \end{itemize}

@@ -35,13 +35,13 @@ OpenOffice.org. It has multiple problems:
 \item It is not free. Sadly it is part of Oracle Open Office Enterprise
 Edition, which is no longer available from the Oracle Store at the time of
 writing (November 2011).
-\item When we earlier checked it, It was only available on Windows 32-bit and it
+\item When we checked it earlier, it was only available on Windows 32-bit and it
 required a server-side component as well.
 \end{itemize}
 
 \subsection*{libcmis}
 libcmis \cite{libcmis} is a general purpose CMIS library, written in C++.
-LibreOffice has a built-in Universal Content Provider built into its core,
+LibreOffice has a Universal Content Provider built into its core,
 internally using libcmis.
 
 It has two issues at the moment:
@@ -61,7 +61,7 @@ An additional SharePoint module \cite{drupal-sp} for the Drupal content manageme
 \begin{itemize}
 \item It can only read from a SharePoint server.
 \item It is written for a CMS, not an office suite.
-\item To reach its goals, it was enough to use the SOAP interface of the
+\item To achieve its goals, it was enough to use the SOAP interface of the
 SharePoint server, which is not enough for our purposes.
 \end{itemize}
 
@@ -75,7 +75,7 @@ SharePoint server, which is not enough for our purposes.
     \makecell[l]{SharePoint 2007 \\ support} & no & no    & no               & yes                           & partial \\ \hline
     \end{tabular}
   \end{center}
-  \caption{Comparison of related document management works}
+  \caption{Comparison of related document management systems}
   \label{tab:related-cmp}
 \end{table}
 
@@ -87,7 +87,7 @@ document-based workflow management, that
 \begin{itemize}
 \item supports arbitrary process definitions
 \item decouples document and workflow management
-\item available under an open-source license
+\item is available under an open-source license
 \end{itemize}
 
 On the other hand, these are partly detailed in papers and implemented in some
@@ -165,7 +165,7 @@ It has pluggable workflow integration, the following engines are supported out o
 \item Kaleo
 \end{itemize}
 
-The later is configured by default, and it even has a few sample definitions
+The latter one is configured by default, and it even has a few sample definitions
 after installation. Sadly it seems Liferay invented its own schema for process
 definitions when using Kaleo \cite{liferay-kaleo}, which resulted in not being
 able to operate with standard BPMN or similar formats.
