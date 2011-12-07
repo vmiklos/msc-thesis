@@ -108,6 +108,9 @@ interesting ideas are raised in recent papers.
 \item detailed comparison of control flow based versus document based approach
 \end{itemize}
 
+The proposed implementation is heavily storage-dependent, while our decision is
+to interoperate with existing storage solutions.
+
 \emph{Mobility in the virtual office: a document-centric workflow approach} \cite{paper-mobility}:
 \begin{itemize}
 \item introduces decentralized document-driven workflows
@@ -115,17 +118,26 @@ interesting ideas are raised in recent papers.
 \item decentralization is handled with a peer-to-peer architecture
 \end{itemize}
 
+This paper proposes a decentralized architecture, our method is simpler, having
+a centralized design.
+
 \emph{XDoC-WFMS -- A Framework for Document Centric Workflow Management System} \cite{paper-xdoc}
 \begin{itemize}
 \item presents use cases of intiutive workflow and document management integration: newspaper editing, processing job applications
 \item proposed solution: documents have an embedded micro-agent, so the document itself will know where to go after a task is completed
 \end{itemize}
 
+The suggestion is to integrate executable code with documents, while our
+approach is to decouple the workflow engine and the document servers.
+
 \emph{Access control in document-centric workflow systems -- an agent-based approach} \cite{paper-access}
 \begin{itemize}
 \item this approach is without decoupling as well
 \item the workflow object is proposed to communicate with the document object
 \end{itemize}
+
+This approach highlights the importance of access control, our extension simply
+threats it as an existing building block.
 
 \subsection*{SharePoint Designer}
 
