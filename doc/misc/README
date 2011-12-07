@@ -1825,6 +1825,11 @@ Fixed a few bugs pointed out by Akos:
 Fixed the toolbar freeze bug by using UNO UI instead of
 JOptionPane.showMessageDialog().
 
+=== 2011-12-07
+
+Finished the toolbar: click on the first button now shows details of the
+current server.
+
 TODO:
 
 Ivan:
