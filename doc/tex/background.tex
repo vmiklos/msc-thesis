@@ -217,11 +217,12 @@ problem, so neither of them is an ultimate tool, making the other one useless.
 
 \subsection{UNO compontents}
 
-My solution will be a LibreOffice extension that registers a UNO \cite{uno}
-component. UNO is the interface based component model of LibreOffice. The
-purpose of UNO is to abstract service definitions (defined in a
-language-idependent IDL-like syntax) from service implementations -- they can
-be developed in multiple languages: C++, Python, Java or BASIC.
+As already introduced in \autoref{sec:intro-docmgmt}, my solution will be a
+LibreOffice extension that registers a UNO \cite{uno} component. UNO is the
+interface based component model of LibreOffice. The purpose of UNO is to
+abstract service definitions (defined in a language-idependent IDL-like syntax)
+from service implementations -- they can be developed in multiple languages:
+C++, Python, Java or BASIC.
 
 The caller is not aware which language the implementation uses, and it does not
 need to be, either. In our extension, we call BASIC macros from the menu elements,
