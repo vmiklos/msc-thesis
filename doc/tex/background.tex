@@ -4,7 +4,7 @@
 
 \subsection{General architecture of document management systems}
 
-A document management system is a typical client-server model: a document
+A document management system has a typical client-server model: a document
 management server stores the documents in a document repository, which can be
 accessed via various interfaces.  The other part of the system is accessed via a client,
 which has built-in support for opening, saving and editing documents.
@@ -42,8 +42,8 @@ email which can be accepted by the other user.
 A user may access the document server using a web browser, or via rich client
 applications. The advantage of the web browser interface is that it can be
 accessed from almost everywhere, however, document editing can't be performed.
-If such operation should be performed, then the user has to manually download
-the document, edit then upload it. This method occasionally does not cause a
+If such an operation should be performed, then the user has to manually download
+the document, edit then upload it. Done rarely, this does not cause a
 problem, but of course it is uncomfortable for daily work.
 
 The other interface is a rich client, which is installed on the machine of the
@@ -61,11 +61,11 @@ listen on one URL as an Alfresco server, and on an other URL as a SharePoint
 server.
 
 Clients can have different extensions or plug-ins to handle different
-protocols. For example Microsoft Office can accept SharePoint URL-s in the
-standard file opener dialog, while the Alfresco extension for OpenOffice.org
+protocols. For example Microsoft Office can accept SharePoint URL's in the
+standard open file dialog, while the Alfresco extension for OpenOffice.org
 has a dedicated menu in the application to connect to an Alfresco server.
 
-It is also common that the client extensions have minimal business logic. For
+It is also common for the client extensions to have minimal business logic. For
 example the proprietary SharePoint extension to OpenOffice.org, created by
 Oracle can't talk to every SharePoint server, but Microsoft Office does -- as
 long as a server-side component provided by Oracle is not installed on the
@@ -84,9 +84,9 @@ is uncomfortable for system administrators.
 The specification called Content Management Interoperability
 Services \cite{cmis} is created to address compatibility issues between various
 document management server implementations. OASIS approved it on May 1, 2010.
-Also, at the time of writing implementation is far from complete among major
+Also, at the time of writing, its implementation is far from complete among major
 document management servers. Alfresco 3.3+ implements the client side only,
-SharePoint 2007 does not support it yet, so at the moment it is a vision that
+SharePoint 2007 does not support it yet, so at the moment it is a only a vision that
 all major document servers will implement this specification.
 
 On the other hand, there are a lot of implementations in other products, such
@@ -107,11 +107,11 @@ AtomPub Binding and the Web Services (SOAP) binding (see \autoref{fig:cmis}).
 
 \subsection{Concrete implementations}
 
-In this subsection, we give a short comparision of Microsoft SharePoint 2007 and
+In this subsection, we give a short comparison of Microsoft SharePoint 2007 and
 Alfresco Community Edition 3.4, which claims to be ``The Open Source Alternative
 for Enterprise Content Management''. \cite{alfwiki}
 
-A difference is that Alfresco does not allow deletion where possible. Of course
+A difference is that Alfresco does not allow deletion wherever possible. Of course
 it is possible to delete documents, but it isn't possible to delete document
 versions, to overwrite a previous document version or to delete a whole
 workspace as a single operation.
@@ -123,13 +123,13 @@ has a \emph{document} parameter -- the documentation \cite{spdoc} does not
 mention the \emph{timestamp of last modification}, part of the meta information
 structure, which is in fact mandatory (and there is no problem with that being
 mandatory, since it uses an optimistic concurrency approach). There is no
-similar problem with Alfresco, where in worst case it is possible to check the
+similar problem with Alfresco, where in the worst case it is possible to check the
 source code.
 
 When evaluating properties, we selected the most common use-cases, required by
 enterprise companies. We intentionally did not evaluate management of document
 workspace permissions, links inside document workspaces and tasks inside
-document workspaces, as those features are outside of the scope of the current
+document workspaces, as those features are beyond the scope of the current
 thesis.
 
 Individual properties we collected are detailed in
@@ -166,7 +166,7 @@ Individual properties we collected are detailed in
 \end{threeparttable}
 \end{table}
 
-\subsection{Differences to version control systems}
+\subsection{Differences from version control systems}
 
 Version control systems in general have richer semantics, more features to
 track software source code. In order to make document management systems easy
@@ -176,11 +176,11 @@ subsection, we describe the major removed operations.
 
 We note that this does not mean version control systems are superior. They are
 optimized to handle source code, which is plain text. Version control systems
-are not efficient in handling binary files -- for example zipped XML files, used by
+are not efficient at handling binary files -- for example zipped XML files, used by
 the ODF/OOXML formats -- while document management systems are designed to deal
 with such files.
 
-The development of source code is typically not linear. It's regular that
+The development of source code is typically not linear. It's common that
 branches are created and merged during development, while a document server
 forces you to follow a single development line.
 
@@ -195,7 +195,7 @@ Documents are improving, but we rarely speak about document bugs, as we speak
 about software bugs. Because of that, version control systems usually provide a
 way to check out the state of the entire repository at a given earlier
 time, to discover which commit introduced a specific bug. Document servers
-allow listing of versions of a document, then the user manually has to select
+allow listing of versions of a document, then the user has to manually select
 the version which is closest to a given date.
 
 Finally, version control systems provide a way to annotate source code files:
@@ -211,24 +211,24 @@ Model-View-Controller), and when we speak about lines, we speak about the
 meaning here.
 
 To sum up, we can see that document management systems feature less operations
-in general to make usage by wider user base possible -- but we should not
+in general to make usage by a wider user base possible -- but we should not
 forget that version control systems solve a related, but still different
-problem, so either of them is an ultimate tool, making the other one useless.
+problem, so neither of them is an ultimate tool, making the other one useless.
 
 \subsection{UNO compontents}
 
-My solution will be a LibreOffice extension that registers an UNO \cite{uno}
+My solution will be a LibreOffice extension that registers a UNO \cite{uno}
 component. UNO is the interface based component model of LibreOffice. The
 purpose of UNO is to abstract service definitions (defined in a
 language-idependent IDL-like syntax) from service implementations -- they can
 be developed in multiple languages: C++, Python, Java or BASIC.
 
 The caller is not aware which language the implementation uses, and it does not
-need to, either. In our extension, we call BASIC macros from the menu elements,
+need to be, either. In our extension, we call BASIC macros from the menu elements,
 which invoke the underlying Java code, where the business logic is implemented.
 
 All the Java code is contained by a single jar file, the workflow of creating
-it is shown on \autoref{fig:uno-java}.
+it is shown in \autoref{fig:uno-java}.
 
 \begin{figure}[H]
 \centering
@@ -242,7 +242,7 @@ it is shown on \autoref{fig:uno-java}.
 \item \emph{regmerge} merges all the .urd files of the component to a single Resource Database,
 \item \emph{javamaker} creates interfaces (.class files) from the Resource Database,
 \item finally the standard Java development tools (\emph{javac}, \emph{jar})
-creates the final jar, including the Java implementation.
+create the final jar, including the Java implementation.
 \end{itemize}
 
 Once the jar package is ready, a zip archive is created, containing:
@@ -265,7 +265,7 @@ by the user, using the extension manager of LibreOffice.
 
 The term application server is used to describe the software framework on which
 the business logic of an application runs. The application server typically
-interacts with SQL database servers, file server or web servers.
+interacts with SQL database servers, file servers or web servers.
 
 \notocsubsubsection{Web application servers}
 
@@ -295,11 +295,11 @@ served, referred as Common Gateway Interface (CGI).} to match this requirement.
 One approach is to use a generic web server, for example the Apache HTTP
 Server \cite{apache-httpd}. Given that almost all programming languages has a C
 API to interact with managed code, plugins for the web server can be
-implemented in C to execute managed code when a HTTP requests arrives,
+implemented in C to execute managed code when an HTTP requests arrives,
 addressing the application in question.
 
 The other approach is to have a dedicated HTTP server, which can only execute
-applications written in a given programming language, but it so more
+applications written in a given programming language, but it does so more
 effectively. Supported programming languages include:
 
 \begin{itemize}
@@ -338,7 +338,7 @@ Popular Java application server implementations include:
 \item GlassFish: An open-source Java application server, started by Sun
 Microsystems for the Java EE platform, and it is still supported by Oracle. The
 name of the product with commercial support is Oracle GlassFish Server.
-\item JBoss Application Server: a detailed discussion in subsubsection~\ref{sub:jboss}.
+\item JBoss Application Server: see detailed discussion in subsubsection~\ref{sub:jboss}.
 \item Apache Tomcat: This is the application server implemented by the Apache
 Software foundation, providing an implementation of the Java Servlet and
 JavaServer Pages specifications.
@@ -351,13 +351,13 @@ server from IBM.
 
 JBoss Application server (in short, JBoss AS) is an open-source application server
 based on Java EE, originally developed by JBoss, Inc -- now a division of Red
-Hat. Besides implementing a server on top of Java, it even implements the Java
+Hat. Besides implementing a server on top of Java, it implements the Java
 EE specification as well.  JBoss is written in pure Java, meaning that it is
 usable on any operating system Java runs on.
 
 At the time of writing, the latest stable version of JBoss is AS7, which
-introduces a rewritten code, focusing on parallel execution, radically speeding
-up start-up time \cite{jboss-fast}.
+introduces a rewritten codebase, focus on parallel execution, and radical speedup
+of start-up time \cite{jboss-fast}.
 
 JBoss provides the common application server features, including:
 
@@ -367,7 +367,7 @@ JBoss provides the common application server features, including:
 \item an implementation of the Authentication and Authorization Service (JAAS)
 specification
 \item management and monitoring though Java Management Extensions (JMX)
-\item implementation of Java Persistence API (JPA), though Hibernate
+\item implementation of the Java Persistence API (JPA), though Hibernate
 \item implementation of JavaServer Pages and / Java Servlet, through Tomcat
 \item integrated support for Java Database Connectivity (JDBC)
 \item OSGi support, which means one can deploy OSGi bundles in a JBoss server,
@@ -424,11 +424,11 @@ uses the following concepts to represent these:
 \label{fig:bpmn-diagram-elements}
 \end{figure}
 
-\autoref{fig:bpmn-activity-types} shows there are two types of activities: tasks and subprocesses.
+\autoref{fig:bpmn-activity-types} shows that there are two types of activities: tasks and subprocesses.
 
 \begin{itemize}
 \item tasks: are part of a process definition that are not described in more detail
-\item subprocesses: refer to reusable independent parts of process definition
+\item subprocesses: refer to reusable independent parts of process definitions
 \end{itemize}
 
 \begin{figure}[H]
@@ -443,7 +443,7 @@ execution of the process will begin. \autoref{fig:bpmn-start-event-types}
 shows three start even types:
 
 \begin{itemize}
-\item normal start: used when an explicit start invoked the process
+\item normal start: used when an explicit start invokes the process
 \item message start: indicates the process was triggered by receiving a message
 \item rule start: means the process was activated by a business rule
 \end{itemize}
@@ -471,7 +471,7 @@ can be (see \autoref{fig:bpmn-intermediate-event-types}):
 \label{fig:bpmn-intermediate-event-types}
 \end{figure}
 
-Finally end events indicate that the main process ended. Subtypes shown on
+Finally, end events indicate that the main process ended. Subtypes shown on
 \autoref{fig:bpmn-end-event-types}:
 
 \begin{itemize}
@@ -501,8 +501,8 @@ The two most common used gateway types (\autoref{fig:bpmn-gateway-types}):
 \label{fig:bpmn-gateway-types}
 \end{figure}
 
-The last BPMN type we introduce here are connectors. Three type of them can be
-seen on \autoref{fig:bpmn-connector-types}:
+The last BPMN type we introduce here are connectors. Three types of them can be
+seen in \autoref{fig:bpmn-connector-types}:
 
 \begin{itemize}
 \item sequence flow: is used for ordering between tasks
@@ -519,7 +519,7 @@ seen on \autoref{fig:bpmn-connector-types}:
 
 \notocsubsubsection{BPMN support in jBPM}
 
-3.x series of jBPM and earlier supported the jPDL format declare process definitions.
+3.x series of jBPM and earlier supported the jPDL format for declaring process definitions.
 4.x series of jBPM introduced support for BPMN, while jBPM 5.x supports BPMN exclusively.
 Tools are available to somewhat automate the conversion from jPDL to BPMN.
 
@@ -563,7 +563,7 @@ When executing actions for external events, the following steps are implemented:
 There are three popular standards to describe a process definition:
 
 \begin{itemize}
-\item The Business Process Execution Language (BPEL): is standard describing an
+\item The Business Process Execution Language (BPEL): is a standard describing an
 executable language where the business process interacts with web services.
 \item The Business Process Model and Notation (BPMN): will discuss it in \autoref{sec:bpmn}.
 \item The jBPM Process Definition Language (JPDL): a proprietary language developed
@@ -618,7 +618,7 @@ specification\footnote{Previously it only supported the jPDL language.}. On top 
 \item its storage back-end can be any database which is supported by JPA\cite{jpa}
 \item handling of human tasks is a separate component -- a sample implementation is included in the release
 \item a BPM console (detailed later in \autoref{sec:bpm-console}), built
-on top of the core provides web-based management and monitoring interface for
+on top of the core provides web-based management and a monitoring interface for
 process instances and tasks
 \item a repository, named Guvnor, can be optionally used to deploy processes to
 \item the storage backend can log all detail needed for audit functionality
@@ -636,8 +636,8 @@ Script tasks can be implemented in multiple imperative languages:
 Both jBPM itself and its sample human task server implementation uses
 object-relational mapping (ORM) to store data in relational database, accessed
 using SQL. The general problem is that object-oriented applications store
-runtime data in objects, while persistent data store can't store object as-is,
-code has to be manually written to store and restore object to / from a
+runtime data in objects, while a persistent data store can't store object
+as-is, code has to be manually written to store and restore object to / from a
 relational database.
 
 An ORM automates this procedure, reducing code needed to be implemented
@@ -725,7 +725,7 @@ purposes, two plugins are interesting:
 \end{itemize}
 
 Both of these editors are specific to jBPM, the list of loaded plugins is
-determined build-time: a \emph{profile} can be specified as a parameter of the
+determined at build-time: a \emph{profile} can be specified as a parameter of the
 build process, and the jBPM profile lists these plugins. As a result, the
 selected profile becomes the \emph{workspace configuration}.
 

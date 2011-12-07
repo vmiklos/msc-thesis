@@ -5,9 +5,9 @@
 The current section consists of three parts:
 
 \begin{itemize}
-\item The first explains the prototype we wrote.
-\item The second details implementation challenges when realizing the designed extension and using external libraries.
-\item The third shows changes in the extension visible from a user's point of view, with screenshots.
+\item The first one explains the prototype we wrote.
+\item The second one details implementation challenges when realizing the designed extension and using external libraries.
+\item The third one shows changes in the extension visible from a user's point of view, with screenshots.
 \end{itemize}
 
 \subsection{The prototype}
@@ -41,12 +41,12 @@ save-as operation invoked that, but it had no explicit command assigned.
 
 The prototype also had two switches to test the implementation on both
 SharePoint and Alfresco automatically. This was critical, so that when we fixed
-something to work with Alfresco, we could quickly test we did not break
+something to work with Alfresco, we could quickly test that we did not break
 anything in SharePoint.
 
 \subsection{The SharePoint protocol}
 
-This subsection gives a brief overview of the SharePoint protocol, for the
+This subsection gives a brief overview of the SharePoint protocol; for the
 exact details, see the source code of our solution. Note that this analysis may
 not be fully accurate, it is only the understanding of the author, and was good
 enough to serve as a base of the implementation.
@@ -54,13 +54,13 @@ enough to serve as a base of the implementation.
 Definitions:
 
 \begin{itemize}
-\item workspace: a toplevel directory, contains folders
-\item folder: a non-toplevel directory, contains folders and documents
-\item document: several versions of the same file, identified with version numbers
+\item workspace: a top-level directory, contains folders
+\item folder: a non-top-level directory, contains folders and documents
+\item document: several versions of the same file, identified by version numbers
 \item checkout, checkin, uncheckout: acquiring and releasing a lock on the document
 \end{itemize}
 
-The following workspace management operations are supported by the SharePoint
+ÍThe following workspace management operations are supported by the SharePoint
 library:
 
 \begin{enumerate}
@@ -100,10 +100,10 @@ Folder management:
 
 \item list folders: HTTP GET to \texttt{/\_vti\_bin/owssvr.dll} in the workspace root
 \begin{itemize}
-\item parameters: \texttt{location} (URL of the folder), \texttt{FileDialogFilterValue} (filter to apply to result on server side, for example \texttt{*.*})
+\item parameters: \texttt{location} (URL of the folder), \texttt{FileDialogFilterValue} (filter to apply to the result on server side, for example \texttt{*.*})
 \item returns: HTML page, containing a table where every row is a folder or a
 document and each column contains properties of the item. The property names
-can be configured runtime on the server.
+can be configured in runtime on the server.
 \end{itemize}
 
 \item delete folder: SOAP request to \texttt{/\_vti\_bin/dws.asmx} in the site root
@@ -122,7 +122,7 @@ Document management:
 \begin{itemize}
 \item method name: \texttt{put document} (yes, RPC method names can contain spaces)
 \item parameters: \texttt{service\_name} (name of the workspace), \texttt{document} (structure containing the document name and last modification date), \texttt{comment} (this option should be provided, but its value is ignored)
-\item payload: everything after a double newline character is considered as the document data
+\item payload: everything after two newline characters is considered as the document data
 \item returns: an RPC response packet, containing a "successfully put document" string with a \texttt{msg=} or \texttt{message=} prefix
 \end{itemize}
 
@@ -203,7 +203,7 @@ Content-Type: application/x-vermeer-urlencoded
 X-Vermeer-Content-Type: application/x-vermeer-urlencoded
 \end{lstlisting}
 
-Once the used protocol -- at least the parts required by our use-cases -- was
+Once the details of the protocol -- at least the parts required for our use-cases -- were
 clear, we could begin writing the LibreOffice extension.
 
 \subsection{External libraries}
@@ -266,7 +266,7 @@ For example, creating a new document workspace is implemented as can be seen on
 \label{fig:implementation-createdws}
 \end{figure}
 
-Earlier it was possible to only view older versions, the new \emph{Versions}
+Earlier only viewing older versions was possible; the new \emph{Versions}
 dialog now allows a user to delete and restore versions as well (as detailed
 above in \autoref{tab:background-comparison}, deleting versions does not work
 with Alfresco, due to the shortcomings of their SharePoint implementation), see
@@ -328,7 +328,7 @@ password should be submitted. The \emph{httpcomponents} package provides a
 dedicated \emph{UrlEncodedFormEntity} class for this purpose:
 
 \begin{itemize}
-\item Fields in the form should be collected to a \emph{NameValuePair} list;
+\item Fields in the form should be collected in a \emph{NameValuePair} list;
 \item Once the list is ready, the entity generator class can produce the
 necessary payload for the HTTP request, using the
 \texttt{application/x-www-form-urlencoded} MIME type \cite{form-encoding}.
@@ -379,7 +379,7 @@ The benefits of using Gson over other implementations (like
 It uses reflection to access fields, so the general object-oriented methodology
 where the fields themselves are private and public getter/setter methods are
 provided is possible to use. Also, the parser is quite liberal about entity
-classes, in case a field is part of the JSON string but the associated Java
+classes, in case a field is present in the JSON string but the associated Java
 class does not have such a field, it is simply ignored. That helps our
 extension to be compatible with future jBPM server versions.
 
@@ -401,7 +401,7 @@ personal / group tasks to the file / folder metaphor, already known by users.
 In LibreOffice, access to files is usually handled by a sequence of property
 values (key-value pairs), where usually the \emph{URL} property is used to
 access the physical file. However in some cases there is no real URL, but the
-contents of the object is provided as a \emph{Stream} property.  An example is
+contents of the object are provided as a \emph{Stream} property.  An example is
 the framework module \cite{lo-framework-module}, where even a define (with a
 value of \emph{private:stream}) is provided to be used as a fake URL for such
 streams.  A similar constant is available to access factories with a
@@ -421,8 +421,8 @@ regular URL's, can handle these special ones. During the opening operation it pe
 
 \begin{itemize}
 \item It queries task instances of the given task type from the workflow server.
-\item Once as task instance is selected, it extracts the associated document URL from the associated process instance variables.
-\item Finally the extension already knows how to open a document server URL.
+\item Once a task instance is selected, it extracts the associated document URL from the associated process instance variables.
+\item Finally, the extension already knows how to open a document server URL.
 \end{itemize}
 
 \begin{figure}[H]
@@ -439,7 +439,7 @@ server during save (see \autoref{fig:implementation-decision}):
 
 \begin{itemize}
 \item if the workflow should be stepped
-\item what is the answer for the business decision, if available
+\item the answer to the business decision, if available
 \end{itemize}
 
 \notocsubsubsection{Audit log}
@@ -522,7 +522,7 @@ The already mentioned TagSoup parser could be used to extract the necessary
 information, but the page is not part of any stable API, so that approach could
 easily break with the next jBPM version.
 
-A better method is to properly handle all JSON parsing exception. This is
+A better method is to properly handle all JSON parsing exceptions. This is
 possible because in case a service is not supported, a HTML error is returned
 by the server, which -- of course -- cannot be handled by the JSON parser.
 

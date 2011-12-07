@@ -64,12 +64,12 @@ property files. During development we paid attention to English strings, then at
 the end as a demonstration we created the Hungarian translation as well. Adding
 new translations is easy.
 
-Finally, the extension inherited some of its limitation from the original OPAL
+Finally, the extension inherited some of the limitations of the original OPAL
 codebase:
 
 \begin{itemize}
-\item The GUI is not started in a separate thread in all cases, resulting the
-lack of the update of the user interface background in many cases.
+\item The GUI is not started in a separate thread in all cases, so in many cases
+the user interface is not updated in the background.
 \item Classes we did not touch still have French comments inside.
 \end{itemize}
 
@@ -127,7 +127,7 @@ Three different test methods were used:
 \item Due to the complex architecture, integration tests were performed manually.
 \end{itemize}
 
-The last method does not only mean it was continuously tested by the author: a closed set of users also tested it once the document management part was ready. They were already used to using a document server and office suite separately, and they all had the possibility not to use the extension if they think it complicates their daily work. The general feedback was:
+The last method does not only mean it was continuously tested by the author: a closed set of users also tested it once the document management part was ready. They were already used to using a document server and office suite separately, and they all had the possibility not to use the extension if they thought it complicated their daily work. The general feedback was:
 
 \begin{itemize}
 \item The extension made their work easier: in most cases they did use the extension once it was installed.
@@ -143,7 +143,7 @@ The workflow support part has the following known limitations:
 \begin{itemize}
 \item Process definitions without a start form -- where the associated document URL can be specified -- are not supported.
 \item Free-form HTML is not allowed in task forms when making a business decision.
-\item The audit log features is not available with an official jBPM version.
+\item The audit log features are not available with an official jBPM version.
 \end{itemize}
 
 The first two are design decisions, the last one will be resolved in the near
@@ -155,9 +155,9 @@ However the document management integration also causes two limitations, which a
 \item The SharePoint protocol does not allow listing files without an
 extension. This means when using the extension to start a workflow, such files
 can't be associated to the process instance.
-\item With choosing a decoupled approach, we also require an external method to
+\item By choosing a decoupled approach, we also require an external method to
 be used for keeping user accounts on the document management and workflow
 servers in sync.
 \end{itemize}
 
-Here the first item is a known limitation, the second was a design decision.
+Here the first item is a known limitation, the second one is a design decision.
