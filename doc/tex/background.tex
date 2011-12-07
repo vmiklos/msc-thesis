@@ -238,7 +238,7 @@ it is shown in \autoref{fig:uno-java}.
 \end{figure}
 
 \begin{itemize}
-\item \emph{idlc} compiles the .idl files to UNO Resource Descriptors,
+\item \emph{idlc} compiles the .idl files to UNO Resource Descriptors (URD),
 \item \emph{regmerge} merges all the .urd files of the component to a single Resource Database,
 \item \emph{javamaker} creates interfaces (.class files) from the Resource Database,
 \item finally the standard Java development tools (\emph{javac}, \emph{jar})
@@ -256,7 +256,7 @@ Once the jar package is ready, a zip archive is created, containing:
 \item other files: metadata, extension description, license, etc.
 \end{itemize}
 
-This zip archive gets a \emph{.oxt} extension, and can be graphically installed
+This zip archive gets a \emph{.oxt} extension, and can be easily installed
 by the user, using the extension manager of LibreOffice.
 
 \section{Workflows}
