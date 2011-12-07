@@ -86,7 +86,7 @@ Services \cite{cmis} is created to address compatibility issues between various
 document management server implementations. OASIS approved it on May 1, 2010.
 Also, at the time of writing, its implementation is far from complete among major
 document management servers. Alfresco 3.3+ implements the client side only,
-SharePoint 2007 does not support it yet, so at the moment it is a only a vision that
+SharePoint 2007 does not support it yet, so at the moment it is only a vision that
 all major document servers will implement this specification.
 
 On the other hand, there are a lot of implementations in other products, such
@@ -97,13 +97,14 @@ CMIS has two main goals:
 
 \begin{itemize}
 \item Providing a list of web service (SOAP) interfaces, which are language-independent.
-\item It allows separating the service and content, making it possible to
+\item Separating the service and content, making it possible to
 implement services for legacy document repositories without modifying them.
 \end{itemize}
 
-To achieve this, it defines a domain model, describing data model elements,
-services to operate on this data model and concrete syntaxes: the Restful
-AtomPub Binding and the Web Services (SOAP) binding (see \autoref{fig:cmis}).
+To realize this separation, it defines a domain model, describing data
+model elements, services to operate on this data model and concrete syntaxes:
+the Restful AtomPub Binding and the Web Services (SOAP) binding (see
+\autoref{fig:cmis}).
 
 \subsection{Concrete implementations}
 
