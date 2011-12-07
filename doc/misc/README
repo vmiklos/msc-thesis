@@ -1834,6 +1834,4 @@ TT:
 - long filenames in detailed view: horizontal scrollbar, but header does not move?
 
 Gabor:
-- toolbar modositasok:
-  - dokutar url nem kell, csak az, hogy kapcsolodva -> kulon status window irhatja az aktualis server(ek) adatait
-  - mentes utan popup, h sikeres-es es mi az uj verzio
+- once save is done, a popup is needed if the operation was successful + the name of the new version
