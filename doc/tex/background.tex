@@ -20,9 +20,8 @@ which has built-in support for opening, saving and editing documents.
 system. They have the following operations:
 
 \begin{itemize}
-\item The server primarily listens to client requests. Additionally it allows
-performing operations directly on the server such as registering new users or
-sharing documents of a user to others.
+\item The server primarily listens to client requests. Additionally, it allows
+performing operations directly on the server.
 \item The client, connecting to one or more document server.
 \end{itemize}
 
@@ -30,9 +29,9 @@ Every user can have access to document \textbf{workspaces}.  Workspaces can
 have documents, links and tasks:
 
 \begin{itemize}
-\item documents: text files, spreadsheets, presentations, drawings
+\item documents: file based document representation
 \item links: collection of bookmarks
-\item tasks: work items related to the internal workflow engine
+\item tasks: work items related to the documents of the workspace
 \end{itemize}
 
 A workspace can be shared with different permissions
@@ -61,7 +60,7 @@ listen on one URL as an Alfresco server, and on an other URL as a SharePoint
 server.
 
 Clients can have different extensions or plug-ins to handle different
-protocols. For example Microsoft Office can accept SharePoint URL's in the
+protocols. For example, Microsoft Office can accept SharePoint URL's in the
 standard open file dialog, while the Alfresco extension for OpenOffice.org
 has a dedicated menu in the application to connect to an Alfresco server.
 
