@@ -15,18 +15,16 @@ retrieving older versions is necessary) and provides a way to document changes.
 There are different approaches to version control:
 
 \begin{itemize}
-\item centralized
-\item distributed
-\item hybrid
+\item Centralized (Subversion \cite{subversion} is probably the most popular
+centralized solution) systems have a central server. A centralized system has a
+simple architecture, but on the other hand, it provides only a few features.
+\item Distributed systems operate in a distributed environment (Git \cite{git}
+is a good example). Distributed systems can operate in more extreme conditions,
+while they are harder to learn, because of their steep learning curve.
+\item A radically different solution is a hybrid cloud-based approach: in that
+case there is a logical central server, where clients are in fact served by a
+large cluster, providing enhanced availability.
 \end{itemize}
-
-Centralized (Subversion \cite{subversion} is probably the most
-popular centralized solution) systems have a central server, distributed
-systems operate in a distributed environment (Git \cite{git} is a good
-example). A centralized system has a simpler architecture, but on the other
-hand, it provides less features. Distributed systems can operate in more extreme
-conditions, while they are harder to learn, because of their steep learning
-curve.
 
 The need for tracking versions and collaborating on documents is not specific to
 software developers. An other type of similar software is usually referred to as
@@ -56,20 +54,19 @@ than expected.
 One of the most widely used document management servers is Microsoft
 SharePoint \cite{sharepoint}. It is well integrated with Microsoft Office, but
 previously it was not possible to replace the office suite with an open-source
-alternative, because of the lack of SharePoint support. An open-source
-alternative of SharePoint is Alfresco \cite{alfresco}, which provides similar
-features, but uses its own, different protocol.
+alternative, because it did not support SharePoint. An open-source alternative
+of SharePoint is Alfresco \cite{alfresco}, which provides similar features, but
+uses its own, different protocol.
 
-Finally, a radically different solution is a hybrid cloud-based approach: in that case
-the client is a simple web browser and even the editing software is downloaded from
-the server each time the user wants to edit the documents (Google
-Docs \cite{google-docs} is a good example). While this method is easy to use, it
-has its drawbacks as well. At the moment none of the cloud-based solutions have
-all features a rich client such as Microsoft Office or LibreOffice provides.
-Additionally, storing documents in the cloud requires a stable and fast network
-connection during the editing process (which is currently isn't guaranteed in many
-cases) and requires trust in the cloud provider when editing sensitive
-documents of a company.
+Finally, in case of the cloud approach, the client is a simple web browser and
+even the editing software is downloaded from the server each time the user
+wants to edit the documents (Google Docs \cite{google-docs} is a good example).
+While this method is easy to use, it has its drawbacks as well. At the moment
+none of the cloud-based solutions have all features a rich client such as
+Microsoft Office or LibreOffice provides.  Additionally, storing documents in
+the cloud requires a stable and fast network connection during the editing
+process (which is currently isn't guaranteed in many cases) and requires trust
+in the cloud provider when editing sensitive documents of a company.
 
 In the current thesis, we are presenting a centralized client-side solution for
 using an existing, proprietary document management server with an open-source
