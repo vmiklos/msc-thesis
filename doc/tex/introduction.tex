@@ -97,18 +97,18 @@ into more abstract process definitions, described in a more separated,
 declarative way\footnote{Even if script tasks can contain imperative code, the
 main structure of a process definition is always declarative.}.
 
-It is a common pattern to use workflows to represent processes which describe a
-set of changes of a given document. In short, they are referred to as
-document-based workflows. Most such solutions are implemented with a strong
+Using workflows to represent processes describing a document's change list is a
+common pattern. In short, they are referred to as
+document-based workflows. Most solutions are implemented with a strong
 dependency between the document management server and the workflow engine,
 which introduces the problem of vendor lock-in once again.
 
 On the other hand, in case a decoupled document server / workflow engine
-architecture is found to be necessary, the integration logic has to be implemented
-in the client. Given that there is already a planned document management client
-in the office suite running on the client, it's a natural extension to
-introduce workflow integration in the office client to manage document-based
-workflows.
+architecture is found to be necessary -- to address the problem of vendor
+lock-in --, the integration logic has to be implemented in the client. Given
+that there is already a planned document management client in the office suite
+running on the client, it's a natural extension to introduce workflow
+integration in the office client to manage document-based workflows.
 
 Based on the experience from a real world use-case, we identified the following
 requirements as mandatory:
