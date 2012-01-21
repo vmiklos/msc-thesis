@@ -22,14 +22,35 @@
 \frame{\titlepage}
 
 \begin{frame}
+\frametitle{Tartalomjegyzék}
+\begin{enumerate}
+\item Bevezető
+\item Motiváció
+\item Feladat leírása
+\item Megoldott feladatok
+\begin{enumerate}
+\item Dokumenummenedzsment
+\item Munkafolyamatok
+\end{enumerate}
+\item Tesztelés
+\item Jövőbeli lehetőségek
+\item Összefoglalás
+\item Válaszok a bírálat kérdéseire
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
 \frametitle{Bevezető}
 \begin{itemize}
-\item Szoftverfejlesztéshez már bevett eszköz manapság a verziókezelő használata
-\item Ezek előnyeit szélesebb körben, technikai előképzettséggel nem rendelkező felhasználók is szeretnék élvezni
-\item Erre nyújtanak megoldást a dokumentummenedzsment rendszerek
-\item A kliensek nyílt forráskódú migrációját nehezíti, ha nem tudnak ezekkel a rendszerekkel kommunikálni
-\item A dokumentumtárakban elérhető dokumentumokon végzett műveletek gyakran egy munkafolyamat részei
-\item Idáig tipikusan manuálisan kellett szinkronban tartani a dokumentum és a munkafolyamat állapotát
+\item Szoftverfejlesztéshez bevett eszköz a verziókezelő
+\item Előnyeit technikai előképzettséggel nem rendelkező felhasználók is szeretnék élvezni
+\item Megoldás: dokumentummenedzsment rendszerek
+\item Kliensek nyílt forráskódú migrációja $\Leftrightarrow$ nem tudnak ezekkel a rendszerekkel kommunikálni
+\item Dokumentumokon végzett műveletek munkafolyamat részei
+\item Probléma: manuális szinkronban tartás
+\begin{itemize}
+\item dokumentum és a munkafolyamat állapota
+\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -43,6 +64,9 @@
 \item A kiterjesztés kommunikálhatna a munkafolyamat-kiszolgálóval is egyben
 \item Elérhető nyílt forráskódú REST API-t támogató munkafolyamat-motor, pl. jBPM
 \end{itemize}
+\begin{figure}[H]
+\includegraphics[width=75mm,keepaspectratio]{decision-bpmn.png}
+\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -53,7 +77,7 @@
 \begin{itemize}
 \item Sharepoint funkcionalitás felmérése
 \item LibreOffice kiterjesztés készítés elsajátítása
-\item Létező kiterjesztés portolása LibreOffice-hoz, átírása Sharepointtal való működésre
+\item Létező kiterjesztés portolása LibreOffice-hoz, átírása Sharepointra
 \item Alfrescohoz és Sharepointhoz lehessen egyidejűleg kapcsolódni
 \item Létező jBPM funkcionalitás felmérése, igény szerint bővítése
 \item jBPM integráció megvalósítása a kiterjesztésben
@@ -62,11 +86,11 @@
 
 \begin{frame}
 \frametitle{Megoldott feladatok}
-\framesubtitle{Sharepoint funkcionalitás felmérése}
+\framesubtitle{Dokumentummenedzsment: Sharepoint funkcionalitás felmérése}
 \begin{itemize}
 \item Hitelesítés: HTTP Basic, NTLM.
 \item Használt protokollok: Vermeer RPC, SOAP.
-\item Használati esetek gyűjtése:
+\item Használati esetek gyűjtése (felhasználói felület):
 \begin{itemize}
 \item Munkaterületek létrehozása, törlése
 \item Munkaterületeken belüli mappák létrehozása, listázása, törlése
@@ -79,16 +103,7 @@
 
 \begin{frame}
 \frametitle{Megoldott feladatok}
-\framesubtitle{Kiterjesztés készítés elsajátítása}
-
-\begin{figure}[H]
-\includegraphics[width=75mm,keepaspectratio]{uno-java-hu.pdf}
-\end{figure}
-\end{frame}
-
-\begin{frame}
-\frametitle{Megoldott feladatok}
-\framesubtitle{Létező kiterjesztés átírása Sharepointtal való működésre}
+\framesubtitle{Dokumentummenedzsment: Létező kiterjesztés átírása Sharepointra}
 \begin{itemize}
 \item Protokoll visszafejtése: Wireshark, vázlatos referencia MSDN-ről.
 \item Megfigyelt rendszer: Microsoft Office 2007, Microsoft Sharepoint 2007.
@@ -100,13 +115,22 @@
 
 \begin{frame}
 \frametitle{Megoldott feladatok}
-\framesubtitle{Alfrescohoz és Sharepointhoz lehessen egyidejűleg kapcsolódni}
+\framesubtitle{Dokumentummenedzsment: Alfresco és Sharepoint egyidejűleg}
 \begin{itemize}
 \item Ahol szerver oldalon migráltak, ott általában Alfresco-ra.
 \item Cél: ha a klienseket korábban migrálják, a szerveroldali migráció után változatlanok maradhassanak a kliensek.
 \item Megoldás: VTI modul Alfresco-hoz, Sharepoint protokoll szerveroldali implementációja.
 \item Problémák: hiányos implementáció.
 \end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Megoldott feladatok}
+\framesubtitle{Dokumentummenedzsment: Kiterjesztés architektúra}
+
+\begin{figure}[H]
+\includegraphics[width=100mm,keepaspectratio]{uno-java-hu.pdf}
+\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -125,7 +149,7 @@ Tervezett funkcionalitás:
 
 \begin{frame}
 \frametitle{Megoldott feladatok}
-\framesubtitle{jBPM bővítés}
+\framesubtitle{Munkafolyamat-integráció: jBPM bővítés}
 \begin{figure}[H]
 \includegraphics[width=70mm,keepaspectratio]{bpm-console-hu.pdf}
 \end{figure}
@@ -140,6 +164,7 @@ Tervezett funkcionalitás:
 \begin{frame}
 \frametitle{Tesztelési környezet}
 
+Funkcionális tesztelés, használati esetek alapján. Környezet:
 \begin{itemize}
 \item Linux, Windows
 \item Eclipse 3.5
@@ -163,6 +188,21 @@ Tervezett funkcionalitás:
 \end{frame}
 
 \begin{frame}
+\frametitle{Összefoglalás}
+\begin{itemize}
+\item A diplomaterv eredményeként egy -- nyílt forráskódú irodai
+programcsomagból használható -- egyszerű Sharepoint és jBPM kliens készült el.
+\item Ennek részeként elkészült egy különállú Sharepoint Java kliens könyvtár,
+mely korábban nem volt elérhető.
+\item Használatához szerveroldali komponens telepítése nem szükséges.
+\item Több platformon (OpenOffice, LibreOffice) fut, operációs rendszerek
+közötti hordozhatóságát a Java biztosítja.
+\item A dokumentumtár és a munkafolyamat-motor integrálása újdonság, más irodai
+programkomponensben sem volt idáig elérhető.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
 \frametitle{Válaszok a bírálatban szereplő kérdésekre}
 \begin{itemize}
 \item \textbf{Tervezi-e a továbbfejlesztést, ha igen, akkor milyen irányban?}
@@ -178,18 +218,4 @@ alaptelepítésbe való integráció javaslat
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\frametitle{Összefoglalás}
-\begin{itemize}
-\item A diplomaterv eredményeként egy -- nyílt forráskódú irodai
-programcsomagból használható -- egyszerű Sharepoint és jBPM kliens készült el.
-\item Ennek részeként elkészült egy különállú Sharepoint Java kliens könyvtár,
-mely korábban nem volt elérhető.
-\item Használatához szerveroldali komponens telepítése nem szükséges.
-\item Több platformon (OpenOffice, LibreOffice) fut, operációs rendszerek
-közötti hordozhatóságát a Java biztosítja.
-\item A dokumentumtár és a munkafolyamat-motor integrálása újdonság, más irodai
-programkomponensben sem volt idáig elérhető.
-\end{itemize}
-\end{frame}
 \end{document}
