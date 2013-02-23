@@ -1,0 +1,5 @@
+= MSc Thesis
+
+- http://vmiklos.hu/msc-thesis/downloads/slides.pdf[Slides]
+- http://vmiklos.hu/msc-thesis/downloads/thesis.pdf[Thesis]
+- https://github.com/vmiklos/msc-thesis[Git repo]
